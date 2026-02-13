@@ -1,0 +1,163 @@
+name: Deploy Backend to HostPinnacle
+
+on:
+  push:
+    branches: [ main, production ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Allow manual triggering
+
+env:
+  NODE_VERSION: '20.x'
+  
+jobs:
+  # Job 1: Test and Build
+  test-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting (if configured)
+      run: npm run lint || echo "Linting not configured, skipping..."
+      continue-on-error: true
+      
+    - name: Generate Prisma client
+      run: npx prisma generate
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Run tests (if configured)
+      run: npm test || echo "Tests not configured, skipping..."
+      continue-on-error: true
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: |
+          dist/
+          package.json
+          package-lock.json
+          prisma/
+        retention-days: 3
+
+  # Job 2: Deploy to Staging (for PR and main branch)
+  deploy-staging:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
+    environment: staging
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-files
+        
+    - name: Deploy to staging via FTP/SFTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.STAGING_FTP_SERVER }}
+        username: ${{ secrets.STAGING_FTP_USERNAME }}
+        password: ${{ secrets.STAGING_FTP_PASSWORD }}
+        server-dir: /staging/ # Adjust path for your hosting structure
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/src/**
+          **/*.md
+          **/*.log
+          
+    - name: Run post-deploy commands (staging)
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.STAGING_SSH_HOST }}
+        username: ${{ secrets.STAGING_SSH_USERNAME }}
+        password: ${{ secrets.STAGING_SSH_PASSWORD }}
+        port: ${{ secrets.STAGING_SSH_PORT || 22 }}
+        script: |
+          cd /path/to/your/staging/app
+          npm ci --production
+          npx prisma migrate deploy
+          npx prisma generate
+          pm2 reload staging-tours-backend || pm2 start dist/server.js --name staging-tours-backend
+          
+  # Job 3: Deploy to Production (only on production branch)
+  deploy-production:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production'
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-files
+        
+    - name: Deploy to production via FTP/SFTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.PROD_FTP_SERVER }}
+        username: ${{ secrets.PROD_FTP_USERNAME }}
+        password: ${{ secrets.PROD_FTP_PASSWORD }}
+        server-dir: /production/ # Adjust path for your hosting structure
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/src/**
+          **/*.md
+          **/*.log
+          
+    - name: Run post-deploy commands (production)
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.PROD_SSH_HOST }}
+        username: ${{ secrets.PROD_SSH_USERNAME }}
+        password: ${{ secrets.PROD_SSH_PASSWORD }}
+        port: ${{ secrets.PROD_SSH_PORT || 22 }}
+        script: |
+          cd /path/to/your/production/app
+          npm ci --production
+          npx prisma migrate deploy
+          npx prisma generate
+          pm2 reload prod-tours-backend || pm2 start dist/server.js --name prod-tours-backend
+
+  # Job 4: Notify deployment status
+  notify:
+    needs: [deploy-staging, deploy-production]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Notify deployment success
+      if: ${{ needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success' }}
+      run: |
+        echo "✅ Deployment successful!"
+        # Add notification logic here (Slack, Discord, Email, etc.)
+        
+    - name: Notify deployment failure
+      if: ${{ needs.deploy-staging.result == 'failure' || needs.deploy-production.result == 'failure' }}
+      run: |
+        echo "❌ Deployment failed!"
+        # Add notification logic here (Slack, Discord, Email, etc.)

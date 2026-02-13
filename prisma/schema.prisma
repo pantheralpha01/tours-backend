@@ -1,0 +1,405 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  AGENT
+  MANAGER
+}
+
+enum BookingStatus {
+  DRAFT
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+}
+
+enum BookingEventType {
+  CREATED
+  UPDATED
+  STATUS_CHANGED
+  DELETED
+  PAYMENT_CREATED
+  PAYMENT_COMPLETED
+  PAYMENT_FAILED
+}
+
+enum InventoryStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+}
+
+enum PaymentState {
+  INITIATED
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum ContractStatus {
+  DRAFT
+  SENT
+  SIGNED
+  CANCELLED
+}
+
+enum ReceiptStatus {
+  ISSUED
+  VOID
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+  REJECTED
+}
+
+enum RefundStatus {
+  REQUESTED
+  APPROVED
+  DECLINED
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum PartnerApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PartnerEventType {
+  APPROVED
+  REJECTED
+}
+
+enum DispatchStatus {
+  PENDING
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum DispatchEventType {
+  CREATED
+  ASSIGNED
+  STATUS_CHANGED
+}
+
+enum Currency {
+  USD
+  KES
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(AGENT)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  bookings         Booking[]
+  quotes           Quote[]
+  disputesOpened   Dispute[] @relation("DisputeOpenedBy")
+  disputesAssigned Dispute[] @relation("DisputeAssignedTo")
+  partnersCreated  Partner[] @relation("PartnerCreatedBy")
+  partnersApproved Partner[] @relation("PartnerApprovedBy")
+  dispatchesAssigned Dispatch[] @relation("DispatchAssignedTo")
+  refreshTokens    RefreshToken[]
+}
+
+model Booking {
+  id                  String        @id @default(uuid())
+  customerName        String
+  serviceTitle        String
+  amount              Decimal       @db.Decimal(12, 2)
+  currency            Currency      @default(USD)
+  commissionRate      Decimal       @db.Decimal(5, 4)
+  commissionAmount    Decimal       @db.Decimal(12, 2)
+  commissionCurrency  Currency      @default(KES)
+  status              BookingStatus @default(DRAFT)
+  paymentStatus       PaymentStatus @default(UNPAID)
+  agentId             String
+  serviceStartAt      DateTime?
+  serviceEndAt        DateTime?
+  serviceTimezone     String?
+  createdAt           DateTime      @default(now())
+
+  agent         User          @relation(fields: [agentId], references: [id])
+  events        BookingEvent[]
+  payments      Payment[]
+  quotes        Quote[]
+  contracts     Contract[]
+  receipts      Receipt[]
+  disputes      Dispute[]
+  refunds       Refund[]
+  dispatches    Dispatch[]
+
+  @@index([agentId])
+}
+
+model BookingEvent {
+  id        String           @id @default(uuid())
+  bookingId String
+  type      BookingEventType
+  actorId   String?
+  metadata  Json?
+  createdAt DateTime         @default(now())
+
+  booking   Booking          @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+}
+
+model Partner {
+  id        String          @id @default(uuid())
+  name      String
+  email     String?         @unique
+  phone     String?
+  isActive  Boolean         @default(true)
+  approvalStatus PartnerApprovalStatus @default(PENDING)
+  approvedById String?
+  approvedAt DateTime?
+  rejectedReason String?
+  createdById String?
+  createdAt DateTime        @default(now())
+
+  inventory InventoryItem[]
+  contracts Contract[]
+  events    PartnerEvent[]
+  createdBy User? @relation("PartnerCreatedBy", fields: [createdById], references: [id])
+  approvedBy User? @relation("PartnerApprovedBy", fields: [approvedById], references: [id])
+
+  @@index([approvalStatus])
+  @@index([createdById])
+  @@index([approvedById])
+}
+
+model PartnerEvent {
+  id        String           @id @default(uuid())
+  partnerId String
+  type      PartnerEventType
+  actorId   String?
+  metadata  Json?
+  createdAt DateTime         @default(now())
+
+  partner   Partner          @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@index([partnerId])
+}
+
+model Dispatch {
+  id           String         @id @default(uuid())
+  bookingId    String
+  assignedToId String?
+  status       DispatchStatus @default(PENDING)
+  notes        String?
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime       @default(now())
+
+  booking      Booking        @relation(fields: [bookingId], references: [id])
+  assignedTo   User?          @relation("DispatchAssignedTo", fields: [assignedToId], references: [id])
+  trackPoints  DispatchTrackPoint[]
+  events       DispatchEvent[]
+
+  @@index([bookingId])
+  @@index([assignedToId])
+  @@index([status])
+}
+
+model DispatchEvent {
+  id         String            @id @default(uuid())
+  dispatchId String
+  type       DispatchEventType
+  actorId    String?
+  metadata   Json?
+  createdAt  DateTime          @default(now())
+
+  dispatch   Dispatch          @relation(fields: [dispatchId], references: [id], onDelete: Cascade)
+
+  @@index([dispatchId])
+  @@index([createdAt])
+}
+
+model DispatchTrackPoint {
+  id         String   @id @default(uuid())
+  dispatchId String
+  latitude   Decimal  @db.Decimal(9, 6)
+  longitude  Decimal  @db.Decimal(9, 6)
+  recordedAt DateTime @default(now())
+  metadata   Json?
+
+  dispatch   Dispatch @relation(fields: [dispatchId], references: [id], onDelete: Cascade)
+
+  @@index([dispatchId])
+  @@index([recordedAt])
+}
+
+model InventoryItem {
+  id          String          @id @default(uuid())
+  partnerId   String
+  title       String
+  description String?
+  price       Decimal         @db.Decimal(12, 2)
+  status      InventoryStatus @default(DRAFT)
+  createdAt   DateTime        @default(now())
+
+  partner     Partner         @relation(fields: [partnerId], references: [id])
+
+  @@index([partnerId])
+}
+
+model Payment {
+  id            String       @id @default(uuid())
+  bookingId     String
+  provider      String
+  amount        Decimal      @db.Decimal(12, 2)
+  currency      Currency     @default(USD)
+  state         PaymentState @default(INITIATED)
+  reference     String?      @unique
+  metadata      Json?
+  createdAt     DateTime     @default(now())
+
+  booking       Booking      @relation(fields: [bookingId], references: [id])
+  receipts      Receipt[]
+  refunds       Refund[]
+
+  @@index([bookingId])
+}
+
+model Quote {
+  id               String      @id @default(uuid())
+  bookingId        String
+  agentId          String
+  title            String
+  status           QuoteStatus @default(DRAFT)
+  amount           Decimal     @db.Decimal(12, 2)
+  currency         Currency    @default(USD)
+  commissionRate   Decimal     @db.Decimal(5, 4)
+  commissionAmount Decimal     @db.Decimal(12, 2)
+  commissionCurrency Currency  @default(KES)
+  expiresAt        DateTime?
+  items            Json?
+  notes            String?
+  createdAt        DateTime    @default(now())
+
+  booking          Booking     @relation(fields: [bookingId], references: [id])
+  agent            User        @relation(fields: [agentId], references: [id])
+
+  @@index([bookingId])
+  @@index([agentId])
+}
+
+model Contract {
+  id          String         @id @default(uuid())
+  bookingId   String
+  partnerId   String?
+  status      ContractStatus @default(DRAFT)
+  fileUrl     String?
+  signedAt    DateTime?
+  metadata    Json?
+  createdAt   DateTime       @default(now())
+
+  booking     Booking        @relation(fields: [bookingId], references: [id])
+  partner     Partner?       @relation(fields: [partnerId], references: [id])
+
+  @@index([bookingId])
+  @@index([partnerId])
+}
+
+model Receipt {
+  id            String        @id @default(uuid())
+  bookingId     String
+  paymentId     String
+  receiptNumber String        @unique
+  status        ReceiptStatus @default(ISSUED)
+  amount        Decimal       @db.Decimal(12, 2)
+  currency      Currency      @default(USD)
+  issuedAt      DateTime      @default(now())
+  fileUrl       String?
+
+  booking       Booking       @relation(fields: [bookingId], references: [id])
+  payment       Payment       @relation(fields: [paymentId], references: [id])
+
+  @@index([bookingId])
+  @@index([paymentId])
+}
+
+model Dispute {
+  id           String        @id @default(uuid())
+  bookingId    String
+  status       DisputeStatus @default(OPEN)
+  reason       String
+  description  String?
+  openedById   String
+  assignedToId String?
+  resolvedAt   DateTime?
+  createdAt    DateTime      @default(now())
+
+  booking      Booking       @relation(fields: [bookingId], references: [id])
+  openedBy     User          @relation("DisputeOpenedBy", fields: [openedById], references: [id])
+  assignedTo   User?         @relation("DisputeAssignedTo", fields: [assignedToId], references: [id])
+
+  @@index([bookingId])
+  @@index([openedById])
+  @@index([assignedToId])
+}
+
+model Refund {
+  id          String       @id @default(uuid())
+  bookingId   String
+  paymentId   String
+  amount      Decimal      @db.Decimal(12, 2)
+  currency    Currency     @default(USD)
+  status      RefundStatus @default(REQUESTED)
+  reason      String
+  reference   String?
+  processedAt DateTime?
+  createdAt   DateTime     @default(now())
+
+  booking     Booking      @relation(fields: [bookingId], references: [id])
+  payment     Payment      @relation(fields: [paymentId], references: [id])
+
+  @@index([bookingId])
+  @@index([paymentId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
