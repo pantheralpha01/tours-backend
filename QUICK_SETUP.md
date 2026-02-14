@@ -109,6 +109,21 @@ After first deployment, you'll need to:
 - [ ] Enable SSL/HTTPS
 - [ ] Test API endpoints
 
+## 🌐 Access Your Live APIs
+
+Once deployment is complete:
+
+**👉 [View API Access Guide](API_ACCESS_GUIDE.md)** - Complete guide to accessing and testing your deployed APIs
+
+Quick test:
+```bash
+# Check if API is live
+curl https://api.timelessfactors.co.ke/health
+
+# View API documentation in browser
+https://api.timelessfactors.co.ke/docs
+```
+
 ---
 
 **Need Help?** See [LIVE_SERVER_DEPLOYMENT.md](LIVE_SERVER_DEPLOYMENT.md) for troubleshooting and detailed setup.
