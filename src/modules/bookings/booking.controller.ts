@@ -105,22 +105,26 @@ export const bookingController = {
       });
       return res.status(200).json(booking);
     } catch (error) {
-      next(error);
+      return next(error);
     }
   },
 
-  remove: async (req: Request, res: Response) => {
-    const { id } = bookingIdSchema.parse(req.params);
-    if (req.user?.role === "AGENT") {
-      const current = await bookingService.getById(id);
-      if (!current) {
-        return res.status(404).json({ message: "Booking not found" });
+  remove: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = bookingIdSchema.parse(req.params);
+      if (req.user?.role === "AGENT") {
+        const current = await bookingService.getById(id);
+        if (!current) {
+          return res.status(404).json({ message: "Booking not found" });
+        }
+        if (current.agentId !== req.user.id) {
+          throw ApiError.forbidden("Insufficient permissions");
+        }
       }
-      if (current.agentId !== req.user.id) {
-        throw ApiError.forbidden("Insufficient permissions");
-      }
+      await bookingService.remove(id);
+      return res.status(204).send();
+    } catch (error) {
+      return next(error);
     }
-    await bookingService.remove(id);
-    return res.status(204).send();
   },
 };
