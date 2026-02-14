@@ -45,6 +45,8 @@ Name: FTP_SERVER_DIR
 Value: /home2/timeles1/tours-backend/
 ```
 
+> **Note:** The directory path should ideally end with `/`. The workflow will automatically add it if missing.
+
 ### 3. Deploy Automatically
 
 Once secrets are added, any push to the `main` branch will automatically deploy to your live server!
