@@ -58,10 +58,8 @@ jobs:
       id: server_dir
       run: |
         SERVER_DIR="${{ secrets.FTP_SERVER_DIR }}"
-        # Add trailing slash if not present
-        if [[ "${SERVER_DIR: -1}" != "/" ]]; then
-          SERVER_DIR="${SERVER_DIR}/"
-        fi
+        # Remove trailing slash if present, then add one
+        SERVER_DIR="${SERVER_DIR%/}/"
         echo "path=$SERVER_DIR" >> $GITHUB_OUTPUT
     
     - name: Deploy via FTP
