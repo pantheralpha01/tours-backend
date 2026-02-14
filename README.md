@@ -67,6 +67,25 @@ Ready to deploy to production? See our guides:
 
 For detailed deployment instructions, environment setup, troubleshooting, and more, see [QUICK_SETUP.md](QUICK_SETUP.md) or [LIVE_SERVER_DEPLOYMENT.md](LIVE_SERVER_DEPLOYMENT.md).
 
+## 🌐 Accessing Your Live APIs
+
+**Deployment complete? Ready to use your APIs?**
+
+### [📘 View Complete API Access Guide →](API_ACCESS_GUIDE.md)
+
+Quick access:
+- **Your API Base URL:** `https://api.timelessfactors.co.ke`
+- **Health Check:** `https://api.timelessfactors.co.ke/health`
+- **API Documentation:** `https://api.timelessfactors.co.ke/docs`
+- **Available Endpoints:** Authentication, Bookings, Partners, Quotes, Payments, and more
+
+The API Access Guide includes:
+- ✅ Complete endpoint list
+- ✅ Authentication examples
+- ✅ Testing with cURL, Postman, Python, JavaScript
+- ✅ Frontend integration examples
+- ✅ Troubleshooting common issues
+
 ## 🏗️ Project Structure
 
 ```

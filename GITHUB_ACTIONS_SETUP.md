@@ -53,7 +53,7 @@ Check your hosting provider's documentation for FTP details.
 | `FTP_SERVER_DIR` | `/home2/timeles1/tours-backend/` | Deployment directory path |
 
 **Important Notes:**
-- `FTP_SERVER_DIR` should end with a trailing slash `/`
+- `FTP_SERVER_DIR` should end with a trailing slash `/` (the workflow will automatically add it if missing)
 - Use the full FTP server address (e.g., `ftp.yourdomain.com` not just `yourdomain.com`)
 - Keep your secrets secure - never commit them to code
 
