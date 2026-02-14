@@ -45,7 +45,7 @@ Name: FTP_SERVER_DIR
 Value: /home2/timeles1/tours-backend/
 ```
 
-> **Note:** The directory path should ideally end with `/`. The workflow will automatically add it if missing.
+> **Note:** The directory path requires a trailing `/`, which the workflow will automatically add if missing.
 
 ### 3. Deploy Automatically
 
