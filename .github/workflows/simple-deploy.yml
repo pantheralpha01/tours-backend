@@ -59,7 +59,7 @@ jobs:
       run: |
         SERVER_DIR="${{ secrets.FTP_SERVER_DIR }}"
         # Add trailing slash if not present
-        if [[ ! "$SERVER_DIR" =~ /$ ]]; then
+        if [[ "${SERVER_DIR: -1}" != "/" ]]; then
           SERVER_DIR="${SERVER_DIR}/"
         fi
         echo "path=$SERVER_DIR" >> $GITHUB_OUTPUT
