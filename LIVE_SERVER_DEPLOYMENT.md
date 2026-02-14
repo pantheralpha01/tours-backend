@@ -183,6 +183,42 @@ Or run the verification script:
 ./verify-deployment.sh https://api.timelessfactors.co.ke
 ```
 
+## 🌐 Accessing Your Live APIs
+
+**Congratulations! Your API is now live. Here's how to use it:**
+
+### [📘 Complete API Access Guide →](API_ACCESS_GUIDE.md)
+
+The guide covers:
+- ✅ **Base URL and endpoints** - All available API routes
+- ✅ **Authentication** - How to login and use access tokens
+- ✅ **Example requests** - cURL, Postman, Python, JavaScript examples
+- ✅ **Testing tools** - Using Swagger UI, Postman, and command-line tools
+- ✅ **Frontend integration** - Connect your frontend to the API
+- ✅ **Troubleshooting** - Common issues and solutions
+
+### Quick Reference
+
+**API Base URL:** `https://api.timelessfactors.co.ke`
+
+**Key Endpoints:**
+- `/health` - Health check (no auth required)
+- `/docs` - Interactive API documentation (Swagger UI)
+- `/api/auth/login` - User authentication
+- `/api/bookings` - Booking management
+- `/api/partners` - Partner management
+- `/api/quotes` - Quote management
+- `/api/payments` - Payment processing
+
+**Quick Test:**
+```bash
+# Open in browser for interactive docs
+https://api.timelessfactors.co.ke/docs
+
+# Or test with cURL
+curl https://api.timelessfactors.co.ke/health
+```
+
 ## 🔍 Troubleshooting
 
 ### Deployment Failed?

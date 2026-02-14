@@ -183,6 +183,20 @@ After deployment, verify:
 - [ ] Monitoring setup
 - [ ] Database backups automated
 
+## 🌐 Accessing Your Live APIs
+
+**Deployment complete? Here's how to access and test your APIs:**
+
+👉 **[View the Complete API Access Guide →](API_ACCESS_GUIDE.md)**
+
+The guide includes:
+- ✅ Your API base URL
+- ✅ Available endpoints list
+- ✅ Authentication examples
+- ✅ Testing with cURL, Postman, and code
+- ✅ Troubleshooting common issues
+- ✅ Frontend integration examples
+
 ## 🔐 Security Checklist
 
 Before going live:
