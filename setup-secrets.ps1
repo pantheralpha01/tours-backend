@@ -9,10 +9,10 @@ Write-Host ""
 
 Write-Host "📋 REQUIRED SECRETS FOR SIMPLE DEPLOY:" -ForegroundColor Cyan
 Write-Host "------------------------------------" -ForegroundColor Cyan
-Write-Host "FTP_SERVER = [Enter your hosting server URL]" -ForegroundColor White
-Write-Host "FTP_USERNAME = [Enter your FTP username]" -ForegroundColor White
-Write-Host "FTP_PASSWORD = [Enter your FTP password]" -ForegroundColor White
-Write-Host "FTP_SERVER_DIR = [Enter deployment path, e.g., /public_html/api/]" -ForegroundColor White
+Write-Host "FTP_SERVER = timelessfactors.co.ke" -ForegroundColor White
+Write-Host "FTP_USERNAME = [Your FTP username - see deployment docs]" -ForegroundColor White
+Write-Host "FTP_PASSWORD = [Your FTP password - see deployment docs]" -ForegroundColor White
+Write-Host "FTP_SERVER_DIR = /home2/timeles1/tours-backend/" -ForegroundColor White
 Write-Host ""
 
 Write-Host "📋 ENVIRONMENT VARIABLES FOR HOSTING PANEL:" -ForegroundColor Cyan
@@ -62,10 +62,10 @@ GitHub Secrets for Tours Backend
 ================================
 Generated: $(Get-Date)
 
-FTP_SERVER = [Enter your hosting server URL]
-FTP_USERNAME = [Enter your FTP username]
-FTP_PASSWORD = [Enter your FTP password]
-FTP_SERVER_DIR = [Enter deployment path]
+FTP_SERVER = timelessfactors.co.ke
+FTP_USERNAME = [Your FTP username - see deployment docs]
+FTP_PASSWORD = [Your FTP password - see deployment docs]
+FTP_SERVER_DIR = /home2/timeles1/tours-backend/
 
 Environment Variables:
 DATABASE_URL = postgresql://username:password@host:port/database_name
