@@ -44,17 +44,19 @@ Once the server is running, visit:
 
 ## 📦 Deployment
 
-Ready to deploy to production? See our comprehensive deployment guide:
+Ready to deploy to production? See our guides:
 
+### [⚡ Quick Setup for Live Server →](QUICK_SETUP.md)
 ### [📖 Complete Deployment Guide →](README-DEPLOYMENT.md)
+### [🚀 Live Server Deployment →](LIVE_SERVER_DEPLOYMENT.md)
 
 ### Quick Deploy with GitHub Actions
 
 1. **Configure GitHub Secrets:**
-   - `FTP_SERVER` - Your server address
-   - `FTP_USERNAME` - Your FTP username
-   - `FTP_PASSWORD` - Your FTP password
-   - `FTP_SERVER_DIR` - Deployment directory (e.g., `/public_html/api/`)
+   - `FTP_SERVER` - timelessfactors.co.ke
+   - `FTP_USERNAME` - [Your FTP username]
+   - `FTP_PASSWORD` - [Your FTP password]
+   - `FTP_SERVER_DIR` - /home2/timeles1/tours-backend/
 
 2. **Push to main branch:**
    ```bash
@@ -63,7 +65,7 @@ Ready to deploy to production? See our comprehensive deployment guide:
 
 3. **That's it!** GitHub Actions will automatically build and deploy your app.
 
-For detailed deployment instructions, environment setup, troubleshooting, and more, see [README-DEPLOYMENT.md](README-DEPLOYMENT.md).
+For detailed deployment instructions, environment setup, troubleshooting, and more, see [QUICK_SETUP.md](QUICK_SETUP.md) or [LIVE_SERVER_DEPLOYMENT.md](LIVE_SERVER_DEPLOYMENT.md).
 
 ## 🏗️ Project Structure
 
@@ -171,8 +173,11 @@ Common issues:
 
 ## 📖 Additional Documentation
 
+- [QUICK_SETUP.md](QUICK_SETUP.md) - Quick setup for live deployment
+- [LIVE_SERVER_DEPLOYMENT.md](LIVE_SERVER_DEPLOYMENT.md) - Live server deployment guide
 - [DEPLOYMENT_README.md](DEPLOYMENT_README.md) - Deployment options overview
 - [GITHUB_DEPLOYMENT.md](GITHUB_DEPLOYMENT.md) - GitHub Actions details
+- [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md) - GitHub Actions setup steps
 - [HOSTPINNACLE_DEPLOYMENT.md](HOSTPINNACLE_DEPLOYMENT.md) - HostPinnacle specific guide
 - [POSTMAN_SETUP_GUIDE.md](POSTMAN_SETUP_GUIDE.md) - API testing with Postman
 - [TRANSITION_TEST_STEPS.md](TRANSITION_TEST_STEPS.md) - Booking state transitions
