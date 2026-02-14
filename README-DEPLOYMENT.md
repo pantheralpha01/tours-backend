@@ -145,6 +145,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 | `FTP_PASSWORD` | Your FTP password | `your-secure-password` |
 | `FTP_SERVER_DIR` | Deployment directory path | `/public_html/api/` |
 
+> **Note:** The `FTP_SERVER_DIR` requires a trailing slash `/`, which the deployment workflow will automatically add if not provided.
+
 ### Step 2: Set Environment Variables on Server
 
 Configure environment variables in your hosting control panel (cPanel, Plesk, etc.):

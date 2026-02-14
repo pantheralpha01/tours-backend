@@ -45,6 +45,8 @@ Name: FTP_SERVER_DIR
 Value: /home2/timeles1/tours-backend/
 ```
 
+> **Note:** The directory path requires a trailing `/`, which the workflow will automatically add if missing.
+
 ### 3. Deploy Automatically
 
 Once secrets are added, any push to the `main` branch will automatically deploy to your live server!
@@ -106,6 +108,21 @@ After first deployment, you'll need to:
 - [ ] Start application with PM2
 - [ ] Enable SSL/HTTPS
 - [ ] Test API endpoints
+
+## 🌐 Access Your Live APIs
+
+Once deployment is complete:
+
+**👉 [View API Access Guide](API_ACCESS_GUIDE.md)** - Complete guide to accessing and testing your deployed APIs
+
+Quick test:
+```bash
+# Check if API is live
+curl https://api.timelessfactors.co.ke/health
+
+# View API documentation in browser
+https://api.timelessfactors.co.ke/docs
+```
 
 ---
 

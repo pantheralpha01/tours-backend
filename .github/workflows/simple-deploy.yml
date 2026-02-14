@@ -54,13 +54,21 @@ jobs:
         rm -rf node_modules
         npm ci --production
     
+    - name: Ensure server directory ends with /
+      id: server_dir
+      run: |
+        SERVER_DIR="${{ secrets.FTP_SERVER_DIR }}"
+        # Remove trailing slash if present, then add one
+        SERVER_DIR="${SERVER_DIR%/}/"
+        echo "path=$SERVER_DIR" >> $GITHUB_OUTPUT
+    
     - name: Deploy via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ${{ secrets.FTP_SERVER_DIR }}
+        server-dir: ${{ steps.server_dir.outputs.path }}
         exclude: |
           **/.git*
           **/.git*/**
