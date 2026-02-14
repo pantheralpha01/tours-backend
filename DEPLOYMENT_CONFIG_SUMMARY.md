@@ -4,14 +4,18 @@
 
 Your repository has been configured for automatic deployment to the live FTP server at **timelessfactors.co.ke**.
 
+## 🔐 SECURITY NOTICE
+
+**IMPORTANT:** The actual FTP username and password should NEVER be committed to version control. Obtain these credentials from your hosting provider or secure password manager, and add them only to GitHub Secrets. This document uses placeholders for sensitive credentials.
+
 ## 🎯 What Was Configured
 
 ### 1. Live Server Credentials
-The following FTP credentials have been configured in the deployment documentation:
+The following FTP configuration has been set up for deployment:
 
 - **FTP Server:** timelessfactors.co.ke
-- **FTP Username:** timeles1
-- **FTP Password:** Timeless@2025
+- **FTP Username:** [Obtain from hosting provider - DO NOT commit to repository]
+- **FTP Password:** [Obtain from hosting provider - DO NOT commit to repository]
 - **Server Directory:** /home2/timeles1/tours-backend/
 
 ### 2. Updated Files
@@ -45,8 +49,8 @@ Add these 4 secrets:
 | Secret Name | Value |
 |-------------|-------|
 | `FTP_SERVER` | `timelessfactors.co.ke` |
-| `FTP_USERNAME` | `timeles1` |
-| `FTP_PASSWORD` | `Timeless@2025` |
+| `FTP_USERNAME` | [Obtain from hosting provider] |
+| `FTP_PASSWORD` | [Obtain from hosting provider] |
 | `FTP_SERVER_DIR` | `/home2/timeles1/tours-backend/` |
 
 **How to add a secret:**

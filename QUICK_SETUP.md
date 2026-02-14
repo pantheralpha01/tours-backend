@@ -1,8 +1,15 @@
 # ⚡ Quick Setup Guide for Live Deployment
 
-## 🎯 IMMEDIATE ACTION REQUIRED
+## 🎯 IMPORTANT SECURITY NOTE
 
-To enable automatic deployment to your live server at **timelessfactors.co.ke**, you need to add these secrets to your GitHub repository.
+**The actual FTP credentials should NEVER be committed to version control.**  
+This guide shows placeholders - obtain the actual credentials from your hosting provider or secure password manager.
+
+## 🔐 Where to Get Credentials
+
+Contact your hosting provider or system administrator to obtain:
+- FTP username
+- FTP password
 
 ## 📋 Step-by-Step Instructions
 
@@ -23,13 +30,13 @@ Value: timelessfactors.co.ke
 #### Secret 2: FTP_USERNAME
 ```
 Name: FTP_USERNAME
-Value: timeles1
+Value: [Obtain from hosting provider]
 ```
 
 #### Secret 3: FTP_PASSWORD
 ```
 Name: FTP_PASSWORD
-Value: Timeless@2025
+Value: [Obtain from hosting provider]
 ```
 
 #### Secret 4: FTP_SERVER_DIR

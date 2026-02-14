@@ -48,8 +48,8 @@ Check your hosting provider's documentation for FTP details.
 | Secret Name | Example Value | Where to Find |
 |-------------|---------------|---------------|
 | `FTP_SERVER` | `timelessfactors.co.ke` | Live server hostname |
-| `FTP_USERNAME` | `timeles1` | FTP account username |
-| `FTP_PASSWORD` | `Timeless@2025` | FTP account password |
+| `FTP_USERNAME` | `[Your FTP username]` | FTP account username (from hosting provider) |
+| `FTP_PASSWORD` | `[Your FTP password]` | FTP account password (from hosting provider) |
 | `FTP_SERVER_DIR` | `/home2/timeles1/tours-backend/` | Deployment directory path |
 
 **Important Notes:**

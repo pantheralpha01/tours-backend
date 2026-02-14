@@ -2,12 +2,16 @@
 
 This document contains the configuration for deploying to the **live production server** at `timelessfactors.co.ke`.
 
+## 🔐 SECURITY NOTICE
+
+**IMPORTANT:** The actual FTP username and password should NEVER be committed to version control. Obtain these credentials from your hosting provider or secure password manager, and add them only to GitHub Secrets.
+
 ## 📋 Live Server Details
 
 ### FTP Configuration
 - **Server:** `timelessfactors.co.ke`
-- **Username:** `timeles1`
-- **Password:** `Timeless@2025`
+- **Username:** [Obtain from hosting provider]
+- **Password:** [Obtain from hosting provider]
 - **Deployment Directory:** `/home2/timeles1/tours-backend/`
 
 ## 🔧 Setup Instructions
@@ -23,8 +27,8 @@ To enable automated deployment via GitHub Actions, add the following secrets to 
 | Secret Name | Value |
 |-------------|-------|
 | `FTP_SERVER` | `timelessfactors.co.ke` |
-| `FTP_USERNAME` | `timeles1` |
-| `FTP_PASSWORD` | `Timeless@2025` |
+| `FTP_USERNAME` | [Obtain from hosting provider] |
+| `FTP_PASSWORD` | [Obtain from hosting provider] |
 | `FTP_SERVER_DIR` | `/home2/timeles1/tours-backend/` |
 
 ### Step 2: Set Environment Variables on Server
