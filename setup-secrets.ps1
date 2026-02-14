@@ -10,8 +10,8 @@ Write-Host ""
 Write-Host "📋 REQUIRED SECRETS FOR SIMPLE DEPLOY:" -ForegroundColor Cyan
 Write-Host "------------------------------------" -ForegroundColor Cyan
 Write-Host "FTP_SERVER = timelessfactors.co.ke" -ForegroundColor White
-Write-Host "FTP_USERNAME = timeles1" -ForegroundColor White
-Write-Host "FTP_PASSWORD = Timeless@2025" -ForegroundColor White
+Write-Host "FTP_USERNAME = [Your FTP username - see deployment docs]" -ForegroundColor White
+Write-Host "FTP_PASSWORD = [Your FTP password - see deployment docs]" -ForegroundColor White
 Write-Host "FTP_SERVER_DIR = /home2/timeles1/tours-backend/" -ForegroundColor White
 Write-Host ""
 
@@ -63,8 +63,8 @@ GitHub Secrets for Tours Backend
 Generated: $(Get-Date)
 
 FTP_SERVER = timelessfactors.co.ke
-FTP_USERNAME = timeles1
-FTP_PASSWORD = Timeless@2025
+FTP_USERNAME = [Your FTP username - see deployment docs]
+FTP_PASSWORD = [Your FTP password - see deployment docs]
 FTP_SERVER_DIR = /home2/timeles1/tours-backend/
 
 Environment Variables:
