@@ -47,10 +47,10 @@ Check your hosting provider's documentation for FTP details.
 
 | Secret Name | Example Value | Where to Find |
 |-------------|---------------|---------------|
-| `FTP_SERVER` | `ftp.yourdomain.com` | Hosting control panel → FTP section |
-| `FTP_USERNAME` | `user@yourdomain.com` | FTP account details |
-| `FTP_PASSWORD` | `your-secure-password` | FTP account password |
-| `FTP_SERVER_DIR` | `/public_html/api/` | Deployment directory path |
+| `FTP_SERVER` | `timelessfactors.co.ke` | Live server hostname |
+| `FTP_USERNAME` | `timeles1` | FTP account username |
+| `FTP_PASSWORD` | `Timeless@2025` | FTP account password |
+| `FTP_SERVER_DIR` | `/home2/timeles1/tours-backend/` | Deployment directory path |
 
 **Important Notes:**
 - `FTP_SERVER_DIR` should end with a trailing slash `/`

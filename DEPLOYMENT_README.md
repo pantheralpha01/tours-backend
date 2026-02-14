@@ -55,10 +55,10 @@ ALLOWED_ORIGINS=https://yoursite.com
 
 ### GitHub Secrets (for auto-deploy):
 ```
-FTP_SERVER=your-server.com
-FTP_USERNAME=your-username  
-FTP_PASSWORD=your-password
-FTP_SERVER_DIR=/public_html/api/
+FTP_SERVER=timelessfactors.co.ke
+FTP_USERNAME=timeles1
+FTP_PASSWORD=Timeless@2025
+FTP_SERVER_DIR=/home2/timeles1/tours-backend/
 ```
 
 ## ⚡ Quick Commands
