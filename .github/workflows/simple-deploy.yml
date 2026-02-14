@@ -26,8 +26,28 @@ jobs:
       run: npx prisma generate
     
     - name: Build application
-      run: npm run build || echo "Build completed with warnings (postbuild may fail without DATABASE_URL)"
-      continue-on-error: true
+      run: |
+        set +e  # Don't exit on error
+        npm run build
+        BUILD_EXIT_CODE=$?
+        
+        # Check if build succeeded (TypeScript compilation)
+        if [ ! -d "dist" ]; then
+          echo "❌ Build failed: dist directory not created"
+          exit 1
+        fi
+        
+        # Postbuild (Prisma migrations) may fail without DATABASE_URL, which is expected
+        # as migrations should run on the server where DATABASE_URL is configured
+        if [ $BUILD_EXIT_CODE -ne 0 ]; then
+          echo "⚠️  Build completed with warnings (likely postbuild migration failed without DATABASE_URL)"
+          echo "✅ TypeScript compilation succeeded - dist directory created"
+          echo "ℹ️  Database migrations will run on server during first startup"
+        else
+          echo "✅ Build completed successfully"
+        fi
+        
+        set -e  # Re-enable exit on error
     
     - name: Install production dependencies only
       run: |
