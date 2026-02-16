@@ -1,0 +1,1 @@
+{"version":3,"file":"dispatch.transitions.js","sourceRoot":"","sources":["../../../src/modules/dispatch/dispatch.transitions.ts"],"names":[],"mappings":";;;AAGa,QAAA,mBAAmB,GAAkC;IAChE,OAAO,EAAE,CAAC,UAAU,EAAE,WAAW,CAAC;IAClC,QAAQ,EAAE,CAAC,aAAa,EAAE,WAAW,CAAC;IACtC,WAAW,EAAE,CAAC,WAAW,EAAE,WAAW,CAAC;IACvC,SAAS,EAAE,EAAE;IACb,SAAS,EAAE,EAAE;CACd,CAAC"}
