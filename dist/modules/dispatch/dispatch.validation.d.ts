@@ -63,18 +63,18 @@ export declare const listDispatchSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    sort?: string | undefined;
     status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     bookingId?: string | undefined;
     assignedToId?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
 }, {
-    sort?: string | undefined;
     limit?: number | undefined;
     status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     bookingId?: string | undefined;
     assignedToId?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
     page?: number | undefined;
