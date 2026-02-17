@@ -8,6 +8,7 @@
     "build": "tsc && npx prisma generate",
     "start": "node dist/server.js",
     "postbuild": "npx prisma migrate deploy",
+    "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
@@ -22,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.19.2",
+    "prisma": "^6.19.2",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -43,7 +45,6 @@
     "@types/node": "^20.11.5",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
-    "prisma": "^6.19.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
