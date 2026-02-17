@@ -15,6 +15,8 @@ const errorHandler_1 = require("./middleware/errorHandler");
 const notFound_1 = require("./middleware/notFound");
 const swagger_1 = require("./config/swagger");
 exports.app = (0, express_1.default)();
+// Respect proxy headers (needed on Render/other platforms for rate limiting & IPs)
+exports.app.set("trust proxy", 1);
 // Security middleware
 exports.app.use((0, helmet_1.default)());
 exports.app.use(cors_1.corsMiddleware);
