@@ -1,6 +1,26 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import { config } from "./index";
 
+const swaggerServerUrl =
+  process.env.SWAGGER_SERVER_URL ??
+  process.env.PUBLIC_BASE_URL ??
+  process.env.RENDER_EXTERNAL_URL ??
+  "";
+
+const servers = [
+  {
+    url: `http://localhost:${config.port}`,
+    description: "Development server",
+  },
+];
+
+if (swaggerServerUrl && !servers.some((server) => server.url === swaggerServerUrl)) {
+  servers.unshift({
+    url: swaggerServerUrl,
+    description: "Production server",
+  });
+}
+
 const options: swaggerJsdoc.Options = {
   definition: {
     openapi: "3.0.0",
@@ -9,12 +29,7 @@ const options: swaggerJsdoc.Options = {
       version: "1.0.0",
       description: "Scalable Agent Portal Backend API Documentation",
     },
-    servers: [
-      {
-        url: `http://localhost:${config.port}`,
-        description: "Development server",
-      },
-    ],
+    servers,
     components: {
       securitySchemes: {
         bearerAuth: {
