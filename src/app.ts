@@ -11,6 +11,9 @@ import { swaggerSpec } from "./config/swagger";
 
 export const app = express();
 
+// Respect proxy headers (needed on Render/other platforms for rate limiting & IPs)
+app.set("trust proxy", 1);
+
 // Security middleware
 app.use(helmet());
 app.use(corsMiddleware);
