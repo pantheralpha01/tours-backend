@@ -65,18 +65,18 @@ export declare const listQuoteSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    sort?: string | undefined;
     status?: string | undefined;
     agentId?: string | undefined;
     bookingId?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
 }, {
-    sort?: string | undefined;
     limit?: number | undefined;
     status?: string | undefined;
     agentId?: string | undefined;
     bookingId?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
     page?: number | undefined;

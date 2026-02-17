@@ -53,18 +53,18 @@ export declare const listContractSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    sort?: string | undefined;
     status?: string | undefined;
     bookingId?: string | undefined;
     partnerId?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
 }, {
-    sort?: string | undefined;
     limit?: number | undefined;
     status?: string | undefined;
     bookingId?: string | undefined;
     partnerId?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
     page?: number | undefined;

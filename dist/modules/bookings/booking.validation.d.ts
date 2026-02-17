@@ -100,16 +100,16 @@ export declare const listBookingSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    sort?: string | undefined;
     status?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
     serviceStartFrom?: Date | undefined;
     serviceStartTo?: Date | undefined;
 }, {
-    sort?: string | undefined;
     limit?: number | undefined;
     status?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
     serviceStartFrom?: Date | undefined;
@@ -129,16 +129,16 @@ export declare const calendarBookingSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
-    sort?: string | undefined;
     status?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
     serviceStartFrom?: Date | undefined;
     serviceStartTo?: Date | undefined;
 }, {
-    sort?: string | undefined;
     limit?: number | undefined;
     status?: string | undefined;
+    sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
     serviceStartFrom?: Date | undefined;

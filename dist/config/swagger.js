@@ -6,6 +6,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.swaggerSpec = void 0;
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const index_1 = require("./index");
+const swaggerServerUrl = process.env.SWAGGER_SERVER_URL ??
+    process.env.PUBLIC_BASE_URL ??
+    process.env.RENDER_EXTERNAL_URL ??
+    "";
+const servers = [
+    {
+        url: `http://localhost:${index_1.config.port}`,
+        description: "Development server",
+    },
+];
+if (swaggerServerUrl && !servers.some((server) => server.url === swaggerServerUrl)) {
+    servers.unshift({
+        url: swaggerServerUrl,
+        description: "Production server",
+    });
+}
 const options = {
     definition: {
         openapi: "3.0.0",
@@ -14,12 +30,7 @@ const options = {
             version: "1.0.0",
             description: "Scalable Agent Portal Backend API Documentation",
         },
-        servers: [
-            {
-                url: `http://localhost:${index_1.config.port}`,
-                description: "Development server",
-            },
-        ],
+        servers,
         components: {
             securitySchemes: {
                 bearerAuth: {
