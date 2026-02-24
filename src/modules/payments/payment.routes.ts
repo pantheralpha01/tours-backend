@@ -5,6 +5,46 @@ import { requireRoles } from "../../middleware/role";
 
 export const paymentRoutes = Router();
 
+/**
+ * @openapi
+ * /api/payments/webhooks/{provider}:
+ *   post:
+ *     tags:
+ *       - Payments
+ *     summary: Ingest payment provider webhook callbacks
+ *     parameters:
+ *       - in: path
+ *         name: provider
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [MPESA, STRIPE, PAYPAL, VISA, MASTERCARD, CRYPTO]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               reference:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *                 enum: [USD, KES]
+ *               eventType:
+ *                 type: string
+ *               metadata:
+ *                 type: object
+ *     responses:
+ *       202:
+ *         description: Webhook accepted
+ */
+paymentRoutes.post("/webhooks/:provider", paymentController.webhook);
+
 paymentRoutes.use(authenticate);
 
 /**
@@ -64,6 +104,99 @@ paymentRoutes.post(
   "/",
   requireRoles("ADMIN", "MANAGER"),
   paymentController.create
+);
+
+/**
+ * @openapi
+ * /api/payments/initiate:
+ *   post:
+ *     tags:
+ *       - Payments
+ *     summary: Initiate a payment via configured gateway
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - bookingId
+ *               - provider
+ *               - amount
+ *             properties:
+ *               bookingId:
+ *                 type: string
+ *                 format: uuid
+ *               provider:
+ *                 type: string
+ *                 enum: [MPESA, STRIPE, PAYPAL, VISA, MASTERCARD, CRYPTO]
+ *               amount:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *                 enum: [USD, KES]
+ *               reference:
+ *                 type: string
+ *               metadata:
+ *                 type: object
+ *     responses:
+ *       201:
+ *         description: Payment intent created successfully
+ */
+paymentRoutes.post(
+  "/initiate",
+  requireRoles("ADMIN", "MANAGER", "AGENT"),
+  paymentController.initiate
+);
+
+/**
+ * @openapi
+ * /api/payments/manual:
+ *   post:
+ *     tags:
+ *       - Payments
+ *     summary: Register a manual or offline payment
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - bookingId
+ *               - amount
+ *             properties:
+ *               bookingId:
+ *                 type: string
+ *                 format: uuid
+ *               provider:
+ *                 type: string
+ *                 enum: [CASH, BANK_TRANSFER, MPESA, PAYPAL, VISA, MASTERCARD, CRYPTO, OTHER]
+ *               amount:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *                 enum: [USD, KES]
+ *               reference:
+ *                 type: string
+ *               recordedAt:
+ *                 type: string
+ *                 format: date-time
+ *               notes:
+ *                 type: string
+ *                 maxLength: 1000
+ *     responses:
+ *       201:
+ *         description: Manual payment recorded successfully
+ */
+paymentRoutes.post(
+  "/manual",
+  requireRoles("ADMIN", "MANAGER", "AGENT"),
+  paymentController.manual
 );
 
 /**

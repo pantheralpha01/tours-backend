@@ -2,6 +2,10 @@ import { Router } from "express";
 import { authRoutes } from "../modules/auth/auth.routes";
 import { bookingRoutes } from "../modules/bookings/booking.routes";
 import { partnerRoutes } from "../modules/partners/partner.routes";
+import {
+	partnerInvitePublicRoutes,
+	partnerInviteRoutes,
+} from "../modules/partner-invites/partner-invite.routes";
 import { inventoryRoutes } from "../modules/inventory/inventory.routes";
 import { paymentRoutes } from "../modules/payments/payment.routes";
 import { quoteRoutes } from "../modules/quotes/quote.routes";
@@ -11,11 +15,19 @@ import { disputeRoutes } from "../modules/disputes/dispute.routes";
 import { refundRoutes } from "../modules/refunds/refund.routes";
 import { integrationRoutes } from "../modules/integrations/integration.routes";
 import { dispatchRoutes } from "../modules/dispatch/dispatch.routes";
+import { dashboardRoutes } from "../modules/dashboard/dashboard.routes";
+import { shiftRoutes } from "../modules/shifts/shift.routes";
+import { escrowRoutes } from "../modules/escrow/escrow.routes";
+import { notificationRoutes } from "../modules/notifications/notification.routes";
+import { offerRoutes } from "../modules/offers/offer.routes";
+import { communityRoutes } from "../modules/community/community.routes";
 
 export const apiRouter = Router();
 
 apiRouter.use("/auth", authRoutes);
+apiRouter.use("/dashboard", dashboardRoutes);
 apiRouter.use("/bookings", bookingRoutes);
+apiRouter.use("/partners/invites", partnerInviteRoutes);
 apiRouter.use("/partners", partnerRoutes);
 apiRouter.use("/inventory", inventoryRoutes);
 apiRouter.use("/payments", paymentRoutes);
@@ -26,3 +38,9 @@ apiRouter.use("/disputes", disputeRoutes);
 apiRouter.use("/refunds", refundRoutes);
 apiRouter.use("/integrations", integrationRoutes);
 apiRouter.use("/dispatches", dispatchRoutes);
+apiRouter.use("/shifts", shiftRoutes);
+apiRouter.use("/escrow", escrowRoutes);
+apiRouter.use("/notifications", notificationRoutes);
+apiRouter.use("/offers", offerRoutes);
+apiRouter.use("/community", communityRoutes);
+apiRouter.use("/public/partner-invites", partnerInvitePublicRoutes);

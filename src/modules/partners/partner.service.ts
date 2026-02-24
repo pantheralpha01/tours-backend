@@ -20,6 +20,7 @@ export const partnerService = {
     dateFrom?: Date;
     dateTo?: Date;
     sort?: string;
+    search?: string;
   }): Promise<PaginatedResponse<any>> => {
     const page = params?.page ?? 1;
     const limit = params?.limit ?? 10;
@@ -35,6 +36,7 @@ export const partnerService = {
         dateFrom: params?.dateFrom,
         dateTo: params?.dateTo,
         sort: params?.sort,
+        search: params?.search,
       }),
       partnerRepository.count({
         status: params?.status,
@@ -42,6 +44,7 @@ export const partnerService = {
         createdById: params?.createdById,
         dateFrom: params?.dateFrom,
         dateTo: params?.dateTo,
+        search: params?.search,
       }),
     ]);
 

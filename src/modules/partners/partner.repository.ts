@@ -28,6 +28,7 @@ export const partnerRepository = {
     dateFrom?: Date;
     dateTo?: Date;
     sort?: string;
+    search?: string;
   }) => {
     const where: any = {};
     if (params?.status) {
@@ -38,6 +39,13 @@ export const partnerRepository = {
     }
     if (params?.createdById) {
       where.createdById = params.createdById;
+    }
+    if (params?.search) {
+      const searchTerm = params.search;
+      where.OR = [
+        { name: { contains: searchTerm, mode: "insensitive" } },
+        { email: { contains: searchTerm, mode: "insensitive" } },
+      ];
     }
     if (params?.dateFrom || params?.dateTo) {
       where.createdAt = {};
@@ -68,6 +76,7 @@ export const partnerRepository = {
     createdById?: string;
     dateFrom?: Date;
     dateTo?: Date;
+    search?: string;
   }) => {
     const where: any = {};
     if (params?.status) {
@@ -78,6 +87,13 @@ export const partnerRepository = {
     }
     if (params?.createdById) {
       where.createdById = params.createdById;
+    }
+    if (params?.search) {
+      const searchTerm = params.search;
+      where.OR = [
+        { name: { contains: searchTerm, mode: "insensitive" } },
+        { email: { contains: searchTerm, mode: "insensitive" } },
+      ];
     }
     if (params?.dateFrom || params?.dateTo) {
       where.createdAt = {};
@@ -90,6 +106,12 @@ export const partnerRepository = {
   findById: (id: string) =>
     prisma.partner.findUnique({
       where: { id },
+      include: { inventory: true, createdBy: true, approvedBy: true },
+    }),
+
+  findByEmail: (email: string) =>
+    prisma.partner.findUnique({
+      where: { email },
       include: { inventory: true, createdBy: true, approvedBy: true },
     }),
 

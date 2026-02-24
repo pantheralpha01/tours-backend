@@ -1,0 +1,676 @@
+paths:
+  /api/community/topics:
+    get:
+      tags: [Community]
+      summary: List community topics
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+          description: Page number (default 1)
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          description: Page size (default 10)
+        - in: query
+          name: search
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Paginated list of topics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTopics'
+    post:
+      tags: [Community]
+      summary: Create a community topic
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTopicRequest'
+      responses:
+        '201':
+          description: Topic created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityTopic'
+  /api/community/topics/{id}:
+    patch:
+      tags: [Community]
+      summary: Update a community topic
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTopicRequest'
+      responses:
+        '200':
+          description: Updated topic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityTopic'
+  /api/community/posts:
+    get:
+      tags: [Community]
+      summary: List posts
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/CommunityPostStatus'
+        - in: query
+          name: topicId
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: authorId
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: search
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Paginated posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPosts'
+    post:
+      tags: [Community]
+      summary: Create a post
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequest'
+      responses:
+        '201':
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityPost'
+  /api/community/posts/{id}:
+    get:
+      tags: [Community]
+      summary: Get a post by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Post details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityPost'
+    patch:
+      tags: [Community]
+      summary: Update a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePostRequest'
+      responses:
+        '200':
+          description: Updated post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityPost'
+    delete:
+      tags: [Community]
+      summary: Delete a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Post deleted
+  /api/community/posts/{id}/flag:
+    post:
+      tags: [Community]
+      summary: Flag a post for moderation
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlagPostRequest'
+      responses:
+        '200':
+          description: Flag acknowledged
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityPost'
+  /api/community/posts/{id}/moderate:
+    post:
+      tags: [Community]
+      summary: Moderate a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModeratePostRequest'
+      responses:
+        '200':
+          description: Updated post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityPost'
+  /api/community/posts/{id}/react:
+    post:
+      tags: [Community]
+      summary: React to a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReactionRequest'
+      responses:
+        '200':
+          description: Reaction result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReactionResponse'
+  /api/community/posts/{id}/comments:
+    get:
+      tags: [Community]
+      summary: List comments for a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Comments for post
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommunityComment'
+    post:
+      tags: [Community]
+      summary: Add a comment to a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '201':
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityComment'
+  /api/community/feed:
+    get:
+      tags: [Community]
+      summary: Browse feed
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: topicId
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: search
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feed results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPosts'
+  /api/community/subscriptions:
+    get:
+      tags: [Community]
+      summary: List viewer subscriptions
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Subscription list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommunitySubscription'
+    post:
+      tags: [Community]
+      summary: Subscribe to posts or topics
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'
+      responses:
+        '201':
+          description: Subscription upserted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunitySubscription'
+    delete:
+      tags: [Community]
+      summary: Unsubscribe from posts or topics
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionTarget'
+      responses:
+        '200':
+          description: Unsubscribe result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+  /api/community/digest/send:
+    post:
+      tags: [Community]
+      summary: Trigger daily digest (admins/managers)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigestTriggerRequest'
+      responses:
+        '202':
+          description: Digest job summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigestTriggerResponse'
+components:
+  schemas:
+    CommunityTopic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        icon:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          nullable: true
+    CreateTopicRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        color:
+          type: string
+        metadata:
+          type: object
+    UpdateTopicRequest:
+      allOf:
+        - $ref: '#/components/schemas/CreateTopicRequest'
+    CommunityPost:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        slug:
+          type: string
+        content:
+          type: string
+        excerpt:
+          type: string
+          nullable: true
+        coverImage:
+          type: string
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+        status:
+          $ref: '#/components/schemas/CommunityPostStatus'
+        visibility:
+          type: string
+          enum: [PUBLIC, MEMBERS_ONLY]
+        isPinned:
+          type: boolean
+        reactionCount:
+          type: integer
+        commentCount:
+          type: integer
+        authorId:
+          type: string
+          format: uuid
+        topicId:
+          type: string
+          format: uuid
+          nullable: true
+        metadata:
+          type: object
+          nullable: true
+    CreatePostRequest:
+      type: object
+      required: [title, content]
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        excerpt:
+          type: string
+        coverImage:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        topicId:
+          type: string
+          format: uuid
+        visibility:
+          type: string
+          enum: [PUBLIC, MEMBERS_ONLY]
+        status:
+          $ref: '#/components/schemas/CommunityPostStatus'
+        isPinned:
+          type: boolean
+    UpdatePostRequest:
+      allOf:
+        - $ref: '#/components/schemas/CreatePostRequest'
+    FlagPostRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+    ModeratePostRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          $ref: '#/components/schemas/CommunityPostStatus'
+        visibility:
+          type: string
+          enum: [PUBLIC, MEMBERS_ONLY]
+        isPinned:
+          type: boolean
+        notes:
+          type: string
+    ReactionRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [LIKE, LOVE, INSIGHTFUL, CURIOUS]
+    ReactionResponse:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [added, removed, updated]
+        count:
+          type: integer
+    CommentRequest:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+        parentId:
+          type: string
+          format: uuid
+    CommunityComment:
+      type: object
+      properties:
+        id:
+          type: string
+        postId:
+          type: string
+        parentId:
+          type: string
+          nullable: true
+        content:
+          type: string
+        status:
+          type: string
+          enum: [PUBLISHED, HIDDEN, DELETED]
+        createdAt:
+          type: string
+          format: date-time
+    CommunitySubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        topicId:
+          type: string
+          nullable: true
+        postId:
+          type: string
+          nullable: true
+        frequency:
+          type: string
+          enum: [INSTANT, DAILY]
+        metadata:
+          type: object
+          nullable: true
+    SubscriptionTarget:
+      type: object
+      properties:
+        topicId:
+          type: string
+          format: uuid
+        postId:
+          type: string
+          format: uuid
+      oneOf:
+        - required: [topicId]
+        - required: [postId]
+    SubscriptionRequest:
+      allOf:
+        - $ref: '#/components/schemas/SubscriptionTarget'
+        - type: object
+          properties:
+            frequency:
+              type: string
+              enum: [INSTANT, DAILY]
+            metadata:
+              type: object
+    DigestTriggerRequest:
+      type: object
+      properties:
+        sinceHours:
+          type: integer
+          minimum: 1
+          maximum: 168
+    DigestTriggerResponse:
+      type: object
+      properties:
+        scheduled:
+          type: integer
+          example: 5
+        since:
+          type: string
+          format: date-time
+    CommunityPostStatus:
+      type: string
+      enum: [DRAFT, PUBLISHED, FLAGGED, ARCHIVED]
+    PaginatedTopics:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommunityTopic'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    PaginatedPosts:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommunityPost'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'

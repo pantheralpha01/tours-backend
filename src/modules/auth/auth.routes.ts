@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authController } from "./auth.controller";
 import { authLimiter } from "../../middleware/rateLimiter";
+import { authenticate } from "../../middleware/auth";
 
 export const authRoutes = Router();
 
@@ -177,3 +178,28 @@ authRoutes.post("/refresh", authController.refresh);
  *                   example: Logged out successfully
  */
 authRoutes.post("/logout", authController.logout);
+
+/**
+ * @openapi
+ * /api/auth/me:
+ *   get:
+ *     tags:
+ *       - Auth
+ *     summary: Get the authenticated user profile
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+authRoutes.get("/me", authenticate, authController.me);

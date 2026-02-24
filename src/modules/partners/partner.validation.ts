@@ -17,12 +17,16 @@ export const updatePartnerSchema = z.object({
   rejectedReason: z.string().min(3).optional(),
 });
 
-export const listPartnerSchema = paginationSchema.merge(
-  z.object({
-    approvalStatus: z.enum(["PENDING", "APPROVED", "REJECTED"]).optional(),
-    createdById: z.string().uuid().optional(),
-  })
-);
+export const listPartnerSchema = paginationSchema
+  .merge(
+    z.object({
+      approvalStatus: z.enum(["PENDING", "APPROVED", "REJECTED"]).optional(),
+      createdById: z.string().uuid().optional(),
+    })
+  )
+  .extend({
+    search: z.string().optional(),
+  });
 
 export const partnerIdSchema = z.object({
   id: z.string().uuid(),

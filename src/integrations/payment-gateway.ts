@@ -1,7 +1,13 @@
 import { config } from "../config";
 import { ApiError } from "../utils/ApiError";
 
-export type ExternalPaymentProvider = "MPESA" | "PAYPAL" | "VISA" | "MASTERCARD" | "STRIPE";
+export type ExternalPaymentProvider =
+  | "MPESA"
+  | "PAYPAL"
+  | "VISA"
+  | "MASTERCARD"
+  | "STRIPE"
+  | "CRYPTO";
 
 const providerConfigured = (provider: ExternalPaymentProvider) => {
   if (provider === "PAYPAL") {
@@ -20,7 +26,10 @@ const providerConfigured = (provider: ExternalPaymentProvider) => {
     return Boolean(config.cardGatewayKey);
   }
   if (provider === "STRIPE") {
-    return true;
+    return Boolean(config.stripeSecretKey);
+  }
+  if (provider === "CRYPTO") {
+    return Boolean(config.cryptoWalletAddress);
   }
   return false;
 };
@@ -31,6 +40,7 @@ export const paymentGatewayService = {
     amount: number;
     currency: "USD" | "KES";
     reference?: string;
+    metadata?: Record<string, unknown>;
   }) => {
     if (!providerConfigured(data.provider)) {
       throw ApiError.badRequest(
@@ -39,11 +49,25 @@ export const paymentGatewayService = {
       );
     }
 
+    const baseReference = data.reference ?? `INTENT_${Date.now()}`;
+
+    if (data.provider === "CRYPTO") {
+      return {
+        provider: data.provider,
+        amount: data.amount,
+        currency: data.currency,
+        reference: baseReference,
+        status: "created",
+        walletAddress: config.cryptoWalletAddress,
+        instructions: data.metadata?.instructions ?? "Send funds to the provided wallet address",
+      };
+    }
+
     return {
       provider: data.provider,
       amount: data.amount,
       currency: data.currency,
-      reference: data.reference ?? `INTENT_${Date.now()}`,
+      reference: baseReference,
       status: "created",
     };
   },

@@ -163,6 +163,15 @@ ALLOWED_ORIGINS=https://yourdomain.com
 
 Payment gateways, SMS/WhatsApp, Airtable integration, etc. See [.env.example](.env.example) for details.
 
+Community module and digest notifications:
+
+```env
+COMMUNITY_PUBLIC_BASE_URL=https://portal.example.com/community
+COMMUNITY_DIGEST_SCHEDULER_ENABLED=true
+COMMUNITY_DIGEST_SCHEDULER_INTERVAL_MS=86400000
+COMMUNITY_DIGEST_SINCE_HOURS=24
+```
+
 ## 🧪 Testing
 
 Test your deployment with the verification script:
@@ -179,6 +188,39 @@ Or use the included Postman collection:
 - Import `Comprehensive_State_Machine_Tests.postman_collection.json`
 - Import `Comprehensive_Tests_Environment.postman_environment.json`
 - Run the collection to test all endpoints
+
+## 📨 Community Module Quickstart
+
+The community feed, moderation tools, and digest notifications are live behind `/api/community`. Follow these steps to try them locally or on Swagger UI:
+
+1. **Apply the latest schema**
+   ```bash
+   npx prisma migrate dev
+   npx prisma generate
+   ```
+2. **Set the public URL + scheduler config** in `.env`:
+   ```env
+   COMMUNITY_PUBLIC_BASE_URL=http://localhost:5173/community
+   COMMUNITY_DIGEST_SCHEDULER_ENABLED=true
+   COMMUNITY_DIGEST_SCHEDULER_INTERVAL_MS=86400000
+   COMMUNITY_DIGEST_SINCE_HOURS=24
+   ```
+3. **Start the dev server and schedulers**
+   ```bash
+   npm run dev
+   ```
+   The notification + community digest schedulers start automatically (see `src/server.ts`).
+4. **Explore the endpoints on Swagger UI** at `http://localhost:4000/api-docs` → look for the **Community** tag. Key flows:
+   - `GET /api/community/feed` for the personalized feed
+   - `POST /api/community/posts` to publish new posts
+   - `POST /api/community/posts/{id}/flag` & `/moderate` to review content
+   - `GET/POST/DELETE /api/community/subscriptions` to manage instant vs daily digests
+   - `POST /api/community/digest/send` to trigger a digest on demand (ADMIN/MANAGER)
+5. **Run the automated tests** to verify the services/controllers covering feed, moderation, subscriptions, and digests:
+   ```bash
+   npm run test
+   npm run lint
+   ```
 
 ## 🐛 Troubleshooting
 

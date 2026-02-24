@@ -32,6 +32,8 @@ enum BookingEventType {
   PAYMENT_CREATED
   PAYMENT_COMPLETED
   PAYMENT_FAILED
+  DISPUTE_CREATED
+  DISPUTE_STATUS_CHANGED
 }
 
 enum InventoryStatus {
@@ -40,11 +42,44 @@ enum InventoryStatus {
   INACTIVE
 }
 
+enum PartnerApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PartnerEventType {
+  INVITED
+  INVITE_ACCEPTED
+  APPROVED
+  REJECTED
+}
+
+enum PartnerInviteStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+}
+
 enum PaymentState {
   INITIATED
   PENDING
   COMPLETED
   FAILED
+  CANCELLED
+}
+
+enum EscrowReleaseStatus {
+  ON_HOLD
+  SCHEDULED
+  RELEASED
+  CANCELLED
+}
+
+enum PayoutStatus {
+  PENDING
+  APPROVED
+  SENT
   CANCELLED
 }
 
@@ -84,17 +119,6 @@ enum RefundStatus {
   FAILED
 }
 
-enum PartnerApprovalStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
-enum PartnerEventType {
-  APPROVED
-  REJECTED
-}
-
 enum DispatchStatus {
   PENDING
   ASSIGNED
@@ -107,6 +131,85 @@ enum DispatchEventType {
   CREATED
   ASSIGNED
   STATUS_CHANGED
+}
+
+enum ShiftStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  WHATSAPP
+}
+
+enum NotificationType {
+  REMINDER
+  PROMO
+  SOS
+  COMMUNITY
+}
+
+enum NotificationPriority {
+  NORMAL
+  HIGH
+  CRITICAL
+}
+
+enum NotificationStatus {
+  DRAFT
+  SCHEDULED
+  QUEUED
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum CommunityPostStatus {
+  DRAFT
+  PUBLISHED
+  FLAGGED
+  ARCHIVED
+}
+
+enum CommunityVisibility {
+  PUBLIC
+  MEMBERS_ONLY
+}
+
+enum CommunityReactionType {
+  LIKE
+  LOVE
+  INSIGHTFUL
+  CURIOUS
+}
+
+enum CommunityCommentStatus {
+  PUBLISHED
+  HIDDEN
+  DELETED
+}
+
+enum CommunitySubscriptionFrequency {
+  INSTANT
+  DAILY
+}
+
+enum OfferStatus {
+  DRAFT
+  APPROVED
+  SENT
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum OfferAssetType {
+  LOGO
+  SIGNATURE
 }
 
 enum Currency {
@@ -129,7 +232,23 @@ model User {
   disputesAssigned Dispute[] @relation("DisputeAssignedTo")
   partnersCreated  Partner[] @relation("PartnerCreatedBy")
   partnersApproved Partner[] @relation("PartnerApprovedBy")
+  partnerInvites   PartnerInvite[] @relation("PartnerInvitedBy")
   dispatchesAssigned Dispatch[] @relation("DispatchAssignedTo")
+  shifts             AgentShift[]
+  paymentsRecorded  Payment[]      @relation("PaymentRecordedBy")
+  payoutsCreated    Payout[]       @relation("PayoutCreatedBy")
+  notificationTemplates NotificationTemplate[] @relation("NotificationTemplateCreatedBy")
+  notificationJobsCreated NotificationJob[] @relation("NotificationCreatedBy")
+  notificationJobsTarget NotificationJob[] @relation("NotificationJobUser")
+  notificationAttempts NotificationAttempt[] @relation("NotificationAttemptActor")
+  offerTemplatesCreated OfferTemplate[] @relation("OfferTemplateCreatedBy")
+  offerProposalsApproved OfferProposal[] @relation("OfferProposalApprovedBy")
+  offerProposalsPublished OfferProposal[] @relation("OfferProposalPublishedBy")
+  communityTopicsCreated CommunityTopic[] @relation("CommunityTopicCreatedBy")
+  communityPostsAuthored CommunityPost[] @relation("CommunityPostAuthor")
+  communityReactions CommunityReaction[] @relation("CommunityReactionUser")
+  communityComments CommunityComment[] @relation("CommunityCommentUser")
+  communitySubscriptions CommunitySubscription[] @relation("CommunitySubscriptionUser")
   refreshTokens    RefreshToken[]
 }
 
@@ -144,6 +263,13 @@ model Booking {
   commissionCurrency  Currency      @default(KES)
   status              BookingStatus @default(DRAFT)
   paymentStatus       PaymentStatus @default(UNPAID)
+  splitPaymentEnabled Boolean       @default(false)
+  depositPercentage   Decimal?      @db.Decimal(5, 4)
+  depositAmount       Decimal?      @db.Decimal(12, 2)
+  depositDueDate      DateTime?
+  balanceAmount       Decimal?      @db.Decimal(12, 2)
+  balanceDueDate      DateTime?
+  splitPaymentNotes   String?
   agentId             String
   serviceStartAt      DateTime?
   serviceEndAt        DateTime?
@@ -159,6 +285,11 @@ model Booking {
   disputes      Dispute[]
   refunds       Refund[]
   dispatches    Dispatch[]
+  escrow        EscrowAccount?
+  payouts       Payout[]
+  shifts        AgentShift[]
+  notifications NotificationJob[]
+  offers        OfferProposal[]
 
   @@index([agentId])
 }
@@ -192,6 +323,7 @@ model Partner {
   inventory InventoryItem[]
   contracts Contract[]
   events    PartnerEvent[]
+  invites   PartnerInvite[]
   createdBy User? @relation("PartnerCreatedBy", fields: [createdById], references: [id])
   approvedBy User? @relation("PartnerApprovedBy", fields: [approvedById], references: [id])
 
@@ -213,6 +345,29 @@ model PartnerEvent {
   @@index([partnerId])
 }
 
+model PartnerInvite {
+  id           String              @id @default(uuid())
+  companyName  String
+  email        String
+  status       PartnerInviteStatus @default(PENDING)
+  token        String              @unique
+  expiresAt    DateTime
+  notes        String?
+  metadata     Json?
+  partnerId    String?
+  invitedById  String
+  acceptedAt   DateTime?
+  createdAt    DateTime            @default(now())
+
+  partner   Partner? @relation(fields: [partnerId], references: [id])
+  invitedBy User     @relation("PartnerInvitedBy", fields: [invitedById], references: [id])
+
+  @@index([status])
+  @@index([email])
+  @@index([partnerId])
+  @@index([invitedById])
+}
+
 model Dispatch {
   id           String         @id @default(uuid())
   bookingId    String
@@ -220,6 +375,7 @@ model Dispatch {
   status       DispatchStatus @default(PENDING)
   notes        String?
   startedAt    DateTime?
+  metadata     Json?
   completedAt  DateTime?
   createdAt    DateTime       @default(now())
 
@@ -230,7 +386,6 @@ model Dispatch {
 
   @@index([bookingId])
   @@index([assignedToId])
-  @@index([status])
 }
 
 model DispatchEvent {
@@ -245,6 +400,25 @@ model DispatchEvent {
 
   @@index([dispatchId])
   @@index([createdAt])
+}
+
+model AgentShift {
+  id        String      @id @default(uuid())
+  agentId   String
+  bookingId String?
+  startAt   DateTime
+  endAt     DateTime
+  status    ShiftStatus @default(SCHEDULED)
+  notes     String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  agent   User    @relation(fields: [agentId], references: [id])
+  booking Booking? @relation(fields: [bookingId], references: [id])
+
+  @@index([agentId])
+  @@index([bookingId])
+  @@index([startAt])
 }
 
 model DispatchTrackPoint {
@@ -285,12 +459,318 @@ model Payment {
   reference     String?      @unique
   metadata      Json?
   createdAt     DateTime     @default(now())
+  recordedById  String?
 
   booking       Booking      @relation(fields: [bookingId], references: [id])
+  recordedBy    User?        @relation("PaymentRecordedBy", fields: [recordedById], references: [id])
   receipts      Receipt[]
   refunds       Refund[]
 
   @@index([bookingId])
+  @@index([recordedById])
+
+}
+
+
+model EscrowAccount {
+  id               String               @id @default(uuid())
+  bookingId        String               @unique
+  totalAmount      Decimal              @db.Decimal(12, 2) @default(0)
+  releasedAmount   Decimal              @db.Decimal(12, 2) @default(0)
+  currency         Currency             @default(USD)
+  releaseStatus    EscrowReleaseStatus  @default(ON_HOLD)
+  releaseScheduledAt DateTime?
+  releasedAt       DateTime?
+  metadata         Json?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  booking          Booking              @relation(fields: [bookingId], references: [id])
+  payouts          Payout[]         @relation("EscrowAccountPayouts")
+}
+
+model Payout {
+  id          String       @id @default(uuid())
+  bookingId   String
+  escrowAccountId String?
+  amount      Decimal      @db.Decimal(12, 2)
+  currency    Currency     @default(USD)
+  status      PayoutStatus @default(PENDING)
+  notes       String?
+  metadata    Json?
+  createdById String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  booking   Booking @relation(fields: [bookingId], references: [id])
+  escrowAccount EscrowAccount? @relation("EscrowAccountPayouts", fields: [escrowAccountId], references: [id])
+  createdBy User?   @relation("PayoutCreatedBy", fields: [createdById], references: [id])
+
+  @@index([bookingId])
+  @@index([escrowAccountId])
+  @@index([createdById])
+}
+
+model NotificationTemplate {
+  id          String             @id @default(uuid())
+  name        String
+  slug        String             @unique
+  type        NotificationType
+  channel     NotificationChannel
+  subject     String?
+  body        String
+  tokens      Json?
+  metadata    Json?
+  createdById String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  createdBy   User?              @relation("NotificationTemplateCreatedBy", fields: [createdById], references: [id])
+  jobs        NotificationJob[]
+}
+
+model NotificationJob {
+  id              String              @id @default(uuid())
+  templateId      String?
+  type            NotificationType
+  channel         NotificationChannel
+  priority        NotificationPriority @default(NORMAL)
+  status          NotificationStatus  @default(SCHEDULED)
+  subject         String?
+  body            String?
+  payload         Json?
+  metadata        Json?
+  scheduledAt     DateTime
+  processedAt     DateTime?
+  sentAt          DateTime?
+  error           String?
+  attempts        Int                 @default(0)
+  recipientName   String?
+  recipientEmail  String?
+  recipientPhone  String?
+  bookingId       String?
+  userId          String?
+  createdById     String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  template   NotificationTemplate? @relation(fields: [templateId], references: [id])
+  booking    Booking?              @relation(fields: [bookingId], references: [id])
+  user       User?                 @relation("NotificationJobUser", fields: [userId], references: [id])
+  createdBy  User?                 @relation("NotificationCreatedBy", fields: [createdById], references: [id])
+  attemptsLog NotificationAttempt[]
+
+  @@index([status, scheduledAt])
+  @@index([bookingId])
+  @@index([userId])
+}
+
+model NotificationAttempt {
+  id        String             @id @default(uuid())
+  jobId     String
+  status    NotificationStatus
+  channel   NotificationChannel
+  response  Json?
+  error     String?
+  actorId   String?
+  createdAt DateTime           @default(now())
+
+  job    NotificationJob      @relation(fields: [jobId], references: [id])
+  actor  User?                @relation("NotificationAttemptActor", fields: [actorId], references: [id])
+
+  @@index([jobId])
+}
+
+model OfferTemplate {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  defaultCurrency Currency @default(USD)
+  baseAmount   Decimal?  @db.Decimal(12, 2)
+  feePercentage Decimal? @db.Decimal(5, 4)
+  itinerary    Json?
+  addons       Json?
+  assetConfig  Json?
+  metadata     Json?
+  createdById  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  createdBy User? @relation("OfferTemplateCreatedBy", fields: [createdById], references: [id])
+  proposals OfferProposal[]
+  mediaAssets OfferAsset[] @relation("OfferTemplateAssets")
+}
+
+model OfferProposal {
+  id            String      @id @default(uuid())
+  bookingId     String
+  templateId    String?
+  status        OfferStatus @default(DRAFT)
+  currency      Currency    @default(USD)
+  baseAmount    Decimal     @db.Decimal(12, 2)
+  feeAmount     Decimal     @db.Decimal(12, 2)
+  discountAmount Decimal    @db.Decimal(12, 2)
+  totalAmount   Decimal     @db.Decimal(12, 2)
+  feePercentage Decimal     @db.Decimal(5, 4)
+  discountRate  Decimal     @db.Decimal(5, 4)
+  itinerary     Json?
+  priceBreakdown Json?
+  notes         String?
+  pdfUrl        String?
+  logoUrl       String?
+  signatureUrl  String?
+  expiresAt     DateTime?
+  metadata      Json?
+  approvedById  String?
+  approvedAt    DateTime?
+  approvalNotes String?
+  publishedById String?
+  publishedAt   DateTime?
+  publishedChannel String?
+  publishNotes  String?
+  shareSlug     String?    @unique
+  shareUrl      String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  booking   Booking      @relation(fields: [bookingId], references: [id])
+  template  OfferTemplate? @relation(fields: [templateId], references: [id])
+  assets    OfferAsset[] @relation("OfferProposalAssets")
+  approvedBy User? @relation("OfferProposalApprovedBy", fields: [approvedById], references: [id])
+  publishedBy User? @relation("OfferProposalPublishedBy", fields: [publishedById], references: [id])
+
+  @@index([bookingId])
+  @@index([templateId])
+  @@index([approvedById])
+  @@index([publishedById])
+}
+
+model OfferAsset {
+  id          String         @id @default(uuid())
+  proposalId  String?
+  templateId  String?
+  type        OfferAssetType
+  url         String
+  metadata    Json?
+  createdAt   DateTime       @default(now())
+
+  proposal OfferProposal? @relation("OfferProposalAssets", fields: [proposalId], references: [id])
+  template OfferTemplate? @relation("OfferTemplateAssets", fields: [templateId], references: [id])
+
+  @@index([proposalId])
+  @@index([templateId])
+}
+
+model CommunityTopic {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  icon        String?
+  color       String?
+  metadata    Json?
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdBy User? @relation("CommunityTopicCreatedBy", fields: [createdById], references: [id])
+  posts     CommunityPost[]
+  subscriptions CommunitySubscription[] @relation("CommunityTopicSubscriptions")
+
+  @@unique([name])
+  @@index([createdById])
+}
+
+model CommunityPost {
+  id             String               @id @default(uuid())
+  title          String
+  slug           String               @unique
+  content        String
+  excerpt        String?
+  coverImage     String?
+  tags           Json?
+  metadata       Json?
+  status         CommunityPostStatus  @default(DRAFT)
+  visibility     CommunityVisibility  @default(PUBLIC)
+  isPinned       Boolean              @default(false)
+  pinnedAt       DateTime?
+  publishedAt    DateTime?
+  lastActivityAt DateTime             @default(now())
+  reactionCount  Int                  @default(0)
+  commentCount   Int                  @default(0)
+  authorId       String
+  topicId        String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  author User            @relation("CommunityPostAuthor", fields: [authorId], references: [id])
+  topic  CommunityTopic? @relation(fields: [topicId], references: [id])
+  reactions CommunityReaction[]
+  comments  CommunityComment[]
+  subscriptions CommunitySubscription[] @relation("CommunityPostSubscriptions")
+
+  @@index([authorId])
+  @@index([topicId])
+  @@index([status])
+  @@index([visibility])
+  @@index([isPinned, lastActivityAt])
+}
+
+model CommunityReaction {
+  id        String                @id @default(uuid())
+  postId    String
+  userId    String
+  type      CommunityReactionType @default(LIKE)
+  createdAt DateTime              @default(now())
+
+  post CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User          @relation("CommunityReactionUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([userId])
+}
+
+model CommunityComment {
+  id        String                 @id @default(uuid())
+  postId    String
+  parentId  String?
+  userId    String
+  content   String
+  status    CommunityCommentStatus @default(PUBLISHED)
+  metadata  Json?
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+
+  post     CommunityPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user     User           @relation("CommunityCommentUser", fields: [userId], references: [id], onDelete: Cascade)
+  parent   CommunityComment? @relation("CommentThread", fields: [parentId], references: [id], onDelete: Cascade)
+  children CommunityComment[] @relation("CommentThread")
+
+  @@index([postId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model CommunitySubscription {
+  id        String                        @id @default(uuid())
+  userId    String
+  topicId   String?
+  postId    String?
+  frequency CommunitySubscriptionFrequency @default(INSTANT)
+  metadata  Json?
+  createdAt DateTime                      @default(now())
+  updatedAt DateTime                      @updatedAt
+
+  user  User            @relation("CommunitySubscriptionUser", fields: [userId], references: [id], onDelete: Cascade)
+  topic CommunityTopic? @relation("CommunityTopicSubscriptions", fields: [topicId], references: [id], onDelete: Cascade)
+  post  CommunityPost?  @relation("CommunityPostSubscriptions", fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([topicId])
+  @@index([postId])
+  @@unique([userId, topicId])
+  @@unique([userId, postId])
 }
 
 model Quote {

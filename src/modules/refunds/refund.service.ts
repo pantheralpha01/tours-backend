@@ -84,7 +84,7 @@ export const refundService = {
     }
 
     // Filter out fields that don't exist in the Refund model
-    const { transitionReason, ...updateData } = data;
+    const { transitionReason: _transitionReason, ...updateData } = data;
     const updated = await refundRepository.update(id, updateData);
 
     if (data.status && data.status !== current.status) {

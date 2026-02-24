@@ -285,6 +285,7 @@ const options: swaggerJsdoc.Options = {
       { name: "Refunds", description: "Refund management" },
       { name: "Integrations", description: "External integration stubs" },
       { name: "Dispatch", description: "Dispatch and live tracking" },
+      { name: "Community", description: "Community topics, posts, and subscriptions" },
     ],
   },
   apis: ["./src/modules/**/*.routes.ts", "./src/docs/**/*.yaml"],

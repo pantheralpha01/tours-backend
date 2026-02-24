@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { PartnerEventType } from "@prisma/client";
 import { partnerService } from "./partner.service";
 import {
   createPartnerSchema,
@@ -82,10 +83,15 @@ export const partnerController = {
     const { id } = partnerIdSchema.parse(req.params);
     const params = paginationSchema.parse(req.query);
     const typeParam = req.query.type;
+    const allowedTypes = new Set<PartnerEventType>([
+      "APPROVED",
+      "REJECTED",
+      "INVITED",
+      "INVITE_ACCEPTED",
+    ]);
     const type =
-      typeof typeParam === "string" &&
-      (typeParam === "APPROVED" || typeParam === "REJECTED")
-        ? typeParam
+      typeof typeParam === "string" && allowedTypes.has(typeParam as PartnerEventType)
+        ? (typeParam as PartnerEventType)
         : undefined;
     const partner = await partnerService.getById(id);
     if (!partner) {

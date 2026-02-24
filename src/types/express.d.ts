@@ -6,5 +6,6 @@ declare module "express-serve-static-core" {
       id: string;
       role: "ADMIN" | "AGENT" | "MANAGER";
     };
+    rawBody?: string;
   }
 }

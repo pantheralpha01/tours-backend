@@ -101,6 +101,15 @@ Your backend provides the following main endpoints:
 - `GET /api/integrations` - Integration management
 - `GET /api/dispatches` - Dispatch management
 
+### Community & Notifications
+- `GET /api/community/topics` - Browse topics
+- `POST /api/community/posts` - Create a post
+- `GET /api/community/feed` - Personalized feed with role-aware visibility
+- `POST /api/community/posts/{id}/flag` - Flag a post
+- `POST /api/community/posts/{id}/moderate` - Approve/Archive posts (ADMIN/MANAGER)
+- `GET|POST|DELETE /api/community/subscriptions` - Manage instant/daily digests
+- `POST /api/community/digest/send` - Trigger digest delivery (ADMIN/MANAGER)
+
 ## 🔐 Authentication
 
 Most endpoints require authentication. Here's how to get started:
@@ -179,6 +188,44 @@ curl -X PATCH https://api.timelessfactors.co.ke/api/bookings/BOOKING_ID/status \
   }'
 ```
 
+### Example 5: Publish a Community Post
+
+```bash
+curl -X POST https://api.timelessfactors.co.ke/api/community/posts \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -d '{
+    "title": "Agent tips for March",
+    "content": "Remember to upsell add-ons.",
+    "topicId": "TOPIC_UUID",
+    "visibility": "PUBLIC",
+    "status": "PUBLISHED"
+  }'
+```
+
+### Example 6: Subscribe to Daily Digests
+
+```bash
+curl -X POST https://api.timelessfactors.co.ke/api/community/subscriptions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -d '{
+    "topicId": "TOPIC_UUID",
+    "frequency": "DAILY"
+  }'
+```
+
+### Example 7: Trigger a Digest (Admin/Manager)
+
+```bash
+curl -X POST https://api.timelessfactors.co.ke/api/community/digest/send \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ADMIN_ACCESS_TOKEN" \
+  -d '{
+    "sinceHours": 12
+  }'
+```
+
 ## 🧪 Testing Your APIs
 
 ### Using cURL (Command Line)
@@ -208,6 +255,19 @@ Invoke-WebRequest -Uri "https://api.timelessfactors.co.ke/health"
 4. **Run Tests:** Execute individual requests or the entire collection
 
 See [POSTMAN_SETUP_GUIDE.md](POSTMAN_SETUP_GUIDE.md) for detailed Postman setup instructions.
+
+### Community Feature Toggle
+
+To receive working community links + digests on any environment, ensure these environment variables are set before deploying:
+
+```env
+COMMUNITY_PUBLIC_BASE_URL=https://app.yourdomain.com/community
+COMMUNITY_DIGEST_SCHEDULER_ENABLED=true
+COMMUNITY_DIGEST_SCHEDULER_INTERVAL_MS=86400000
+COMMUNITY_DIGEST_SINCE_HOURS=24
+```
+
+After updating the `.env`, redeploy and re-run `npx prisma migrate deploy` so the `CommunitySubscription` tables are present. Once the API restarts, open `https://api.timelessfactors.co.ke/docs` and use the **Community** tag to try every endpoint interactively.
 
 ### Using Your Browser
 

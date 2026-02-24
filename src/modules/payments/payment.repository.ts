@@ -1,3 +1,4 @@
+import { PaymentState } from "@prisma/client";
 import { prisma } from "../../config/prisma";
 
 export const paymentRepository = {
@@ -8,6 +9,8 @@ export const paymentRepository = {
     currency?: "USD" | "KES";
     reference?: string;
     metadata?: Record<string, unknown>;
+    state?: PaymentState;
+    recordedById?: string | null;
   }) =>
     prisma.payment.create({
       data: {
@@ -17,6 +20,8 @@ export const paymentRepository = {
         currency: (data.currency as "USD" | "KES") ?? "USD",
         reference: data.reference,
         metadata: data.metadata ? (data.metadata as any) : null,
+        state: data.state ?? undefined,
+        recordedById: data.recordedById ?? undefined,
       },
     }),
 
@@ -74,6 +79,12 @@ export const paymentRepository = {
 
   findById: (id: string) =>
     prisma.payment.findUnique({ where: { id }, include: { booking: true } }),
+
+  findByReference: (reference: string) =>
+    prisma.payment.findUnique({
+      where: { reference },
+      include: { booking: true },
+    }),
 
   update: (
     id: string,

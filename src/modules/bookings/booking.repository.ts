@@ -15,6 +15,13 @@ export const bookingRepository = {
     serviceStartAt?: Date;
     serviceEndAt?: Date;
     serviceTimezone?: string;
+    splitPaymentEnabled?: boolean;
+    depositPercentage?: number | string | null;
+    depositAmount?: number | string | null;
+    depositDueDate?: Date | null;
+    balanceAmount?: number | string | null;
+    balanceDueDate?: Date | null;
+    splitPaymentNotes?: string | null;
   }) =>
     prisma.booking.create({
       data: {
@@ -27,6 +34,13 @@ export const bookingRepository = {
         commissionCurrency: data.commissionCurrency ?? "KES",
         status: data.status ?? "DRAFT",
         paymentStatus: data.paymentStatus ?? "UNPAID",
+        splitPaymentEnabled: data.splitPaymentEnabled ?? false,
+        depositPercentage: data.depositPercentage,
+        depositAmount: data.depositAmount,
+        depositDueDate: data.depositDueDate,
+        balanceAmount: data.balanceAmount,
+        balanceDueDate: data.balanceDueDate,
+        splitPaymentNotes: data.splitPaymentNotes,
         agentId: data.agentId,
         serviceStartAt: data.serviceStartAt,
         serviceEndAt: data.serviceEndAt,
@@ -44,6 +58,7 @@ export const bookingRepository = {
     serviceStartFrom?: Date;
     serviceStartTo?: Date;
     sort?: string;
+    search?: string;
   }) => {
     const where: any = {};
     if (params?.status) {
@@ -51,6 +66,12 @@ export const bookingRepository = {
     }
     if (params?.agentId) {
       where.agentId = params.agentId;
+    }
+    if (params?.search) {
+      where.customerName = {
+        contains: params.search,
+        mode: "insensitive",
+      };
     }
     if (params?.dateFrom || params?.dateTo) {
       where.createdAt = {};
@@ -91,6 +112,7 @@ export const bookingRepository = {
     dateTo?: Date;
     serviceStartFrom?: Date;
     serviceStartTo?: Date;
+    search?: string;
   }) => {
     const where: any = {};
     if (params?.status) {
@@ -98,6 +120,12 @@ export const bookingRepository = {
     }
     if (params?.agentId) {
       where.agentId = params.agentId;
+    }
+    if (params?.search) {
+      where.customerName = {
+        contains: params.search,
+        mode: "insensitive",
+      };
     }
     if (params?.dateFrom || params?.dateTo) {
       where.createdAt = {};
@@ -117,7 +145,15 @@ export const bookingRepository = {
   },
 
   findById: (id: string) =>
-    prisma.booking.findUnique({ where: { id }, include: { agent: true } }),
+    prisma.booking.findUnique({
+      where: { id },
+      include: {
+        agent: true,
+        events: {
+          orderBy: { createdAt: "desc" },
+        },
+      },
+    }),
 
   update: (
     id: string,
@@ -135,6 +171,13 @@ export const bookingRepository = {
       serviceStartAt?: Date;
       serviceEndAt?: Date;
       serviceTimezone?: string;
+      splitPaymentEnabled?: boolean;
+      depositPercentage?: number | string | null;
+      depositAmount?: number | string | null;
+      depositDueDate?: Date | null;
+      balanceAmount?: number | string | null;
+      balanceDueDate?: Date | null;
+      splitPaymentNotes?: string | null;
     }
   ) =>
     prisma.booking.update({

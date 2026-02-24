@@ -1,3 +1,4 @@
+import { PartnerEventType } from "@prisma/client";
 import { partnerEventRepository } from "./partner-event.repository";
 import { calculatePagination, PaginatedResponse } from "../../utils/pagination";
 
@@ -6,7 +7,7 @@ export const partnerEventService = {
     partnerId: string;
     page?: number;
     limit?: number;
-    type?: "APPROVED" | "REJECTED";
+    type?: PartnerEventType;
     dateFrom?: Date;
     dateTo?: Date;
     sort?: string;

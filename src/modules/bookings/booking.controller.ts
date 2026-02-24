@@ -9,6 +9,7 @@ import {
   updateBookingSchema,
 } from "./booking.validation";
 import { ApiError } from "../../utils/ApiError";
+import { paginationSchema } from "../../utils/pagination";
 
 export const bookingController = {
   create: async (req: Request, res: Response) => {
@@ -126,5 +127,31 @@ export const bookingController = {
     } catch (error) {
       return next(error);
     }
+  },
+
+  events: async (req: Request, res: Response) => {
+    const { id } = bookingIdSchema.parse(req.params);
+    const params = paginationSchema.parse(req.query);
+    const booking = await bookingService.getById(id);
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+    if (req.user?.role === "AGENT" && booking.agentId !== req.user.id) {
+      throw ApiError.forbidden("Insufficient permissions");
+    }
+
+    const sortOrder =
+      params.sort?.split(":")[1]?.toLowerCase() === "asc" ? "asc" : "desc";
+
+    const timeline = await bookingService.listEvents({
+      bookingId: id,
+      page: params.page,
+      limit: params.limit,
+      dateFrom: params.dateFrom,
+      dateTo: params.dateTo,
+      sort: sortOrder,
+    });
+
+    return res.status(200).json(timeline);
   },
 };

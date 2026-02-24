@@ -1,4 +1,4 @@
-import { BookingStatus } from "@prisma/client";
+import { BookingStatus, Prisma } from "@prisma/client";
 import { bookingRepository } from "./booking.repository";
 import { bookingEventRepository } from "./booking-event.repository";
 import { calculateCommission, BOOKING_COMMISSION_RATE, convertUsdToKes } from "./booking.constants";
@@ -7,6 +7,158 @@ import { bookingTransitions } from "./booking.transitions";
 import { validateStatusRules } from "./booking.rules";
 import { bookingLifecycleRules } from "./booking.lifecycle-rules";
 import { calculatePagination, PaginatedResponse } from "../../utils/pagination";
+import { shiftService } from "../shifts/shift.service";
+import { offerService } from "../offers/offer.service";
+
+const MIN_DEPOSIT_PERCENTAGE = new Prisma.Decimal("0.10");
+const MAX_DEPOSIT_PERCENTAGE = new Prisma.Decimal("1.00");
+const DEFAULT_DEPOSIT_PERCENTAGE = new Prisma.Decimal("0.50");
+
+const decimalToNumber = (
+  value?: Prisma.Decimal | number | string | null
+): number | undefined => {
+  if (value === null || value === undefined) {
+    return undefined;
+  }
+  if (typeof value === "number") {
+    return value;
+  }
+  if (typeof value === "string") {
+    return Number(value);
+  }
+  return (value as Prisma.Decimal).toNumber();
+};
+
+type SplitPaymentInput = {
+  amount: number;
+  splitPaymentEnabled?: boolean;
+  depositPercentage?: number;
+  depositAmount?: number;
+  depositDueDate?: Date;
+  balanceDueDate?: Date;
+  splitPaymentNotes?: string;
+};
+
+type SplitPaymentPlan = {
+  splitPaymentEnabled: boolean;
+  depositPercentage: Prisma.Decimal | null;
+  depositAmount: Prisma.Decimal | null;
+  balanceAmount: Prisma.Decimal | null;
+  depositDueDate: Date | null;
+  balanceDueDate: Date | null;
+  splitPaymentNotes: string | null;
+};
+
+const deriveSplitPaymentPlan = (input: SplitPaymentInput): SplitPaymentPlan => {
+  const enabled = input.splitPaymentEnabled ?? false;
+
+  if (!enabled) {
+    return {
+      splitPaymentEnabled: false,
+      depositPercentage: null,
+      depositAmount: null,
+      balanceAmount: null,
+      depositDueDate: null,
+      balanceDueDate: null,
+      splitPaymentNotes: null,
+    };
+  }
+
+  const totalAmount = new Prisma.Decimal(input.amount);
+
+  let percentage =
+    input.depositPercentage !== undefined
+      ? new Prisma.Decimal(input.depositPercentage)
+      : null;
+  let deposit =
+    input.depositAmount !== undefined
+      ? new Prisma.Decimal(input.depositAmount)
+      : null;
+
+  if (!percentage && !deposit) {
+    percentage = DEFAULT_DEPOSIT_PERCENTAGE;
+  }
+
+  if (percentage && !deposit) {
+    deposit = totalAmount.mul(percentage);
+  }
+
+  if (!percentage && deposit) {
+    percentage = deposit.div(totalAmount);
+  }
+
+  if (!percentage || !deposit) {
+    throw new Error("Unable to determine split payment values");
+  }
+
+  if (percentage.lessThan(MIN_DEPOSIT_PERCENTAGE)) {
+    throw new Error("Deposit percentage must be at least 10%");
+  }
+
+  if (percentage.greaterThan(MAX_DEPOSIT_PERCENTAGE)) {
+    throw new Error("Deposit percentage cannot exceed 100%");
+  }
+
+  if (deposit.lessThanOrEqualTo(0)) {
+    throw new Error("Deposit amount must be greater than zero");
+  }
+
+  if (deposit.greaterThan(totalAmount)) {
+    throw new Error("Deposit amount cannot exceed booking amount");
+  }
+
+  const balance = totalAmount.minus(deposit);
+
+  if (balance.lessThan(0)) {
+    throw new Error("Balance amount cannot be negative");
+  }
+
+  return {
+    splitPaymentEnabled: true,
+    depositPercentage: percentage,
+    depositAmount: deposit,
+    balanceAmount: balance,
+    depositDueDate: input.depositDueDate ?? null,
+    balanceDueDate: input.balanceDueDate ?? null,
+    splitPaymentNotes: input.splitPaymentNotes ?? null,
+  };
+};
+
+const serializeSplitPlan = (plan: SplitPaymentPlan) => ({
+  splitPaymentEnabled: plan.splitPaymentEnabled,
+  depositPercentage: plan.depositPercentage?.toString() ?? null,
+  depositAmount: plan.depositAmount?.toString() ?? null,
+  depositDueDate: plan.depositDueDate,
+  balanceAmount: plan.balanceAmount?.toString() ?? null,
+  balanceDueDate: plan.balanceDueDate,
+  splitPaymentNotes: plan.splitPaymentNotes,
+});
+
+const syncBookingShift = async (
+  booking: {
+    id: string;
+    agentId: string | null;
+    status: BookingStatus;
+    serviceStartAt: Date | null;
+    serviceEndAt: Date | null;
+  },
+  actorId?: string,
+  source?: string
+) => {
+  if (!booking.agentId) {
+    return;
+  }
+
+  await shiftService.syncWithBooking({
+    bookingId: booking.id,
+    agentId: booking.agentId,
+    status: booking.status as BookingStatus,
+    startAt: booking.serviceStartAt ?? undefined,
+    endAt: booking.serviceEndAt ?? undefined,
+    actorId,
+    source,
+  });
+};
 
 export const bookingService = {
   create: async (data: {
@@ -21,6 +173,12 @@ export const bookingService = {
     serviceEndAt?: Date;
     serviceTimezone?: string;
     actorId?: string;
+    splitPaymentEnabled?: boolean;
+    depositPercentage?: number;
+    depositAmount?: number;
+    depositDueDate?: Date;
+    balanceDueDate?: Date;
+    splitPaymentNotes?: string;
   }) => {
     validateStatusRules(
       {
@@ -41,12 +199,25 @@ export const bookingService = {
       ? convertUsdToKes(commissionAmount)
       : commissionAmount;
 
+    const splitPlan = deriveSplitPaymentPlan({
+      amount: data.amount,
+      splitPaymentEnabled: data.splitPaymentEnabled,
+      depositPercentage: data.depositPercentage,
+      depositAmount: data.depositAmount,
+      depositDueDate: data.depositDueDate,
+      balanceDueDate: data.balanceDueDate,
+      splitPaymentNotes: data.splitPaymentNotes,
+    });
+
+    const splitPersistence = serializeSplitPlan(splitPlan);
+
     const booking = await bookingRepository.create({
       ...data,
       currency,
       commissionRate: BOOKING_COMMISSION_RATE.toString(),
       commissionAmount: commissionInKes.toString(),
       commissionCurrency: "KES",
+      ...splitPersistence,
     });
 
     await bookingEventRepository.create({
@@ -61,6 +232,10 @@ export const bookingService = {
       },
     });
 
+    await syncBookingShift(booking, data.actorId, "BOOKING_CREATE");
+
+    await offerService.ensureProposalForBooking(booking.id);
+
     return booking;
   },
 
@@ -74,6 +249,7 @@ export const bookingService = {
     serviceStartFrom?: Date;
     serviceStartTo?: Date;
     sort?: string;
+    search?: string;
   }): Promise<PaginatedResponse<any>> => {
     const page = params?.page ?? 1;
     const limit = params?.limit ?? 10;
@@ -90,6 +266,7 @@ export const bookingService = {
         serviceStartFrom: params?.serviceStartFrom,
         serviceStartTo: params?.serviceStartTo,
         sort: params?.sort,
+        search: params?.search,
       }),
       bookingRepository.count({
         status: params?.status,
@@ -98,6 +275,7 @@ export const bookingService = {
         dateTo: params?.dateTo,
         serviceStartFrom: params?.serviceStartFrom,
         serviceStartTo: params?.serviceStartTo,
+        search: params?.search,
       }),
     ]);
 
@@ -124,6 +302,12 @@ export const bookingService = {
       serviceTimezone?: string;
       transitionReason?: string;
       actorId?: string;
+      splitPaymentEnabled?: boolean;
+      depositPercentage?: number;
+      depositAmount?: number;
+      depositDueDate?: Date;
+      balanceDueDate?: Date;
+      splitPaymentNotes?: string;
     }
   ) => {
     const current = await bookingRepository.findById(id);
@@ -140,30 +324,73 @@ export const bookingService = {
       });
     }
 
-    validateStatusRules(
-      {
-        status: current.status as BookingStatus,
-        paymentStatus: current.paymentStatus,
-      },
-      data
-    );
+    if (data.status || data.paymentStatus) {
+      validateStatusRules(
+        {
+          status: current.status as BookingStatus,
+          paymentStatus: current.paymentStatus,
+        },
+        {
+          status: data.status,
+          paymentStatus: data.paymentStatus,
+        }
+      );
+    }
 
     let commissionAmount: string | undefined;
     let commissionCurrency: "USD" | "KES" | undefined;
-
     if (typeof data.amount === "number") {
       const commission = calculateCommission(data.amount);
       const currency = data.currency ?? (current.currency as "USD" | "KES");
-      commissionAmount = (currency === "USD" 
-        ? convertUsdToKes(commission) 
-        : commission).toString();
+      commissionAmount = (
+        currency === "USD" ? convertUsdToKes(commission) : commission
+      ).toString();
       commissionCurrency = "KES";
+    }
+
+    const requiresSplitUpdate = [
+      "amount",
+      "splitPaymentEnabled",
+      "depositPercentage",
+      "depositAmount",
+      "depositDueDate",
+      "balanceDueDate",
+      "splitPaymentNotes",
+    ].some((key) => (data as Record<string, unknown>)[key] !== undefined);
+
+    let splitPersistence: Record<string, unknown> | undefined;
+
+    if (requiresSplitUpdate) {
+      const baseAmount = data.amount ?? decimalToNumber(current.amount);
+      if (baseAmount === undefined) {
+        throw new Error("Unable to determine booking amount for split payments");
+      }
+
+      const splitPlan = deriveSplitPaymentPlan({
+        amount: baseAmount,
+        splitPaymentEnabled:
+          data.splitPaymentEnabled ?? current.splitPaymentEnabled ?? false,
+        depositPercentage:
+          data.depositPercentage ?? decimalToNumber(current.depositPercentage),
+        depositAmount:
+          data.depositAmount ?? decimalToNumber(current.depositAmount),
+        depositDueDate:
+          data.depositDueDate ?? current.depositDueDate ?? undefined,
+        balanceDueDate:
+          data.balanceDueDate ?? current.balanceDueDate ?? undefined,
+        splitPaymentNotes:
+          data.splitPaymentNotes ?? current.splitPaymentNotes ?? undefined,
+      });
+
+      splitPersistence = serializeSplitPlan(splitPlan);
     }
 
     const booking = await bookingRepository.update(id, {
       ...data,
-      commissionAmount,
-      commissionCurrency,
+      ...(commissionAmount
+        ? { commissionAmount, commissionCurrency: commissionCurrency ?? "KES" }
+        : {}),
+      ...(splitPersistence ?? {}),
     });
 
     const eventType = data.status ? "STATUS_CHANGED" : "UPDATED";
@@ -178,6 +405,8 @@ export const bookingService = {
         reason: data.transitionReason,
       },
     });
+
+    await syncBookingShift(booking, data.actorId, "BOOKING_UPDATE");
 
     return booking;
   },
@@ -235,8 +464,44 @@ export const bookingService = {
       },
     });
 
+    await syncBookingShift(booking, data.actorId, "BOOKING_TRANSITION");
+
     return booking;
   },
 
   remove: (id: string) => bookingRepository.remove(id),
+
+  listEvents: async (params: {
+    bookingId: string;
+    page?: number;
+    limit?: number;
+    dateFrom?: Date;
+    dateTo?: Date;
+    sort?: "asc" | "desc";
+  }): Promise<PaginatedResponse<any>> => {
+    const page = params.page ?? 1;
+    const limit = params.limit ?? 10;
+    const skip = (page - 1) * limit;
+
+    const [events, total] = await Promise.all([
+      bookingEventRepository.listByBooking({
+        bookingId: params.bookingId,
+        skip,
+        take: limit,
+        dateFrom: params.dateFrom,
+        dateTo: params.dateTo,
+        sort: params.sort,
+      }),
+      bookingEventRepository.countByBooking({
+        bookingId: params.bookingId,
+        dateFrom: params.dateFrom,
+        dateTo: params.dateTo,
+      }),
+    ]);
+
+    return {
+      data: events,
+      meta: calculatePagination(total, page, limit),
+    };
+  },
 };

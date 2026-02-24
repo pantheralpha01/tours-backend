@@ -4,14 +4,37 @@ import { assertTransition } from "../../utils/stateMachine";
 import { disputeTransitions } from "./dispute.transitions";
 import { bookingEventRepository } from "../bookings/booking-event.repository";
 
+const DISPUTE_STATUS_SEQUENCE = [
+  "OPEN",
+  "UNDER_REVIEW",
+  "RESOLVED",
+  "REJECTED",
+] as const;
+
 export const disputeService = {
-  create: (data: {
+  create: async (data: {
     bookingId: string;
     reason: string;
     description?: string;
     openedById: string;
     assignedToId?: string;
-  }) => disputeRepository.create(data),
+  }) => {
+    const dispute = await disputeRepository.create(data);
+
+    await bookingEventRepository.create({
+      bookingId: dispute.bookingId,
+      type: "DISPUTE_CREATED",
+      actorId: data.openedById,
+      metadata: {
+        disputeId: dispute.id,
+        reason: dispute.reason,
+        status: dispute.status,
+        statusSequence: DISPUTE_STATUS_SEQUENCE,
+      },
+    });
+
+    return dispute;
+  },
 
   list: async (params?: {
     page?: number;
@@ -84,19 +107,20 @@ export const disputeService = {
     }
 
     // Filter out fields that don't exist in the Dispute model
-    const { transitionReason, ...updateData } = data;
+    const { transitionReason: _transitionReason, ...updateData } = data;
     const updated = await disputeRepository.update(id, updateData);
 
     if (data.status && data.status !== current.status) {
       await bookingEventRepository.create({
         bookingId: current.bookingId,
-        type: "UPDATED",
+        type: "DISPUTE_STATUS_CHANGED",
         metadata: {
           entity: "DISPUTE",
           disputeId: current.id,
           fromStatus: current.status,
           toStatus: data.status,
           reason: data.transitionReason,
+          statusSequence: DISPUTE_STATUS_SEQUENCE,
         },
       });
     }

@@ -110,7 +110,7 @@ export const dispatchService = {
     }
 
     // Filter out fields that don't exist in the Dispatch model
-    const { actorId, transitionReason, ...updateData } = data;
+    const { actorId: _actorId, transitionReason: _transitionReason, ...updateData } = data;
     const updated = await dispatchRepository.update(id, updateData);
 
     if (data.assignedToId && data.assignedToId !== current.assignedToId) {
