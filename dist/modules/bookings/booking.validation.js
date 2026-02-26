@@ -14,6 +14,12 @@ exports.createBookingSchema = zod_1.z.object({
     serviceStartAt: zod_1.z.coerce.date().optional(),
     serviceEndAt: zod_1.z.coerce.date().optional(),
     serviceTimezone: zod_1.z.string().min(3).optional(),
+    splitPaymentEnabled: zod_1.z.boolean().optional(),
+    depositPercentage: zod_1.z.number().min(0.1).max(1).optional(),
+    depositAmount: zod_1.z.number().positive().optional(),
+    depositDueDate: zod_1.z.coerce.date().optional(),
+    balanceDueDate: zod_1.z.coerce.date().optional(),
+    splitPaymentNotes: zod_1.z.string().max(1000).optional(),
 });
 exports.updateBookingSchema = zod_1.z.object({
     customerName: zod_1.z.string().min(2).optional(),
@@ -27,6 +33,12 @@ exports.updateBookingSchema = zod_1.z.object({
     serviceEndAt: zod_1.z.coerce.date().optional(),
     serviceTimezone: zod_1.z.string().min(3).optional(),
     transitionReason: zod_1.z.string().min(2).optional(),
+    splitPaymentEnabled: zod_1.z.boolean().optional(),
+    depositPercentage: zod_1.z.number().min(0.1).max(1).optional(),
+    depositAmount: zod_1.z.number().positive().optional(),
+    depositDueDate: zod_1.z.coerce.date().optional(),
+    balanceDueDate: zod_1.z.coerce.date().optional(),
+    splitPaymentNotes: zod_1.z.string().max(1000).optional(),
 });
 exports.transitionBookingSchema = zod_1.z.object({
     toStatus: zod_1.z.enum(["DRAFT", "CONFIRMED", "CANCELLED"]),
@@ -35,10 +47,14 @@ exports.transitionBookingSchema = zod_1.z.object({
 exports.bookingIdSchema = zod_1.z.object({
     id: zod_1.z.string().uuid(),
 });
-exports.listBookingSchema = pagination_1.paginationSchema.merge(zod_1.z.object({
+exports.listBookingSchema = pagination_1.paginationSchema
+    .merge(zod_1.z.object({
     serviceStartFrom: zod_1.z.coerce.date().optional(),
     serviceStartTo: zod_1.z.coerce.date().optional(),
-}));
+}))
+    .extend({
+    search: zod_1.z.string().optional(),
+});
 exports.calendarBookingSchema = pagination_1.paginationSchema.merge(zod_1.z.object({
     serviceStartFrom: zod_1.z.coerce.date().optional(),
     serviceStartTo: zod_1.z.coerce.date().optional(),

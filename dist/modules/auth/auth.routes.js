@@ -4,6 +4,7 @@ exports.authRoutes = void 0;
 const express_1 = require("express");
 const auth_controller_1 = require("./auth.controller");
 const rateLimiter_1 = require("../../middleware/rateLimiter");
+const auth_1 = require("../../middleware/auth");
 exports.authRoutes = (0, express_1.Router)();
 /**
  * @openapi
@@ -175,4 +176,28 @@ exports.authRoutes.post("/refresh", auth_controller_1.authController.refresh);
  *                   example: Logged out successfully
  */
 exports.authRoutes.post("/logout", auth_controller_1.authController.logout);
+/**
+ * @openapi
+ * /api/auth/me:
+ *   get:
+ *     tags:
+ *       - Auth
+ *     summary: Get the authenticated user profile
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+exports.authRoutes.get("/me", auth_1.authenticate, auth_controller_1.authController.me);
 //# sourceMappingURL=auth.routes.js.map

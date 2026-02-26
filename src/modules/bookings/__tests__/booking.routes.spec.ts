@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import request from "supertest";
 import express from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -139,7 +140,30 @@ describe("bookingRoutes", () => {
   });
 
   it("deletes a booking", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      id: 'booking-1',
+      createdAt: new Date(),
+      customerName: 'Test Customer',
+      serviceTitle: 'Test Service',
+      amount: new Decimal(1000),
+      currency: 'USD',
+      commissionRate: new Decimal(0.1),
+      commissionAmount: new Decimal(100),
+      commissionCurrency: 'KES',
+      status: 'DRAFT',
+      paymentStatus: 'UNPAID',
+      splitPaymentEnabled: false,
+      depositPercentage: null,
+      depositAmount: null,
+      depositDueDate: null,
+      balanceAmount: null,
+      balanceDueDate: null,
+      splitPaymentNotes: null,
+      agentId: 'agent-1',
+      serviceStartAt: null,
+      serviceEndAt: null,
+      serviceTimezone: null
+    });
 
     const res = await request(app).delete("/api/bookings/550e8400-e29b-41d4-a716-446655440000");
 

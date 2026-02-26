@@ -73,7 +73,7 @@ exports.dispatchService = {
             });
         }
         // Filter out fields that don't exist in the Dispatch model
-        const { actorId, transitionReason, ...updateData } = data;
+        const { actorId: _actorId, transitionReason: _transitionReason, ...updateData } = data;
         const updated = await dispatch_repository_1.dispatchRepository.update(id, updateData);
         if (data.assignedToId && data.assignedToId !== current.assignedToId) {
             await dispatch_event_repository_1.dispatchEventRepository.create({

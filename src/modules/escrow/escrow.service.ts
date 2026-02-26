@@ -233,7 +233,7 @@ export const escrowService = {
         toStatus: data.status,
         amount: payout.amount.toString(),
         currency: payout.currency,
-        trigger: data.metadata?.trigger,
+        trigger: typeof data.metadata?.trigger === 'object' || typeof data.metadata?.trigger === 'string' ? data.metadata?.trigger : null,
         transactionReference: data.transactionReference,
       },
     });

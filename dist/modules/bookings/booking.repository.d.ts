@@ -13,23 +13,37 @@ export declare const bookingRepository: {
         serviceStartAt?: Date;
         serviceEndAt?: Date;
         serviceTimezone?: string;
+        splitPaymentEnabled?: boolean;
+        depositPercentage?: number | string | null;
+        depositAmount?: number | string | null;
+        depositDueDate?: Date | null;
+        balanceAmount?: number | string | null;
+        balanceDueDate?: Date | null;
+        splitPaymentNotes?: string | null;
     }) => import(".prisma/client").Prisma.Prisma__BookingClient<{
         id: string;
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: import("@prisma/client-runtime-utils").Decimal;
+        commissionAmount: import("@prisma/client-runtime-utils").Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+        depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
         serviceTimezone: string | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     findMany: (params?: {
         skip?: number;
         take?: number;
@@ -40,6 +54,7 @@ export declare const bookingRepository: {
         serviceStartFrom?: Date;
         serviceStartTo?: Date;
         sort?: string;
+        search?: string;
     }) => import(".prisma/client").Prisma.PrismaPromise<({
         agent: {
             name: string;
@@ -55,13 +70,20 @@ export declare const bookingRepository: {
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: import("@prisma/client-runtime-utils").Decimal;
+        commissionAmount: import("@prisma/client-runtime-utils").Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+        depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
@@ -74,6 +96,7 @@ export declare const bookingRepository: {
         dateTo?: Date;
         serviceStartFrom?: Date;
         serviceStartTo?: Date;
+        search?: string;
     }) => import(".prisma/client").Prisma.PrismaPromise<number>;
     findById: (id: string) => import(".prisma/client").Prisma.Prisma__BookingClient<({
         agent: {
@@ -85,23 +108,38 @@ export declare const bookingRepository: {
             isActive: boolean;
             createdAt: Date;
         };
+        events: {
+            id: string;
+            createdAt: Date;
+            bookingId: string;
+            metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            type: import(".prisma/client").$Enums.BookingEventType;
+            actorId: string | null;
+        }[];
     } & {
         id: string;
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: import("@prisma/client-runtime-utils").Decimal;
+        commissionAmount: import("@prisma/client-runtime-utils").Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+        depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
         serviceTimezone: string | null;
-    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
         customerName?: string;
         serviceTitle?: string;
@@ -116,6 +154,13 @@ export declare const bookingRepository: {
         serviceStartAt?: Date;
         serviceEndAt?: Date;
         serviceTimezone?: string;
+        splitPaymentEnabled?: boolean;
+        depositPercentage?: number | string | null;
+        depositAmount?: number | string | null;
+        depositDueDate?: Date | null;
+        balanceAmount?: number | string | null;
+        balanceDueDate?: Date | null;
+        splitPaymentNotes?: string | null;
     }) => import(".prisma/client").Prisma.Prisma__BookingClient<{
         agent: {
             name: string;
@@ -131,34 +176,48 @@ export declare const bookingRepository: {
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: import("@prisma/client-runtime-utils").Decimal;
+        commissionAmount: import("@prisma/client-runtime-utils").Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+        depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
         serviceTimezone: string | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove: (id: string) => import(".prisma/client").Prisma.Prisma__BookingClient<{
         id: string;
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: import("@prisma/client-runtime-utils").Decimal;
+        commissionAmount: import("@prisma/client-runtime-utils").Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+        depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
         serviceTimezone: string | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 };
 //# sourceMappingURL=booking.repository.d.ts.map

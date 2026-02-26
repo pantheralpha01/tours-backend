@@ -20,6 +20,7 @@ exports.partnerService = {
                 dateFrom: params?.dateFrom,
                 dateTo: params?.dateTo,
                 sort: params?.sort,
+                search: params?.search,
             }),
             partner_repository_1.partnerRepository.count({
                 status: params?.status,
@@ -27,6 +28,7 @@ exports.partnerService = {
                 createdById: params?.createdById,
                 dateFrom: params?.dateFrom,
                 dateTo: params?.dateTo,
+                search: params?.search,
             }),
         ]);
         return {

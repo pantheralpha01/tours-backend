@@ -7,12 +7,12 @@ export declare const dispatchTrackRepository: {
         metadata?: Record<string, unknown>;
     }) => import(".prisma/client").Prisma.Prisma__DispatchTrackPointClient<{
         id: string;
-        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         dispatchId: string;
-        latitude: import("@prisma/client/runtime/library").Decimal;
-        longitude: import("@prisma/client/runtime/library").Decimal;
+        latitude: import("@prisma/client-runtime-utils").Decimal;
+        longitude: import("@prisma/client-runtime-utils").Decimal;
         recordedAt: Date;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     findMany: (params: {
         dispatchId: string;
         skip?: number;
@@ -21,10 +21,10 @@ export declare const dispatchTrackRepository: {
         dateTo?: Date;
     }) => import(".prisma/client").Prisma.PrismaPromise<{
         id: string;
-        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         dispatchId: string;
-        latitude: import("@prisma/client/runtime/library").Decimal;
-        longitude: import("@prisma/client/runtime/library").Decimal;
+        latitude: import("@prisma/client-runtime-utils").Decimal;
+        longitude: import("@prisma/client-runtime-utils").Decimal;
         recordedAt: Date;
     }[]>;
     count: (params: {

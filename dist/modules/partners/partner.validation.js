@@ -17,10 +17,14 @@ exports.updatePartnerSchema = zod_1.z.object({
     approvalStatus: zod_1.z.enum(["PENDING", "APPROVED", "REJECTED"]).optional(),
     rejectedReason: zod_1.z.string().min(3).optional(),
 });
-exports.listPartnerSchema = pagination_1.paginationSchema.merge(zod_1.z.object({
+exports.listPartnerSchema = pagination_1.paginationSchema
+    .merge(zod_1.z.object({
     approvalStatus: zod_1.z.enum(["PENDING", "APPROVED", "REJECTED"]).optional(),
     createdById: zod_1.z.string().uuid().optional(),
-}));
+}))
+    .extend({
+    search: zod_1.z.string().optional(),
+});
 exports.partnerIdSchema = zod_1.z.object({
     id: zod_1.z.string().uuid(),
 });

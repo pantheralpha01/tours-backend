@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import request from "supertest";
 import express from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -159,7 +160,18 @@ describe("paymentRoutes", () => {
   });
 
   it("deletes a payment", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      id: 'pay-1',
+      createdAt: new Date(),
+      amount: new Decimal(1000),
+      currency: 'USD',
+      bookingId: 'booking-1',
+      metadata: {},
+      provider: 'TestProvider',
+      state: 'INITIATED',
+      reference: null,
+      recordedById: null
+    });
 
     const res = await request(app).delete("/api/payments/550e8400-e29b-41d4-a716-446655440000");
 

@@ -218,6 +218,62 @@ exports.bookingRoutes.get("/calendar", booking_controller_1.bookingController.ca
 exports.bookingRoutes.get("/:id", booking_controller_1.bookingController.getById);
 /**
  * @openapi
+ * /api/bookings/{id}/events:
+ *   get:
+ *     tags:
+ *       - Bookings
+ *     summary: List booking event timeline
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - in: query
+ *         name: dateFrom
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *       - in: query
+ *         name: dateTo
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           example: createdAt:desc
+ *     responses:
+ *       200:
+ *         description: Booking events retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/PaginatedResponse'
+ *       404:
+ *         description: Booking not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+exports.bookingRoutes.get("/:id/events", booking_controller_1.bookingController.events);
+/**
+ * @openapi
  * /api/bookings/{id}:
  *   patch:
  *     tags:

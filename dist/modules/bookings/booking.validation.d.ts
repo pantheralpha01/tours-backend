@@ -10,6 +10,12 @@ export declare const createBookingSchema: z.ZodObject<{
     serviceStartAt: z.ZodOptional<z.ZodDate>;
     serviceEndAt: z.ZodOptional<z.ZodDate>;
     serviceTimezone: z.ZodOptional<z.ZodString>;
+    splitPaymentEnabled: z.ZodOptional<z.ZodBoolean>;
+    depositPercentage: z.ZodOptional<z.ZodNumber>;
+    depositAmount: z.ZodOptional<z.ZodNumber>;
+    depositDueDate: z.ZodOptional<z.ZodDate>;
+    balanceDueDate: z.ZodOptional<z.ZodDate>;
+    splitPaymentNotes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     customerName: string;
     serviceTitle: string;
@@ -17,6 +23,12 @@ export declare const createBookingSchema: z.ZodObject<{
     currency?: "USD" | "KES" | undefined;
     status?: "DRAFT" | "CONFIRMED" | "CANCELLED" | undefined;
     paymentStatus?: "UNPAID" | "PAID" | undefined;
+    splitPaymentEnabled?: boolean | undefined;
+    depositPercentage?: number | undefined;
+    depositAmount?: number | undefined;
+    depositDueDate?: Date | undefined;
+    balanceDueDate?: Date | undefined;
+    splitPaymentNotes?: string | undefined;
     agentId?: string | undefined;
     serviceStartAt?: Date | undefined;
     serviceEndAt?: Date | undefined;
@@ -28,6 +40,12 @@ export declare const createBookingSchema: z.ZodObject<{
     currency?: "USD" | "KES" | undefined;
     status?: "DRAFT" | "CONFIRMED" | "CANCELLED" | undefined;
     paymentStatus?: "UNPAID" | "PAID" | undefined;
+    splitPaymentEnabled?: boolean | undefined;
+    depositPercentage?: number | undefined;
+    depositAmount?: number | undefined;
+    depositDueDate?: Date | undefined;
+    balanceDueDate?: Date | undefined;
+    splitPaymentNotes?: string | undefined;
     agentId?: string | undefined;
     serviceStartAt?: Date | undefined;
     serviceEndAt?: Date | undefined;
@@ -45,6 +63,12 @@ export declare const updateBookingSchema: z.ZodObject<{
     serviceEndAt: z.ZodOptional<z.ZodDate>;
     serviceTimezone: z.ZodOptional<z.ZodString>;
     transitionReason: z.ZodOptional<z.ZodString>;
+    splitPaymentEnabled: z.ZodOptional<z.ZodBoolean>;
+    depositPercentage: z.ZodOptional<z.ZodNumber>;
+    depositAmount: z.ZodOptional<z.ZodNumber>;
+    depositDueDate: z.ZodOptional<z.ZodDate>;
+    balanceDueDate: z.ZodOptional<z.ZodDate>;
+    splitPaymentNotes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     customerName?: string | undefined;
     serviceTitle?: string | undefined;
@@ -52,6 +76,12 @@ export declare const updateBookingSchema: z.ZodObject<{
     currency?: "USD" | "KES" | undefined;
     status?: "DRAFT" | "CONFIRMED" | "CANCELLED" | undefined;
     paymentStatus?: "UNPAID" | "PAID" | undefined;
+    splitPaymentEnabled?: boolean | undefined;
+    depositPercentage?: number | undefined;
+    depositAmount?: number | undefined;
+    depositDueDate?: Date | undefined;
+    balanceDueDate?: Date | undefined;
+    splitPaymentNotes?: string | undefined;
     agentId?: string | undefined;
     serviceStartAt?: Date | undefined;
     serviceEndAt?: Date | undefined;
@@ -64,6 +94,12 @@ export declare const updateBookingSchema: z.ZodObject<{
     currency?: "USD" | "KES" | undefined;
     status?: "DRAFT" | "CONFIRMED" | "CANCELLED" | undefined;
     paymentStatus?: "UNPAID" | "PAID" | undefined;
+    splitPaymentEnabled?: boolean | undefined;
+    depositPercentage?: number | undefined;
+    depositAmount?: number | undefined;
+    depositDueDate?: Date | undefined;
+    balanceDueDate?: Date | undefined;
+    splitPaymentNotes?: string | undefined;
     agentId?: string | undefined;
     serviceStartAt?: Date | undefined;
     serviceEndAt?: Date | undefined;
@@ -97,9 +133,12 @@ export declare const listBookingSchema: z.ZodObject<{
 } & {
     serviceStartFrom: z.ZodOptional<z.ZodDate>;
     serviceStartTo: z.ZodOptional<z.ZodDate>;
+} & {
+    search: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
+    search?: string | undefined;
     status?: string | undefined;
     sort?: string | undefined;
     dateFrom?: Date | undefined;
@@ -108,6 +147,7 @@ export declare const listBookingSchema: z.ZodObject<{
     serviceStartTo?: Date | undefined;
 }, {
     limit?: number | undefined;
+    search?: string | undefined;
     status?: string | undefined;
     sort?: string | undefined;
     dateFrom?: Date | undefined;

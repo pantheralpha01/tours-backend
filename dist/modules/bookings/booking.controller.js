@@ -4,6 +4,7 @@ exports.bookingController = void 0;
 const booking_service_1 = require("./booking.service");
 const booking_validation_1 = require("./booking.validation");
 const ApiError_1 = require("../../utils/ApiError");
+const pagination_1 = require("../../utils/pagination");
 exports.bookingController = {
     create: async (req, res) => {
         const payload = booking_validation_1.createBookingSchema.parse(req.body);
@@ -114,6 +115,27 @@ exports.bookingController = {
         catch (error) {
             return next(error);
         }
+    },
+    events: async (req, res) => {
+        const { id } = booking_validation_1.bookingIdSchema.parse(req.params);
+        const params = pagination_1.paginationSchema.parse(req.query);
+        const booking = await booking_service_1.bookingService.getById(id);
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found" });
+        }
+        if (req.user?.role === "AGENT" && booking.agentId !== req.user.id) {
+            throw ApiError_1.ApiError.forbidden("Insufficient permissions");
+        }
+        const sortOrder = params.sort?.split(":")[1]?.toLowerCase() === "asc" ? "asc" : "desc";
+        const timeline = await booking_service_1.bookingService.listEvents({
+            bookingId: id,
+            page: params.page,
+            limit: params.limit,
+            dateFrom: params.dateFrom,
+            dateTo: params.dateTo,
+            sort: sortOrder,
+        });
+        return res.status(200).json(timeline);
     },
 };
 //# sourceMappingURL=booking.controller.js.map

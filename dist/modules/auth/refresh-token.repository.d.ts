@@ -10,7 +10,7 @@ export declare const refreshTokenRepository: {
         token: string;
         userId: string;
         revoked: boolean;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     findByToken: (token: string) => import(".prisma/client").Prisma.Prisma__RefreshTokenClient<({
         user: {
             name: string;
@@ -28,7 +28,7 @@ export declare const refreshTokenRepository: {
         token: string;
         userId: string;
         revoked: boolean;
-    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     revoke: (token: string) => import(".prisma/client").Prisma.Prisma__RefreshTokenClient<{
         id: string;
         createdAt: Date;
@@ -36,7 +36,7 @@ export declare const refreshTokenRepository: {
         token: string;
         userId: string;
         revoked: boolean;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     revokeAllForUser: (userId: string) => import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
     deleteExpired: () => import(".prisma/client").Prisma.PrismaPromise<import(".prisma/client").Prisma.BatchPayload>;
 };

@@ -18,7 +18,10 @@ const providerConfigured = (provider) => {
         return Boolean(config_1.config.cardGatewayKey);
     }
     if (provider === "STRIPE") {
-        return true;
+        return Boolean(config_1.config.stripeSecretKey);
+    }
+    if (provider === "CRYPTO") {
+        return Boolean(config_1.config.cryptoWalletAddress);
     }
     return false;
 };
@@ -27,11 +30,23 @@ exports.paymentGatewayService = {
         if (!providerConfigured(data.provider)) {
             throw ApiError_1.ApiError.badRequest(`${data.provider} gateway is not configured`, "PAYMENT_GATEWAY_NOT_CONFIGURED");
         }
+        const baseReference = data.reference ?? `INTENT_${Date.now()}`;
+        if (data.provider === "CRYPTO") {
+            return {
+                provider: data.provider,
+                amount: data.amount,
+                currency: data.currency,
+                reference: baseReference,
+                status: "created",
+                walletAddress: config_1.config.cryptoWalletAddress,
+                instructions: data.metadata?.instructions ?? "Send funds to the provided wallet address",
+            };
+        }
         return {
             provider: data.provider,
             amount: data.amount,
             currency: data.currency,
-            reference: data.reference ?? `INTENT_${Date.now()}`,
+            reference: baseReference,
             status: "created",
         };
     },

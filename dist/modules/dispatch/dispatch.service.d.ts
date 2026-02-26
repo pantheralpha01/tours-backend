@@ -14,13 +14,20 @@ export declare const dispatchService: {
             createdAt: Date;
             customerName: string;
             serviceTitle: string;
-            amount: import("@prisma/client/runtime/library").Decimal;
+            amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
-            commissionRate: import("@prisma/client/runtime/library").Decimal;
-            commissionAmount: import("@prisma/client/runtime/library").Decimal;
+            commissionRate: import("@prisma/client-runtime-utils").Decimal;
+            commissionAmount: import("@prisma/client-runtime-utils").Decimal;
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            splitPaymentEnabled: boolean;
+            depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+            depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            depositDueDate: Date | null;
+            balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            balanceDueDate: Date | null;
+            splitPaymentNotes: string | null;
             agentId: string;
             serviceStartAt: Date | null;
             serviceEndAt: Date | null;
@@ -42,6 +49,7 @@ export declare const dispatchService: {
         bookingId: string;
         notes: string | null;
         assignedToId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         startedAt: Date | null;
         completedAt: Date | null;
     }>;
@@ -62,13 +70,20 @@ export declare const dispatchService: {
             createdAt: Date;
             customerName: string;
             serviceTitle: string;
-            amount: import("@prisma/client/runtime/library").Decimal;
+            amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
-            commissionRate: import("@prisma/client/runtime/library").Decimal;
-            commissionAmount: import("@prisma/client/runtime/library").Decimal;
+            commissionRate: import("@prisma/client-runtime-utils").Decimal;
+            commissionAmount: import("@prisma/client-runtime-utils").Decimal;
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            splitPaymentEnabled: boolean;
+            depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+            depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            depositDueDate: Date | null;
+            balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            balanceDueDate: Date | null;
+            splitPaymentNotes: string | null;
             agentId: string;
             serviceStartAt: Date | null;
             serviceEndAt: Date | null;
@@ -90,9 +105,10 @@ export declare const dispatchService: {
         bookingId: string;
         notes: string | null;
         assignedToId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         startedAt: Date | null;
         completedAt: Date | null;
-    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
         assignedToId?: string;
         status?: "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
@@ -107,13 +123,20 @@ export declare const dispatchService: {
             createdAt: Date;
             customerName: string;
             serviceTitle: string;
-            amount: import("@prisma/client/runtime/library").Decimal;
+            amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
-            commissionRate: import("@prisma/client/runtime/library").Decimal;
-            commissionAmount: import("@prisma/client/runtime/library").Decimal;
+            commissionRate: import("@prisma/client-runtime-utils").Decimal;
+            commissionAmount: import("@prisma/client-runtime-utils").Decimal;
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            splitPaymentEnabled: boolean;
+            depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+            depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            depositDueDate: Date | null;
+            balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            balanceDueDate: Date | null;
+            splitPaymentNotes: string | null;
             agentId: string;
             serviceStartAt: Date | null;
             serviceEndAt: Date | null;
@@ -135,6 +158,7 @@ export declare const dispatchService: {
         bookingId: string;
         notes: string | null;
         assignedToId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         startedAt: Date | null;
         completedAt: Date | null;
     }>;
@@ -145,9 +169,10 @@ export declare const dispatchService: {
         bookingId: string;
         notes: string | null;
         assignedToId: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         startedAt: Date | null;
         completedAt: Date | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     addTrackPoint: (data: {
         dispatchId: string;
         latitude: number;
@@ -156,12 +181,12 @@ export declare const dispatchService: {
         metadata?: Record<string, unknown>;
     }) => import(".prisma/client").Prisma.Prisma__DispatchTrackPointClient<{
         id: string;
-        metadata: import("@prisma/client/runtime/library").JsonValue | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         dispatchId: string;
-        latitude: import("@prisma/client/runtime/library").Decimal;
-        longitude: import("@prisma/client/runtime/library").Decimal;
+        latitude: import("@prisma/client-runtime-utils").Decimal;
+        longitude: import("@prisma/client-runtime-utils").Decimal;
         recordedAt: Date;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     listTrackPoints: (params: {
         dispatchId: string;
         page?: number;

@@ -95,7 +95,17 @@ describe("disputeRoutes", () => {
   });
 
   it("deletes a dispute", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      id: 'dispute-1',
+      createdAt: new Date(),
+      status: 'OPEN',
+      bookingId: 'booking-1',
+      reason: 'Test Reason',
+      description: null,
+      openedById: 'user-1',
+      assignedToId: null,
+      resolvedAt: null
+    });
 
     const res = await request(app).delete("/api/disputes/550e8400-e29b-41d4-a716-446655440000");
 

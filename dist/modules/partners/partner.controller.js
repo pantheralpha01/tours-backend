@@ -69,8 +69,13 @@ exports.partnerController = {
         const { id } = partner_validation_1.partnerIdSchema.parse(req.params);
         const params = pagination_1.paginationSchema.parse(req.query);
         const typeParam = req.query.type;
-        const type = typeof typeParam === "string" &&
-            (typeParam === "APPROVED" || typeParam === "REJECTED")
+        const allowedTypes = new Set([
+            "APPROVED",
+            "REJECTED",
+            "INVITED",
+            "INVITE_ACCEPTED",
+        ]);
+        const type = typeof typeParam === "string" && allowedTypes.has(typeParam)
             ? typeParam
             : undefined;
         const partner = await partner_service_1.partnerService.getById(id);

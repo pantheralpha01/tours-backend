@@ -14,6 +14,13 @@ exports.bookingRepository = {
             commissionCurrency: data.commissionCurrency ?? "KES",
             status: data.status ?? "DRAFT",
             paymentStatus: data.paymentStatus ?? "UNPAID",
+            splitPaymentEnabled: data.splitPaymentEnabled ?? false,
+            depositPercentage: data.depositPercentage,
+            depositAmount: data.depositAmount,
+            depositDueDate: data.depositDueDate,
+            balanceAmount: data.balanceAmount,
+            balanceDueDate: data.balanceDueDate,
+            splitPaymentNotes: data.splitPaymentNotes,
             agentId: data.agentId,
             serviceStartAt: data.serviceStartAt,
             serviceEndAt: data.serviceEndAt,
@@ -27,6 +34,12 @@ exports.bookingRepository = {
         }
         if (params?.agentId) {
             where.agentId = params.agentId;
+        }
+        if (params?.search) {
+            where.customerName = {
+                contains: params.search,
+                mode: "insensitive",
+            };
         }
         if (params?.dateFrom || params?.dateTo) {
             where.createdAt = {};
@@ -68,6 +81,12 @@ exports.bookingRepository = {
         if (params?.agentId) {
             where.agentId = params.agentId;
         }
+        if (params?.search) {
+            where.customerName = {
+                contains: params.search,
+                mode: "insensitive",
+            };
+        }
         if (params?.dateFrom || params?.dateTo) {
             where.createdAt = {};
             if (params.dateFrom)
@@ -86,7 +105,15 @@ exports.bookingRepository = {
         }
         return prisma_1.prisma.booking.count({ where });
     },
-    findById: (id) => prisma_1.prisma.booking.findUnique({ where: { id }, include: { agent: true } }),
+    findById: (id) => prisma_1.prisma.booking.findUnique({
+        where: { id },
+        include: {
+            agent: true,
+            events: {
+                orderBy: { createdAt: "desc" },
+            },
+        },
+    }),
     update: (id, data) => prisma_1.prisma.booking.update({
         where: { id },
         data,

@@ -6,8 +6,28 @@ const pagination_1 = require("../../utils/pagination");
 const stateMachine_1 = require("../../utils/stateMachine");
 const dispute_transitions_1 = require("./dispute.transitions");
 const booking_event_repository_1 = require("../bookings/booking-event.repository");
+const DISPUTE_STATUS_SEQUENCE = [
+    "OPEN",
+    "UNDER_REVIEW",
+    "RESOLVED",
+    "REJECTED",
+];
 exports.disputeService = {
-    create: (data) => dispute_repository_1.disputeRepository.create(data),
+    create: async (data) => {
+        const dispute = await dispute_repository_1.disputeRepository.create(data);
+        await booking_event_repository_1.bookingEventRepository.create({
+            bookingId: dispute.bookingId,
+            type: "DISPUTE_CREATED",
+            actorId: data.openedById,
+            metadata: {
+                disputeId: dispute.id,
+                reason: dispute.reason,
+                status: dispute.status,
+                statusSequence: Array.from(DISPUTE_STATUS_SEQUENCE),
+            },
+        });
+        return dispute;
+    },
     list: async (params) => {
         const page = params?.page ?? 1;
         const limit = params?.limit ?? 10;
@@ -53,18 +73,19 @@ exports.disputeService = {
             });
         }
         // Filter out fields that don't exist in the Dispute model
-        const { transitionReason, ...updateData } = data;
+        const { transitionReason: _transitionReason, ...updateData } = data;
         const updated = await dispute_repository_1.disputeRepository.update(id, updateData);
         if (data.status && data.status !== current.status) {
             await booking_event_repository_1.bookingEventRepository.create({
                 bookingId: current.bookingId,
-                type: "UPDATED",
+                type: "DISPUTE_STATUS_CHANGED",
                 metadata: {
                     entity: "DISPUTE",
                     disputeId: current.id,
                     fromStatus: current.status,
                     toStatus: data.status,
                     reason: data.transitionReason,
+                    statusSequence: Array.from(DISPUTE_STATUS_SEQUENCE),
                 },
             });
         }

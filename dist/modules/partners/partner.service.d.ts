@@ -14,7 +14,7 @@ export declare const partnerService: {
             title: string;
             description: string | null;
             partnerId: string;
-            price: import("@prisma/client/runtime/library").Decimal;
+            price: import("@prisma/client-runtime-utils").Decimal;
         }[];
         createdBy: {
             name: string;
@@ -46,7 +46,7 @@ export declare const partnerService: {
         approvedAt: Date | null;
         rejectedReason: string | null;
         createdById: string | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     list: (params?: {
         page?: number;
         limit?: number;
@@ -56,6 +56,7 @@ export declare const partnerService: {
         dateFrom?: Date;
         dateTo?: Date;
         sort?: string;
+        search?: string;
     }) => Promise<PaginatedResponse<any>>;
     getById: (id: string) => import(".prisma/client").Prisma.Prisma__PartnerClient<({
         inventory: {
@@ -65,7 +66,7 @@ export declare const partnerService: {
             title: string;
             description: string | null;
             partnerId: string;
-            price: import("@prisma/client/runtime/library").Decimal;
+            price: import("@prisma/client-runtime-utils").Decimal;
         }[];
         createdBy: {
             name: string;
@@ -97,7 +98,7 @@ export declare const partnerService: {
         approvedAt: Date | null;
         rejectedReason: string | null;
         createdById: string | null;
-    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
         name?: string;
         email?: string;
@@ -115,7 +116,7 @@ export declare const partnerService: {
             title: string;
             description: string | null;
             partnerId: string;
-            price: import("@prisma/client/runtime/library").Decimal;
+            price: import("@prisma/client-runtime-utils").Decimal;
         }[];
         createdBy: {
             name: string;
@@ -147,7 +148,7 @@ export declare const partnerService: {
         approvedAt: Date | null;
         rejectedReason: string | null;
         createdById: string | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     approve: (id: string, approvedById: string) => Promise<{
         inventory: {
             id: string;
@@ -156,7 +157,7 @@ export declare const partnerService: {
             title: string;
             description: string | null;
             partnerId: string;
-            price: import("@prisma/client/runtime/library").Decimal;
+            price: import("@prisma/client-runtime-utils").Decimal;
         }[];
         createdBy: {
             name: string;
@@ -197,7 +198,7 @@ export declare const partnerService: {
             title: string;
             description: string | null;
             partnerId: string;
-            price: import("@prisma/client/runtime/library").Decimal;
+            price: import("@prisma/client-runtime-utils").Decimal;
         }[];
         createdBy: {
             name: string;
@@ -242,6 +243,6 @@ export declare const partnerService: {
         approvedAt: Date | null;
         rejectedReason: string | null;
         createdById: string | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 };
 //# sourceMappingURL=partner.service.d.ts.map

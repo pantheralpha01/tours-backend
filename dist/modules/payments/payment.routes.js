@@ -6,6 +6,45 @@ const payment_controller_1 = require("./payment.controller");
 const auth_1 = require("../../middleware/auth");
 const role_1 = require("../../middleware/role");
 exports.paymentRoutes = (0, express_1.Router)();
+/**
+ * @openapi
+ * /api/payments/webhooks/{provider}:
+ *   post:
+ *     tags:
+ *       - Payments
+ *     summary: Ingest payment provider webhook callbacks
+ *     parameters:
+ *       - in: path
+ *         name: provider
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [MPESA, STRIPE, PAYPAL, VISA, MASTERCARD, CRYPTO]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               reference:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *                 enum: [USD, KES]
+ *               eventType:
+ *                 type: string
+ *               metadata:
+ *                 type: object
+ *     responses:
+ *       202:
+ *         description: Webhook accepted
+ */
+exports.paymentRoutes.post("/webhooks/:provider", payment_controller_1.paymentController.webhook);
 exports.paymentRoutes.use(auth_1.authenticate);
 /**
  * @openapi
@@ -61,6 +100,89 @@ exports.paymentRoutes.use(auth_1.authenticate);
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 exports.paymentRoutes.post("/", (0, role_1.requireRoles)("ADMIN", "MANAGER"), payment_controller_1.paymentController.create);
+/**
+ * @openapi
+ * /api/payments/initiate:
+ *   post:
+ *     tags:
+ *       - Payments
+ *     summary: Initiate a payment via configured gateway
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - bookingId
+ *               - provider
+ *               - amount
+ *             properties:
+ *               bookingId:
+ *                 type: string
+ *                 format: uuid
+ *               provider:
+ *                 type: string
+ *                 enum: [MPESA, STRIPE, PAYPAL, VISA, MASTERCARD, CRYPTO]
+ *               amount:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *                 enum: [USD, KES]
+ *               reference:
+ *                 type: string
+ *               metadata:
+ *                 type: object
+ *     responses:
+ *       201:
+ *         description: Payment intent created successfully
+ */
+exports.paymentRoutes.post("/initiate", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), payment_controller_1.paymentController.initiate);
+/**
+ * @openapi
+ * /api/payments/manual:
+ *   post:
+ *     tags:
+ *       - Payments
+ *     summary: Register a manual or offline payment
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - bookingId
+ *               - amount
+ *             properties:
+ *               bookingId:
+ *                 type: string
+ *                 format: uuid
+ *               provider:
+ *                 type: string
+ *                 enum: [CASH, BANK_TRANSFER, MPESA, PAYPAL, VISA, MASTERCARD, CRYPTO, OTHER]
+ *               amount:
+ *                 type: number
+ *               currency:
+ *                 type: string
+ *                 enum: [USD, KES]
+ *               reference:
+ *                 type: string
+ *               recordedAt:
+ *                 type: string
+ *                 format: date-time
+ *               notes:
+ *                 type: string
+ *                 maxLength: 1000
+ *     responses:
+ *       201:
+ *         description: Manual payment recorded successfully
+ */
+exports.paymentRoutes.post("/manual", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), payment_controller_1.paymentController.manual);
 /**
  * @openapi
  * /api/payments:

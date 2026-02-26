@@ -27,12 +27,12 @@ export declare const paymentIntentSchema: z.ZodObject<{
     reference: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     amount: number;
-    provider: "MPESA" | "STRIPE" | "PAYPAL" | "VISA" | "MASTERCARD";
+    provider: "MPESA" | "PAYPAL" | "VISA" | "MASTERCARD" | "STRIPE";
     currency?: "USD" | "KES" | undefined;
     reference?: string | undefined;
 }, {
     amount: number;
-    provider: "MPESA" | "STRIPE" | "PAYPAL" | "VISA" | "MASTERCARD";
+    provider: "MPESA" | "PAYPAL" | "VISA" | "MASTERCARD" | "STRIPE";
     currency?: "USD" | "KES" | undefined;
     reference?: string | undefined;
 }>;

@@ -11,6 +11,8 @@ exports.paymentRepository = {
             currency: data.currency ?? "USD",
             reference: data.reference,
             metadata: data.metadata ? data.metadata : null,
+            state: data.state ?? undefined,
+            recordedById: data.recordedById ?? undefined,
         },
     }),
     findMany: (params) => {
@@ -56,6 +58,10 @@ exports.paymentRepository = {
         return prisma_1.prisma.payment.count({ where });
     },
     findById: (id) => prisma_1.prisma.payment.findUnique({ where: { id }, include: { booking: true } }),
+    findByReference: (reference) => prisma_1.prisma.payment.findUnique({
+        where: { reference },
+        include: { booking: true },
+    }),
     update: (id, data) => {
         const updateData = {};
         if (data.state !== undefined)

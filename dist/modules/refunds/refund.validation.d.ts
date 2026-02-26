@@ -27,12 +27,12 @@ export declare const updateRefundSchema: z.ZodObject<{
     processedAt: z.ZodOptional<z.ZodDate>;
     transitionReason: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    status?: "APPROVED" | "COMPLETED" | "FAILED" | "REQUESTED" | "DECLINED" | "PROCESSING" | undefined;
+    status?: "APPROVED" | "COMPLETED" | "FAILED" | "DECLINED" | "REQUESTED" | "PROCESSING" | undefined;
     reference?: string | undefined;
     processedAt?: Date | undefined;
     transitionReason?: string | undefined;
 }, {
-    status?: "APPROVED" | "COMPLETED" | "FAILED" | "REQUESTED" | "DECLINED" | "PROCESSING" | undefined;
+    status?: "APPROVED" | "COMPLETED" | "FAILED" | "DECLINED" | "REQUESTED" | "PROCESSING" | undefined;
     reference?: string | undefined;
     processedAt?: Date | undefined;
     transitionReason?: string | undefined;

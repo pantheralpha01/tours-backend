@@ -29,7 +29,7 @@ export const disputeService = {
         disputeId: dispute.id,
         reason: dispute.reason,
         status: dispute.status,
-        statusSequence: DISPUTE_STATUS_SEQUENCE,
+        statusSequence: Array.from(DISPUTE_STATUS_SEQUENCE),
       },
     });
 
@@ -120,7 +120,7 @@ export const disputeService = {
           fromStatus: current.status,
           toStatus: data.status,
           reason: data.transitionReason,
-          statusSequence: DISPUTE_STATUS_SEQUENCE,
+          statusSequence: Array.from(DISPUTE_STATUS_SEQUENCE),
         },
       });
     }

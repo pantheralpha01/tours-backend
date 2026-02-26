@@ -95,7 +95,16 @@ describe("contractRoutes", () => {
   });
 
   it("deletes a contract", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      id: 'contract-1',
+      createdAt: new Date(),
+      status: 'DRAFT',
+      bookingId: 'booking-1',
+      metadata: {},
+      partnerId: null,
+      fileUrl: null,
+      signedAt: null
+    });
 
     const res = await request(app).delete("/api/contracts/550e8400-e29b-41d4-a716-446655440000");
 

@@ -29,8 +29,8 @@ vi.mock('../bookings/booking.service', () => ({
   }
 }));
 
-vi.mock('../../middleware/auth', () => ({ authenticate: (req, res, next) => { req.user = { id: '11111111-1111-1111-1111-111111111111', role: 'ADMIN' }; next(); } }));
-vi.mock('../../middleware/role', () => ({ requireRoles: () => (req, res, next) => next() }));
+vi.mock('../../middleware/auth', () => ({ authenticate: (req: any, _res: any, next: any) => { req.user = { id: '11111111-1111-1111-1111-111111111111', role: 'ADMIN' }; next(); } }));
+vi.mock('../../middleware/role', () => ({ requireRoles: () => (_req: any, _res: any, next: any) => next() }));
 
 const app = express();
 app.use(express.json());

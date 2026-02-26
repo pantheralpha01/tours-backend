@@ -8,11 +8,11 @@ export declare const dispatchEventRepository: {
     }) => Prisma.Prisma__DispatchEventClient<{
         id: string;
         createdAt: Date;
+        metadata: Prisma.JsonValue | null;
         type: import(".prisma/client").$Enums.DispatchEventType;
         actorId: string | null;
-        metadata: Prisma.JsonValue | null;
         dispatchId: string;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
     findMany: (params: {
         dispatchId: string;
         dateFrom?: Date;
@@ -21,9 +21,9 @@ export declare const dispatchEventRepository: {
     }) => Prisma.PrismaPromise<{
         id: string;
         createdAt: Date;
+        metadata: Prisma.JsonValue | null;
         type: import(".prisma/client").$Enums.DispatchEventType;
         actorId: string | null;
-        metadata: Prisma.JsonValue | null;
         dispatchId: string;
     }[]>;
 };

@@ -175,8 +175,8 @@ export const communityNotificationService = {
     for (const [userId, entry] of grouped.entries()) {
       const digestPosts = Array.from(entry.posts.values()).map((post) => ({
         title: post.title,
-        topicName: post.topic?.name,
-        authorName: post.author?.name,
+        topicName: post.topicId ?? '',
+        authorName: post.authorId ?? '',
         excerpt: formatExcerpt(post),
         postUrl: buildPostUrl(post.slug),
         publishedAt: post.publishedAt,

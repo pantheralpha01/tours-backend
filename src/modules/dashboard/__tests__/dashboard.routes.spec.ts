@@ -35,6 +35,9 @@ describe("dashboardRoutes", () => {
       pendingPartnerApprovals: 2,
       openDisputes: 1,
       generatedAt: new Date().toISOString(),
+      bookingsTrend: [],
+      partnersTrend: [],
+      disputesTrend: []
     });
 
     const res = await request(app).get("/api/dashboard/summary");

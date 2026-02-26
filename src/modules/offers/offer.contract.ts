@@ -55,8 +55,8 @@ section { margin-bottom: 24px; }
       <tbody>
         <tr><th>Base</th><td>${data.priceBreakdown?.["baseAmount"] ?? "-"}</td></tr>
         <tr><th>Addons</th><td>${data.priceBreakdown?.["addonsTotal"] ?? 0}</td></tr>
-        <tr><th>Fee</th><td>${data.priceBreakdown?.["fee"]?.["amount"] ?? 0}</td></tr>
-        <tr><th>Discount</th><td>- ${data.priceBreakdown?.["discount"]?.["amount"] ?? 0}</td></tr>
+        <tr><th>Fee</th><td>${((data.priceBreakdown?.["fee"] as { amount?: number })?.amount ?? 0)}</td></tr>
+        <tr><th>Discount</th><td>- ${((data.priceBreakdown?.["discount"] as { amount?: number })?.amount ?? 0)}</td></tr>
         <tr><th>Total</th><td><strong>${data.priceBreakdown?.["total"] ?? "-"}</strong></td></tr>
       </tbody>
     </table>

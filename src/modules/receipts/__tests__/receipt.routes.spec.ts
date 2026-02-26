@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import request from "supertest";
 import express from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -98,7 +99,17 @@ describe("receiptRoutes", () => {
   });
 
   it("deletes a receipt", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      id: 'receipt-1',
+      amount: new Decimal(1000),
+      currency: 'USD',
+      status: 'ISSUED',
+      bookingId: 'booking-1',
+      fileUrl: null,
+      paymentId: 'pay-1',
+      receiptNumber: 'R-001',
+      issuedAt: new Date()
+    });
 
     const res = await request(app).delete("/api/receipts/550e8400-e29b-41d4-a716-446655440000");
 

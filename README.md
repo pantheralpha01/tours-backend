@@ -1,3 +1,20 @@
+# Docker Deployment (VPS)
+
+1. Build the Docker image:
+   ```sh
+   docker build -t tours-backend .
+   ```
+
+2. Run the container:
+   ```sh
+   docker run -d --env-file .env -p 4000:4000 tours-backend
+   ```
+
+3. Ensure your VPS firewall allows port 4000.
+
+4. For production, set `NODE_ENV=production` in your .env file.
+
+5. Make sure your Neon PostgreSQL database is accessible from your VPS.
 # Tours Backend API
 
 A comprehensive Node.js backend API for managing tours, bookings, agents, and customer interactions.

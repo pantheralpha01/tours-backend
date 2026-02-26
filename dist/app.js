@@ -23,7 +23,11 @@ exports.app.use(cors_1.corsMiddleware);
 // Logging
 exports.app.use((0, morgan_1.default)("combined"));
 // Body parsing
-exports.app.use(express_1.default.json());
+exports.app.use(express_1.default.json({
+    verify: (req, _res, buf) => {
+        req.rawBody = buf.toString();
+    },
+}));
 exports.app.use(express_1.default.urlencoded({ extended: true }));
 // API Documentation
 exports.app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));

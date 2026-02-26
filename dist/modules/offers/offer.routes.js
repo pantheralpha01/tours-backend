@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.offerRoutes = void 0;
+const express_1 = require("express");
+const auth_1 = require("../../middleware/auth");
+const role_1 = require("../../middleware/role");
+const offer_controller_1 = require("./offer.controller");
+exports.offerRoutes = (0, express_1.Router)();
+exports.offerRoutes.use(auth_1.authenticate);
+exports.offerRoutes.post("/templates", (0, role_1.requireRoles)("ADMIN", "MANAGER"), offer_controller_1.offerController.createTemplate);
+exports.offerRoutes.get("/templates", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), offer_controller_1.offerController.listTemplates);
+exports.offerRoutes.get("/templates/:id", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), offer_controller_1.offerController.getTemplate);
+exports.offerRoutes.post("/calculate", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), offer_controller_1.offerController.calculatePrice);
+exports.offerRoutes.post("/proposals", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), offer_controller_1.offerController.createProposal);
+exports.offerRoutes.get("/proposals", (0, role_1.requireRoles)("ADMIN", "MANAGER"), offer_controller_1.offerController.listProposals);
+exports.offerRoutes.get("/proposals/:id", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), offer_controller_1.offerController.getProposal);
+exports.offerRoutes.post("/proposals/:id/assets", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), offer_controller_1.offerController.generateAssets);
+exports.offerRoutes.post("/proposals/:id/contract", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), offer_controller_1.offerController.generateContract);
+exports.offerRoutes.post("/proposals/:id/approve", (0, role_1.requireRoles)("ADMIN", "MANAGER"), offer_controller_1.offerController.approveProposal);
+exports.offerRoutes.post("/proposals/:id/publish", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), offer_controller_1.offerController.publishProposal);
+//# sourceMappingURL=offer.routes.js.map

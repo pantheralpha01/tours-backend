@@ -24,6 +24,13 @@ exports.partnerRepository = {
         if (params?.createdById) {
             where.createdById = params.createdById;
         }
+        if (params?.search) {
+            const searchTerm = params.search;
+            where.OR = [
+                { name: { contains: searchTerm, mode: "insensitive" } },
+                { email: { contains: searchTerm, mode: "insensitive" } },
+            ];
+        }
         if (params?.dateFrom || params?.dateTo) {
             where.createdAt = {};
             if (params.dateFrom)
@@ -58,6 +65,13 @@ exports.partnerRepository = {
         if (params?.createdById) {
             where.createdById = params.createdById;
         }
+        if (params?.search) {
+            const searchTerm = params.search;
+            where.OR = [
+                { name: { contains: searchTerm, mode: "insensitive" } },
+                { email: { contains: searchTerm, mode: "insensitive" } },
+            ];
+        }
         if (params?.dateFrom || params?.dateTo) {
             where.createdAt = {};
             if (params.dateFrom)
@@ -69,6 +83,10 @@ exports.partnerRepository = {
     },
     findById: (id) => prisma_1.prisma.partner.findUnique({
         where: { id },
+        include: { inventory: true, createdBy: true, approvedBy: true },
+    }),
+    findByEmail: (email) => prisma_1.prisma.partner.findUnique({
+        where: { email },
         include: { inventory: true, createdBy: true, approvedBy: true },
     }),
     update: (id, data) => prisma_1.prisma.partner.update({

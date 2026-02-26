@@ -146,7 +146,19 @@ describe("partnerRoutes", () => {
   });
 
   it("deletes a partner", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      name: 'Test Partner',
+      id: 'partner-1',
+      email: null,
+      isActive: true,
+      createdAt: new Date(),
+      phone: null,
+      approvalStatus: 'PENDING',
+      approvedById: null,
+      approvedAt: null,
+      rejectedReason: null,
+      createdById: null
+    });
 
     const res = await request(app).delete("/api/partners/550e8400-e29b-41d4-a716-446655440000");
 

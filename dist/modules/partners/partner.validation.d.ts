@@ -47,9 +47,12 @@ export declare const listPartnerSchema: z.ZodObject<{
 } & {
     approvalStatus: z.ZodOptional<z.ZodEnum<["PENDING", "APPROVED", "REJECTED"]>>;
     createdById: z.ZodOptional<z.ZodString>;
+} & {
+    search: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
+    search?: string | undefined;
     status?: string | undefined;
     approvalStatus?: "REJECTED" | "PENDING" | "APPROVED" | undefined;
     createdById?: string | undefined;
@@ -58,6 +61,7 @@ export declare const listPartnerSchema: z.ZodObject<{
     dateTo?: Date | undefined;
 }, {
     limit?: number | undefined;
+    search?: string | undefined;
     status?: string | undefined;
     approvalStatus?: "REJECTED" | "PENDING" | "APPROVED" | undefined;
     createdById?: string | undefined;

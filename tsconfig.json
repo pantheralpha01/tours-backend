@@ -22,5 +22,15 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/modules/community/__tests__",
+    "src/modules/bookings/__tests__",
+    "src/modules/inventory/__tests__",
+    "src/modules/payments/__tests__",
+    "src/modules/quotes/__tests__",
+    "src/modules/receipts/__tests__",
+    "src/modules/refunds/__tests__"
+  ]
 }

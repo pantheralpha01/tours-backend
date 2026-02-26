@@ -118,7 +118,7 @@ export const partnerInviteService = {
       status: "ACCEPTED",
       acceptedAt: new Date(),
       metadata: {
-        ...(invite.metadata ?? {}),
+        ...(typeof invite.metadata === 'object' && invite.metadata !== null ? invite.metadata : {}),
         contactName: payload.contactName,
         phone: payload.phone,
         notes: payload.notes,

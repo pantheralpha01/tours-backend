@@ -11,5 +11,26 @@ exports.bookingEventRepository = {
             metadata: (data.metadata || undefined),
         },
     }),
+    listByBooking: (params) => prisma_1.prisma.bookingEvent.findMany({
+        where: {
+            bookingId: params.bookingId,
+            createdAt: params.dateFrom || params.dateTo ? {
+                ...(params.dateFrom ? { gte: params.dateFrom } : {}),
+                ...(params.dateTo ? { lte: params.dateTo } : {}),
+            } : undefined,
+        },
+        orderBy: { createdAt: params.sort ?? "desc" },
+        skip: params.skip,
+        take: params.take,
+    }),
+    countByBooking: (params) => prisma_1.prisma.bookingEvent.count({
+        where: {
+            bookingId: params.bookingId,
+            createdAt: params.dateFrom || params.dateTo ? {
+                ...(params.dateFrom ? { gte: params.dateFrom } : {}),
+                ...(params.dateTo ? { lte: params.dateTo } : {}),
+            } : undefined,
+        },
+    }),
 };
 //# sourceMappingURL=booking-event.repository.js.map

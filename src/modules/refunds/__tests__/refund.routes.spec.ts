@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import request from "supertest";
 import express from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -98,7 +99,18 @@ describe("refundRoutes", () => {
   });
 
   it("deletes a refund", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      id: 'refund-1',
+      createdAt: new Date(),
+      amount: new Decimal(1000),
+      currency: 'USD',
+      status: 'REQUESTED',
+      bookingId: 'booking-1',
+      reason: 'Test Reason',
+      reference: null,
+      processedAt: null,
+      paymentId: 'pay-1'
+    });
 
     const res = await request(app).delete("/api/refunds/550e8400-e29b-41d4-a716-446655440000");
 

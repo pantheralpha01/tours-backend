@@ -54,7 +54,7 @@ exports.refundService = {
             });
         }
         // Filter out fields that don't exist in the Refund model
-        const { transitionReason, ...updateData } = data;
+        const { transitionReason: _transitionReason, ...updateData } = data;
         const updated = await refund_repository_1.refundRepository.update(id, updateData);
         if (data.status && data.status !== current.status) {
             await booking_event_repository_1.bookingEventRepository.create({

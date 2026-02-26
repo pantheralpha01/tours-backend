@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import request from "supertest";
 import express from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -102,7 +103,22 @@ describe("quoteRoutes", () => {
   });
 
   it("deletes a quote", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      id: 'quote-1',
+      createdAt: new Date(),
+      amount: new Decimal(1000),
+      currency: 'USD',
+      commissionRate: new Decimal(0.1),
+      commissionAmount: new Decimal(100),
+      commissionCurrency: 'KES',
+      bookingId: 'booking-1',
+      agentId: 'agent-1',
+      title: 'Test Quote',
+      status: 'DRAFT',
+      expiresAt: null,
+      items: null,
+      notes: null
+    });
 
     const res = await request(app).delete("/api/quotes/550e8400-e29b-41d4-a716-446655440000");
 

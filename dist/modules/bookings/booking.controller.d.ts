@@ -7,5 +7,6 @@ export declare const bookingController: {
     update: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     transition: (req: Request, res: Response, next: NextFunction) => Promise<void | Response<any, Record<string, any>>>;
     remove: (req: Request, res: Response, next: NextFunction) => Promise<void | Response<any, Record<string, any>>>;
+    events: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
 };
 //# sourceMappingURL=booking.controller.d.ts.map

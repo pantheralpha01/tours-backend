@@ -5,5 +5,11 @@ export declare const twilioService: {
         from: string;
         status: string;
     }>;
+    sendSmsMessage: (to: string, message: string) => Promise<{
+        to: string;
+        message: string;
+        from: string;
+        status: string;
+    }>;
 };
 //# sourceMappingURL=twilio.d.ts.map

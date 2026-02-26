@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import request from "supertest";
 import express from "express";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -88,7 +89,15 @@ describe("inventoryRoutes", () => {
   });
 
   it("deletes an inventory item", async () => {
-    service.remove.mockResolvedValue(undefined);
+    service.remove.mockResolvedValue({
+      id: 'inventory-1',
+      createdAt: new Date(),
+      status: 'DRAFT',
+      title: 'Test Inventory',
+      description: null,
+      partnerId: 'partner-1',
+      price: new Decimal(1000)
+    });
 
     const res = await request(app).delete("/api/inventory/550e8400-e29b-41d4-a716-446655440000");
 

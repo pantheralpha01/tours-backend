@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { PaginatedResponse } from "../../utils/pagination";
 export declare const bookingService: {
     create: (data: {
@@ -12,18 +13,31 @@ export declare const bookingService: {
         serviceEndAt?: Date;
         serviceTimezone?: string;
         actorId?: string;
+        splitPaymentEnabled?: boolean;
+        depositPercentage?: number;
+        depositAmount?: number;
+        depositDueDate?: Date;
+        balanceDueDate?: Date;
+        splitPaymentNotes?: string;
     }) => Promise<{
         id: string;
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: Prisma.Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: Prisma.Decimal;
+        commissionAmount: Prisma.Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: Prisma.Decimal | null;
+        depositAmount: Prisma.Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: Prisma.Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
@@ -39,8 +53,9 @@ export declare const bookingService: {
         serviceStartFrom?: Date;
         serviceStartTo?: Date;
         sort?: string;
+        search?: string;
     }) => Promise<PaginatedResponse<any>>;
-    getById: (id: string) => import(".prisma/client").Prisma.Prisma__BookingClient<({
+    getById: (id: string) => Prisma.Prisma__BookingClient<({
         agent: {
             name: string;
             id: string;
@@ -50,23 +65,38 @@ export declare const bookingService: {
             isActive: boolean;
             createdAt: Date;
         };
+        events: {
+            id: string;
+            createdAt: Date;
+            bookingId: string;
+            metadata: Prisma.JsonValue | null;
+            type: import(".prisma/client").$Enums.BookingEventType;
+            actorId: string | null;
+        }[];
     } & {
         id: string;
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: Prisma.Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: Prisma.Decimal;
+        commissionAmount: Prisma.Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: Prisma.Decimal | null;
+        depositAmount: Prisma.Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: Prisma.Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
         serviceTimezone: string | null;
-    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
     update: (id: string, data: {
         customerName?: string;
         serviceTitle?: string;
@@ -80,6 +110,12 @@ export declare const bookingService: {
         serviceTimezone?: string;
         transitionReason?: string;
         actorId?: string;
+        splitPaymentEnabled?: boolean;
+        depositPercentage?: number;
+        depositAmount?: number;
+        depositDueDate?: Date;
+        balanceDueDate?: Date;
+        splitPaymentNotes?: string;
     }) => Promise<{
         agent: {
             name: string;
@@ -95,13 +131,20 @@ export declare const bookingService: {
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: Prisma.Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: Prisma.Decimal;
+        commissionAmount: Prisma.Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: Prisma.Decimal | null;
+        depositAmount: Prisma.Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: Prisma.Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
@@ -127,34 +170,56 @@ export declare const bookingService: {
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: Prisma.Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: Prisma.Decimal;
+        commissionAmount: Prisma.Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: Prisma.Decimal | null;
+        depositAmount: Prisma.Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: Prisma.Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
         serviceTimezone: string | null;
     }>;
-    remove: (id: string) => import(".prisma/client").Prisma.Prisma__BookingClient<{
+    remove: (id: string) => Prisma.Prisma__BookingClient<{
         id: string;
         createdAt: Date;
         customerName: string;
         serviceTitle: string;
-        amount: import("@prisma/client/runtime/library").Decimal;
+        amount: Prisma.Decimal;
         currency: import(".prisma/client").$Enums.Currency;
-        commissionRate: import("@prisma/client/runtime/library").Decimal;
-        commissionAmount: import("@prisma/client/runtime/library").Decimal;
+        commissionRate: Prisma.Decimal;
+        commissionAmount: Prisma.Decimal;
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        splitPaymentEnabled: boolean;
+        depositPercentage: Prisma.Decimal | null;
+        depositAmount: Prisma.Decimal | null;
+        depositDueDate: Date | null;
+        balanceAmount: Prisma.Decimal | null;
+        balanceDueDate: Date | null;
+        splitPaymentNotes: string | null;
         agentId: string;
         serviceStartAt: Date | null;
         serviceEndAt: Date | null;
         serviceTimezone: string | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
+    listEvents: (params: {
+        bookingId: string;
+        page?: number;
+        limit?: number;
+        dateFrom?: Date;
+        dateTo?: Date;
+        sort?: "asc" | "desc";
+    }) => Promise<PaginatedResponse<any>>;
 };
 //# sourceMappingURL=booking.service.d.ts.map

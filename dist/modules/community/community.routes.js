@@ -1,0 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.communityRoutes = void 0;
+const express_1 = require("express");
+const auth_1 = require("../../middleware/auth");
+const role_1 = require("../../middleware/role");
+const community_controller_1 = require("./community.controller");
+exports.communityRoutes = (0, express_1.Router)();
+exports.communityRoutes.use(auth_1.authenticate);
+exports.communityRoutes.get("/topics", community_controller_1.communityController.listTopics);
+exports.communityRoutes.post("/topics", (0, role_1.requireRoles)("ADMIN", "MANAGER"), community_controller_1.communityController.createTopic);
+exports.communityRoutes.patch("/topics/:id", (0, role_1.requireRoles)("ADMIN", "MANAGER"), community_controller_1.communityController.updateTopic);
+exports.communityRoutes.get("/feed", community_controller_1.communityController.getFeed);
+exports.communityRoutes.get("/posts", community_controller_1.communityController.listPosts);
+exports.communityRoutes.post("/posts", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.createPost);
+exports.communityRoutes.get("/posts/:id", community_controller_1.communityController.getPost);
+exports.communityRoutes.patch("/posts/:id", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.updatePost);
+exports.communityRoutes.delete("/posts/:id", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.deletePost);
+exports.communityRoutes.post("/posts/:id/react", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.reactToPost);
+exports.communityRoutes.post("/posts/:id/flag", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.flagPost);
+exports.communityRoutes.post("/posts/:id/moderate", (0, role_1.requireRoles)("ADMIN", "MANAGER"), community_controller_1.communityController.moderatePost);
+exports.communityRoutes.get("/posts/:id/comments", community_controller_1.communityController.listComments);
+exports.communityRoutes.post("/posts/:id/comments", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.addComment);
+exports.communityRoutes.get("/subscriptions", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.listSubscriptions);
+exports.communityRoutes.post("/subscriptions", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.subscribe);
+exports.communityRoutes.delete("/subscriptions", (0, role_1.requireRoles)("ADMIN", "MANAGER", "AGENT"), community_controller_1.communityController.unsubscribe);
+exports.communityRoutes.post("/digest/send", (0, role_1.requireRoles)("ADMIN", "MANAGER"), community_controller_1.communityController.sendDigest);
+//# sourceMappingURL=community.routes.js.map

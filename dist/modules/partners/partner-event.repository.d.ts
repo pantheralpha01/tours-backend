@@ -8,11 +8,11 @@ export declare const partnerEventRepository: {
     }) => Prisma.Prisma__PartnerEventClient<{
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.PartnerEventType;
-        actorId: string | null;
         metadata: Prisma.JsonValue | null;
         partnerId: string;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
+        type: import(".prisma/client").$Enums.PartnerEventType;
+        actorId: string | null;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
     findMany: (params: {
         partnerId: string;
         type?: PartnerEventType;
@@ -24,10 +24,10 @@ export declare const partnerEventRepository: {
     }) => Prisma.PrismaPromise<{
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.PartnerEventType;
-        actorId: string | null;
         metadata: Prisma.JsonValue | null;
         partnerId: string;
+        type: import(".prisma/client").$Enums.PartnerEventType;
+        actorId: string | null;
     }[]>;
     count: (params: {
         partnerId: string;

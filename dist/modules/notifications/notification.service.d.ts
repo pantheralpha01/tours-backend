@@ -1,0 +1,230 @@
+import { NotificationChannel, NotificationPriority, NotificationStatus, NotificationType } from "@prisma/client";
+import { notificationRepository } from "./notification.repository";
+import { PaginatedResponse } from "../../utils/pagination";
+export declare const notificationService: {
+    createTemplate: (data: {
+        name: string;
+        slug: string;
+        type: NotificationType;
+        channel: NotificationChannel;
+        subject?: string | null;
+        body: string;
+        tokens?: Record<string, unknown>;
+        metadata?: Record<string, unknown>;
+        actorId?: string;
+    }) => Promise<{
+        createdBy: {
+            name: string;
+            id: string;
+            email: string;
+            password: string;
+            role: import(".prisma/client").$Enums.Role;
+            isActive: boolean;
+            createdAt: Date;
+        } | null;
+    } & {
+        name: string;
+        id: string;
+        createdAt: Date;
+        createdById: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        updatedAt: Date;
+        slug: string;
+        type: import(".prisma/client").$Enums.NotificationType;
+        channel: import(".prisma/client").$Enums.NotificationChannel;
+        subject: string | null;
+        body: string;
+        tokens: import("@prisma/client/runtime/client").JsonValue | null;
+    }>;
+    listTemplates: (params?: {
+        page?: number;
+        limit?: number;
+        search?: string;
+    }) => Promise<PaginatedResponse<any>>;
+    scheduleNotification: (input: {
+        templateSlug?: string;
+        type?: NotificationType;
+        channel?: NotificationChannel;
+        priority?: NotificationPriority;
+        subject?: string;
+        body?: string;
+        tokens?: Record<string, unknown>;
+        metadata?: Record<string, unknown>;
+        scheduledAt?: Date;
+        sendNow?: boolean;
+        recipientName?: string;
+        recipientEmail?: string;
+        recipientPhone?: string;
+        bookingId?: string;
+        userId?: string;
+        actorId?: string;
+    }) => Promise<{
+        user: {
+            name: string;
+            id: string;
+            email: string;
+            password: string;
+            role: import(".prisma/client").$Enums.Role;
+            isActive: boolean;
+            createdAt: Date;
+        } | null;
+        booking: {
+            id: string;
+            createdAt: Date;
+            customerName: string;
+            serviceTitle: string;
+            amount: import("@prisma/client-runtime-utils").Decimal;
+            currency: import(".prisma/client").$Enums.Currency;
+            commissionRate: import("@prisma/client-runtime-utils").Decimal;
+            commissionAmount: import("@prisma/client-runtime-utils").Decimal;
+            commissionCurrency: import(".prisma/client").$Enums.Currency;
+            status: import(".prisma/client").$Enums.BookingStatus;
+            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            splitPaymentEnabled: boolean;
+            depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+            depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            depositDueDate: Date | null;
+            balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            balanceDueDate: Date | null;
+            splitPaymentNotes: string | null;
+            agentId: string;
+            serviceStartAt: Date | null;
+            serviceEndAt: Date | null;
+            serviceTimezone: string | null;
+        } | null;
+        template: {
+            name: string;
+            id: string;
+            createdAt: Date;
+            createdById: string | null;
+            metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            updatedAt: Date;
+            slug: string;
+            type: import(".prisma/client").$Enums.NotificationType;
+            channel: import(".prisma/client").$Enums.NotificationChannel;
+            subject: string | null;
+            body: string;
+            tokens: import("@prisma/client/runtime/client").JsonValue | null;
+        } | null;
+    } & {
+        error: string | null;
+        id: string;
+        createdAt: Date;
+        status: import(".prisma/client").$Enums.NotificationStatus;
+        bookingId: string | null;
+        createdById: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        updatedAt: Date;
+        type: import(".prisma/client").$Enums.NotificationType;
+        channel: import(".prisma/client").$Enums.NotificationChannel;
+        subject: string | null;
+        body: string | null;
+        templateId: string | null;
+        priority: import(".prisma/client").$Enums.NotificationPriority;
+        payload: import("@prisma/client/runtime/client").JsonValue | null;
+        scheduledAt: Date;
+        processedAt: Date | null;
+        sentAt: Date | null;
+        attempts: number;
+        recipientName: string | null;
+        recipientEmail: string | null;
+        recipientPhone: string | null;
+        userId: string | null;
+    }>;
+    listJobs: (params?: {
+        page?: number;
+        limit?: number;
+        status?: NotificationStatus;
+        type?: NotificationType;
+        search?: string;
+    }) => Promise<PaginatedResponse<any>>;
+    processJob: (jobId: string) => Promise<{
+        success: boolean;
+        status: NotificationStatus;
+    }>;
+    dispatchJob: (job: Awaited<ReturnType<typeof notificationRepository.findJobById>>) => Promise<{
+        success: boolean;
+        status: NotificationStatus;
+    }>;
+    processDueJobs: (limit?: number) => Promise<number>;
+    triggerSos: (input: {
+        message: string;
+        recipientPhone?: string;
+        recipientEmail?: string;
+        bookingId?: string;
+        actorId?: string;
+    }) => Promise<{
+        user: {
+            name: string;
+            id: string;
+            email: string;
+            password: string;
+            role: import(".prisma/client").$Enums.Role;
+            isActive: boolean;
+            createdAt: Date;
+        } | null;
+        booking: {
+            id: string;
+            createdAt: Date;
+            customerName: string;
+            serviceTitle: string;
+            amount: import("@prisma/client-runtime-utils").Decimal;
+            currency: import(".prisma/client").$Enums.Currency;
+            commissionRate: import("@prisma/client-runtime-utils").Decimal;
+            commissionAmount: import("@prisma/client-runtime-utils").Decimal;
+            commissionCurrency: import(".prisma/client").$Enums.Currency;
+            status: import(".prisma/client").$Enums.BookingStatus;
+            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            splitPaymentEnabled: boolean;
+            depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
+            depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            depositDueDate: Date | null;
+            balanceAmount: import("@prisma/client-runtime-utils").Decimal | null;
+            balanceDueDate: Date | null;
+            splitPaymentNotes: string | null;
+            agentId: string;
+            serviceStartAt: Date | null;
+            serviceEndAt: Date | null;
+            serviceTimezone: string | null;
+        } | null;
+        template: {
+            name: string;
+            id: string;
+            createdAt: Date;
+            createdById: string | null;
+            metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            updatedAt: Date;
+            slug: string;
+            type: import(".prisma/client").$Enums.NotificationType;
+            channel: import(".prisma/client").$Enums.NotificationChannel;
+            subject: string | null;
+            body: string;
+            tokens: import("@prisma/client/runtime/client").JsonValue | null;
+        } | null;
+    } & {
+        error: string | null;
+        id: string;
+        createdAt: Date;
+        status: import(".prisma/client").$Enums.NotificationStatus;
+        bookingId: string | null;
+        createdById: string | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        updatedAt: Date;
+        type: import(".prisma/client").$Enums.NotificationType;
+        channel: import(".prisma/client").$Enums.NotificationChannel;
+        subject: string | null;
+        body: string | null;
+        templateId: string | null;
+        priority: import(".prisma/client").$Enums.NotificationPriority;
+        payload: import("@prisma/client/runtime/client").JsonValue | null;
+        scheduledAt: Date;
+        processedAt: Date | null;
+        sentAt: Date | null;
+        attempts: number;
+        recipientName: string | null;
+        recipientEmail: string | null;
+        recipientPhone: string | null;
+        userId: string | null;
+    }>;
+};
+//# sourceMappingURL=notification.service.d.ts.map
