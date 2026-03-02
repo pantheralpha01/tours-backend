@@ -11,7 +11,9 @@ export declare const shiftRepository: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -20,6 +22,11 @@ export declare const shiftRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -36,27 +43,38 @@ export declare const shiftRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.ShiftStatus;
         agentId: string;
         bookingId: string | null;
         notes: string | null;
         startAt: Date;
         endAt: Date;
-        updatedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     findByBooking: (bookingId: string) => import(".prisma/client").Prisma.Prisma__AgentShiftClient<({
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -65,6 +83,11 @@ export declare const shiftRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -81,21 +104,30 @@ export declare const shiftRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.ShiftStatus;
         agentId: string;
         bookingId: string | null;
         notes: string | null;
         startAt: Date;
         endAt: Date;
-        updatedAt: Date;
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     findMany: (params?: {
         skip?: number;
@@ -110,7 +142,9 @@ export declare const shiftRepository: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -119,6 +153,11 @@ export declare const shiftRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -135,21 +174,30 @@ export declare const shiftRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.ShiftStatus;
         agentId: string;
         bookingId: string | null;
         notes: string | null;
         startAt: Date;
         endAt: Date;
-        updatedAt: Date;
     })[]>;
     count: (params?: {
         agentId?: string;
@@ -162,7 +210,9 @@ export declare const shiftRepository: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -171,6 +221,11 @@ export declare const shiftRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -187,21 +242,30 @@ export declare const shiftRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.ShiftStatus;
         agentId: string;
         bookingId: string | null;
         notes: string | null;
         startAt: Date;
         endAt: Date;
-        updatedAt: Date;
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
         agentId?: string;
@@ -214,7 +278,9 @@ export declare const shiftRepository: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -223,6 +289,11 @@ export declare const shiftRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -239,32 +310,41 @@ export declare const shiftRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.ShiftStatus;
         agentId: string;
         bookingId: string | null;
         notes: string | null;
         startAt: Date;
         endAt: Date;
-        updatedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove: (id: string) => import(".prisma/client").Prisma.Prisma__AgentShiftClient<{
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.ShiftStatus;
         agentId: string;
         bookingId: string | null;
         notes: string | null;
         startAt: Date;
         endAt: Date;
-        updatedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 };
 //# sourceMappingURL=shift.repository.d.ts.map

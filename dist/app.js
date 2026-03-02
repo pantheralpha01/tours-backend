@@ -30,6 +30,7 @@ exports.app.use(express_1.default.json({
 }));
 exports.app.use(express_1.default.urlencoded({ extended: true }));
 // API Documentation
+exports.app.get("/swagger.json", (_req, res) => res.json(swagger_1.swaggerSpec));
 exports.app.use("/docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));
 // Rate limiting
 exports.app.use("/api", rateLimiter_1.apiLimiter);

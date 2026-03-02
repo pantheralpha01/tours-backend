@@ -18,10 +18,10 @@ export declare const communityService: {
         name: string;
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         description: string | null;
         createdById: string | null;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         slug: string;
         icon: string | null;
         color: string | null;
@@ -47,10 +47,10 @@ export declare const communityService: {
         name: string;
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         description: string | null;
         createdById: string | null;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         slug: string;
         icon: string | null;
         color: string | null;
@@ -81,10 +81,10 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityPostStatus;
         title: string;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         slug: string;
         publishedAt: Date | null;
         content: string;
@@ -135,10 +135,10 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityPostStatus;
         title: string;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         slug: string;
         publishedAt: Date | null;
         content: string;
@@ -182,10 +182,10 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityPostStatus;
         title: string;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         slug: string;
         publishedAt: Date | null;
         content: string;
@@ -224,10 +224,10 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityPostStatus;
         title: string;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         slug: string;
         publishedAt: Date | null;
         content: string;
@@ -265,10 +265,10 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityPostStatus;
         title: string;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         slug: string;
         publishedAt: Date | null;
         content: string;
@@ -305,9 +305,9 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityCommentStatus;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         userId: string;
         content: string;
         postId: string;
@@ -321,9 +321,9 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityCommentStatus;
         metadata: Prisma.JsonValue | null;
-        updatedAt: Date;
         userId: string;
         content: string;
         postId: string;
@@ -350,8 +350,8 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
-        metadata: Prisma.JsonValue | null;
         updatedAt: Date;
+        metadata: Prisma.JsonValue | null;
         userId: string;
         topicId: string | null;
         postId: string | null;
@@ -384,8 +384,8 @@ export declare const communityService: {
     } & {
         id: string;
         createdAt: Date;
-        metadata: Prisma.JsonValue | null;
         updatedAt: Date;
+        metadata: Prisma.JsonValue | null;
         userId: string;
         topicId: string | null;
         postId: string | null;

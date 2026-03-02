@@ -10,16 +10,25 @@ const swaggerServerUrl = process.env.SWAGGER_SERVER_URL ??
     process.env.PUBLIC_BASE_URL ??
     process.env.RENDER_EXTERNAL_URL ??
     "";
+const liveServerUrl = process.env.LIVE_SERVER_URL ?? "";
 const servers = [
     {
         url: `http://localhost:${index_1.config.port}`,
-        description: "Development server",
+        description: "Development (Localhost)",
     },
 ];
+// Add live server if configured
+if (liveServerUrl && !servers.some((server) => server.url === liveServerUrl)) {
+    servers.push({
+        url: liveServerUrl,
+        description: "Live Server",
+    });
+}
+// Add production server if configured
 if (swaggerServerUrl && !servers.some((server) => server.url === swaggerServerUrl)) {
     servers.unshift({
         url: swaggerServerUrl,
-        description: "Production server",
+        description: "Production",
     });
 }
 const options = {

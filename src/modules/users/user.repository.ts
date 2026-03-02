@@ -5,6 +5,10 @@ export const userRepository = {
     name: string;
     email: string;
     password: string;
+    phone?: string;
+    idNumber?: string;
+    idType?: string;
+    profilePicUrl?: string;
     role?: "ADMIN" | "AGENT" | "MANAGER";
   }) =>
     prisma.user.create({
@@ -12,6 +16,10 @@ export const userRepository = {
         name: data.name,
         email: data.email,
         password: data.password,
+        phone: data.phone,
+        idNumber: data.idNumber,
+        idType: data.idType,
+        profilePicUrl: data.profilePicUrl,
         role: data.role ?? "AGENT",
       },
     }),

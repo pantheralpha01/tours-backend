@@ -55,8 +55,20 @@ export const partnerRepository = {
 
     const orderBy: any = {};
     if (params?.sort) {
-      const [field, order] = params.sort.split(":");
-      orderBy[field] = order === "asc" ? "asc" : "desc";
+      let sortField = params.sort;
+      let sortOrder: "asc" | "desc" = "asc";
+      
+      // Handle format: "field:asc" or "-field" or "field"
+      if (sortField.startsWith("-")) {
+        sortField = sortField.substring(1);
+        sortOrder = "desc";
+      } else if (sortField.includes(":")) {
+        const [field, order] = sortField.split(":");
+        sortField = field;
+        sortOrder = order === "asc" ? "asc" : "desc";
+      }
+      
+      orderBy[sortField] = sortOrder;
     } else {
       orderBy.createdAt = "desc";
     }

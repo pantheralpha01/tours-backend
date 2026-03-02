@@ -3,6 +3,7 @@ import { prisma } from "../../config/prisma";
 export const bookingRepository = {
   create: (data: {
     customerName: string;
+    customerPhoneNumber?: string;
     serviceTitle: string;
     amount: number;
     currency?: "USD" | "KES";
@@ -10,11 +11,17 @@ export const bookingRepository = {
     commissionAmount: number | string;
     commissionCurrency?: "USD" | "KES";
     status?: "DRAFT" | "CONFIRMED" | "CANCELLED";
-    paymentStatus?: "UNPAID" | "PAID";
+    paymentStatus?: "UNPAID" | "PARTIAL" | "PAID";
+    paymentType?: "FULL_PAYMENT" | "PARTIAL_PAYMENT";
+    costAtBooking?: any;
+    costPostEvent?: any;
+    totalCost?: any;
+    payPostEventDueDate?: Date;
     agentId: string;
     serviceStartAt?: Date;
     serviceEndAt?: Date;
     serviceTimezone?: string;
+    bookingPartners?: any;
     splitPaymentEnabled?: boolean;
     depositPercentage?: number | string | null;
     depositAmount?: number | string | null;
@@ -26,6 +33,7 @@ export const bookingRepository = {
     prisma.booking.create({
       data: {
         customerName: data.customerName,
+        customerPhoneNumber: data.customerPhoneNumber,
         serviceTitle: data.serviceTitle,
         amount: data.amount,
         currency: data.currency ?? "USD",
@@ -34,6 +42,11 @@ export const bookingRepository = {
         commissionCurrency: data.commissionCurrency ?? "KES",
         status: data.status ?? "DRAFT",
         paymentStatus: data.paymentStatus ?? "UNPAID",
+        paymentType: data.paymentType ?? "FULL_PAYMENT",
+        costAtBooking: data.costAtBooking,
+        costPostEvent: data.costPostEvent,
+        totalCost: data.totalCost,
+        payPostEventDueDate: data.payPostEventDueDate,
         splitPaymentEnabled: data.splitPaymentEnabled ?? false,
         depositPercentage: data.depositPercentage,
         depositAmount: data.depositAmount,
@@ -45,7 +58,12 @@ export const bookingRepository = {
         serviceStartAt: data.serviceStartAt,
         serviceEndAt: data.serviceEndAt,
         serviceTimezone: data.serviceTimezone,
+        ...(data.bookingPartners && { bookingPartners: data.bookingPartners }),
       },
+      include: {
+        agent: true,
+        bookingPartners: true,
+      }
     }),
 
   findMany: (params?: {
@@ -101,7 +119,10 @@ export const bookingRepository = {
       orderBy,
       skip: params?.skip,
       take: params?.take,
-      include: { agent: true },
+      include: {
+        agent: true,
+        bookingPartners: true,
+      },
     });
   },
 
@@ -149,6 +170,7 @@ export const bookingRepository = {
       where: { id },
       include: {
         agent: true,
+        bookingPartners: true,
         events: {
           orderBy: { createdAt: "desc" },
         },
@@ -159,6 +181,7 @@ export const bookingRepository = {
     id: string,
     data: {
       customerName?: string;
+      customerPhoneNumber?: string;
       serviceTitle?: string;
       amount?: number;
       currency?: "USD" | "KES";
@@ -166,7 +189,12 @@ export const bookingRepository = {
       commissionAmount?: number | string;
       commissionCurrency?: "USD" | "KES";
       status?: "DRAFT" | "CONFIRMED" | "CANCELLED";
-      paymentStatus?: "UNPAID" | "PAID";
+      paymentStatus?: "UNPAID" | "PARTIAL" | "PAID";
+      paymentType?: "FULL_PAYMENT" | "PARTIAL_PAYMENT";
+      costAtBooking?: any;
+      costPostEvent?: any;
+      totalCost?: any;
+      payPostEventDueDate?: Date;
       agentId?: string;
       serviceStartAt?: Date;
       serviceEndAt?: Date;
@@ -183,7 +211,10 @@ export const bookingRepository = {
     prisma.booking.update({
       where: { id },
       data,
-      include: { agent: true },
+      include: {
+        agent: true,
+        bookingPartners: true,
+      }
     }),
 
   remove: (id: string) => prisma.booking.delete({ where: { id } }),

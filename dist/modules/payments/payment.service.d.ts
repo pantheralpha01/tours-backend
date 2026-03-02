@@ -45,6 +45,16 @@ export declare const paymentService: {
             recordedById: string | null;
         };
         intent: {
+            provider: "STRIPE";
+            amount: number;
+            currency: "USD" | "KES";
+            reference: string;
+            status: import("stripe").Stripe.PaymentIntent.Status;
+            clientSecret: string | null;
+            paymentIntentId: string;
+            walletAddress?: undefined;
+            instructions?: undefined;
+        } | {
             provider: "CRYPTO";
             amount: number;
             currency: "USD" | "KES";
@@ -52,12 +62,16 @@ export declare const paymentService: {
             status: string;
             walletAddress: string;
             instructions: {};
+            clientSecret?: undefined;
+            paymentIntentId?: undefined;
         } | {
-            provider: "MPESA" | "PAYPAL" | "VISA" | "MASTERCARD" | "STRIPE";
+            provider: "MPESA" | "PAYPAL" | "VISA" | "MASTERCARD";
             amount: number;
             currency: "USD" | "KES";
             reference: string;
             status: string;
+            clientSecret?: undefined;
+            paymentIntentId?: undefined;
             walletAddress?: undefined;
             instructions?: undefined;
         };
@@ -97,7 +111,9 @@ export declare const paymentService: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -106,6 +122,11 @@ export declare const paymentService: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -139,7 +160,9 @@ export declare const paymentService: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -148,6 +171,11 @@ export declare const paymentService: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;

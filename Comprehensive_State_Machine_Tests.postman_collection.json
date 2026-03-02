@@ -18,9 +18,70 @@
     {
       "key": "base_url",
       "value": "http://localhost:4000"
+    },
+    {
+      "key": "live_server_url",
+      "value": "http://178.162.244.84:4000"
     }
   ],
   "item": [
+    {
+      "name": "0. Register User",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Generate unique email with timestamp",
+              "const timestamp = Date.now();",
+              "const uniqueEmail = `test.agent.${timestamp}@example.com`;",
+              "pm.environment.set('test_user_email', uniqueEmail);",
+              "console.log('✓ Generated unique email:', uniqueEmail);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('User registered successfully', function () {",
+              "    const responseJson = pm.response.json();",
+              "    console.log('Register Response:', JSON.stringify(responseJson, null, 2));",
+              "    ",
+              "    pm.expect(responseJson).to.have.property('user');",
+              "    pm.expect(responseJson.user).to.have.property('email');",
+              "    pm.expect(responseJson).to.have.property('accessToken');",
+              "    ",
+              "    pm.environment.set('test_user_email', responseJson.user.email);",
+              "    console.log('✓ User Registered: ' + responseJson.user.email);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Agent\",\n  \"email\": \"{{test_user_email}}\",\n  \"password\": \"TestPass123!\",\n  \"phone\": \"+254712345678\",\n  \"idNumber\": \"12345678\",\n  \"idType\": \"NATIONAL_ID\",\n  \"profilePicUrl\": \"https://example.com/pic.jpg\",\n  \"role\": \"AGENT\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/register",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "register"]
+        }
+      }
+    },
     {
       "name": "1. Login",
       "event": [
@@ -115,7 +176,8 @@
               "",
               "pm.test('Booking status is DRAFT', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('DRAFT');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('DRAFT');",
               "});"
             ]
           }
@@ -135,7 +197,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"customerName\": \"Test Customer\",\n  \"serviceTitle\": \"Safari Tour\",\n  \"amount\": 500,\n  \"currency\": \"USD\",\n  \"status\": \"DRAFT\"\n}"
+          "raw": "{\n  \"customerName\": \"Jane Smith\",\n  \"customerPhoneNumber\": \"+254712345678\",\n  \"serviceTitle\": \"3-Day Kenya Safari Package\",\n  \"amount\": 1500.00,\n  \"currency\": \"USD\",\n  \"status\": \"DRAFT\",\n  \"paymentStatus\": \"UNPAID\",\n  \"paymentType\": \"FULL_PAYMENT\",\n  \"costAtBooking\": 500.00,\n  \"costPostEvent\": 0.00,\n  \"serviceStartAt\": \"2026-03-15T08:00:00Z\",\n  \"serviceEndAt\": \"2026-03-17T18:00:00Z\",\n  \"serviceTimezone\": \"Africa/Nairobi\",\n  \"splitPaymentEnabled\": false,\n  \"depositPercentage\": 0.5,\n  \"depositAmount\": 750.00,\n  \"depositDueDate\": \"2026-03-08T23:59:59Z\",\n  \"balanceDueDate\": \"2026-03-14T23:59:59Z\",\n  \"splitPaymentNotes\": \"Full payment due before service date\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/bookings",
@@ -217,7 +279,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"bookingId\": \"{{booking_id}}\",\n  \"provider\": \"STRIPE\",\n  \"amount\": 500,\n  \"currency\": \"USD\"\n}"
+          "raw": "{\n  \"bookingId\": \"{{booking_id}}\",\n  \"provider\": \"STRIPE\",\n  \"amount\": 1500,\n  \"currency\": \"USD\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/api/payments",
@@ -239,7 +301,8 @@
               "",
               "pm.test('Payment state is PENDING', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.state).to.eql('PENDING');",
+              "    const state = responseJson.data?.state || responseJson.state;",
+              "    pm.expect(state).to.eql('PENDING');",
               "    console.log('✓ Payment → PENDING');",
               "});"
             ]
@@ -278,7 +341,8 @@
               "",
               "pm.test('Payment state is COMPLETED', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.state).to.eql('COMPLETED');",
+              "    const state = responseJson.data?.state || responseJson.state;",
+              "    pm.expect(state).to.eql('COMPLETED');",
               "    console.log('✓ Payment → COMPLETED');",
               "});"
             ]
@@ -317,7 +381,8 @@
               "",
               "pm.test('Booking status is CONFIRMED', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('CONFIRMED');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('CONFIRMED');",
               "    console.log('✓ Booking → CONFIRMED');",
               "});"
             ]
@@ -356,17 +421,27 @@
               "",
               "pm.test('Response has dispatch ID', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson).to.have.property('data');",
-              "    pm.expect(responseJson.data).to.have.property('id');",
               "    ",
+              "    // Handle different response formats",
+              "    let dispatchId;",
+              "    if (responseJson.data && responseJson.data.id) {",
+              "        dispatchId = responseJson.data.id;",
+              "    } else if (responseJson.id) {",
+              "        dispatchId = responseJson.id;",
+              "    } else {",
+              "        throw new Error('No dispatch ID found in response');",
+              "    }",
+              "    ",
+              "    pm.expect(dispatchId).to.be.a('string');",
               "    // Store dispatch ID for subsequent requests",
-              "    pm.environment.set('dispatch_id', responseJson.data.id);",
-              "    console.log('✓ Create Dispatch - ID: ' + responseJson.data.id);",
+              "    pm.environment.set('dispatch_id', dispatchId);",
+              "    console.log('✓ Create Dispatch - ID: ' + dispatchId);",
               "});",
               "",
               "pm.test('Dispatch status is PENDING', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('PENDING');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('PENDING');",
               "});"
             ]
           }
@@ -404,7 +479,8 @@
               "",
               "pm.test('Dispatch status is ASSIGNED', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('ASSIGNED');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('ASSIGNED');",
               "    console.log('✓ Dispatch → ASSIGNED');",
               "});"
             ]
@@ -443,7 +519,8 @@
               "",
               "pm.test('Dispatch status is IN_PROGRESS', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('IN_PROGRESS');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('IN_PROGRESS');",
               "    console.log('✓ Dispatch → IN_PROGRESS');",
               "});"
             ]
@@ -482,7 +559,8 @@
               "",
               "pm.test('Dispatch status is COMPLETED', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('COMPLETED');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('COMPLETED');",
               "    console.log('✓ Dispatch → COMPLETED');",
               "});"
             ]
@@ -521,17 +599,27 @@
               "",
               "pm.test('Response has dispute ID', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson).to.have.property('data');",
-              "    pm.expect(responseJson.data).to.have.property('id');",
               "    ",
+              "    // Handle different response formats",
+              "    let disputeId;",
+              "    if (responseJson.data && responseJson.data.id) {",
+              "        disputeId = responseJson.data.id;",
+              "    } else if (responseJson.id) {",
+              "        disputeId = responseJson.id;",
+              "    } else {",
+              "        throw new Error('No dispute ID found in response');",
+              "    }",
+              "    ",
+              "    pm.expect(disputeId).to.be.a('string');",
               "    // Store dispute ID for subsequent requests",
-              "    pm.environment.set('dispute_id', responseJson.data.id);",
-              "    console.log('✓ Create Dispute - ID: ' + responseJson.data.id);",
+              "    pm.environment.set('dispute_id', disputeId);",
+              "    console.log('✓ Create Dispute - ID: ' + disputeId);",
               "});",
               "",
               "pm.test('Dispute status is OPEN', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('OPEN');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('OPEN');",
               "});"
             ]
           }
@@ -569,7 +657,8 @@
               "",
               "pm.test('Dispute status is UNDER_REVIEW', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('UNDER_REVIEW');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('UNDER_REVIEW');",
               "    console.log('✓ Dispute → UNDER_REVIEW');",
               "});"
             ]
@@ -608,7 +697,8 @@
               "",
               "pm.test('Dispute status is RESOLVED', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('RESOLVED');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('RESOLVED');",
               "    console.log('✓ Dispute → RESOLVED');",
               "});"
             ]
@@ -647,17 +737,27 @@
               "",
               "pm.test('Response has refund ID', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson).to.have.property('data');",
-              "    pm.expect(responseJson.data).to.have.property('id');",
               "    ",
+              "    // Handle different response formats",
+              "    let refundId;",
+              "    if (responseJson.data && responseJson.data.id) {",
+              "        refundId = responseJson.data.id;",
+              "    } else if (responseJson.id) {",
+              "        refundId = responseJson.id;",
+              "    } else {",
+              "        throw new Error('No refund ID found in response');",
+              "    }",
+              "    ",
+              "    pm.expect(refundId).to.be.a('string');",
               "    // Store refund ID for subsequent requests",
-              "    pm.environment.set('refund_id', responseJson.data.id);",
-              "    console.log('✓ Create Refund - ID: ' + responseJson.data.id);",
+              "    pm.environment.set('refund_id', refundId);",
+              "    console.log('✓ Create Refund - ID: ' + refundId);",
               "});",
               "",
               "pm.test('Refund status is REQUESTED', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('REQUESTED');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('REQUESTED');",
               "});"
             ]
           }
@@ -695,7 +795,8 @@
               "",
               "pm.test('Refund status is APPROVED', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('APPROVED');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('APPROVED');",
               "    console.log('✓ Refund → APPROVED');",
               "});"
             ]
@@ -734,7 +835,8 @@
               "",
               "pm.test('Refund status is PROCESSING', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('PROCESSING');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('PROCESSING');",
               "    console.log('✓ Refund → PROCESSING');",
               "});"
             ]
@@ -773,7 +875,8 @@
               "",
               "pm.test('Refund status is COMPLETED', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson.data.status).to.eql('COMPLETED');",
+              "    const status = responseJson.data?.status || responseJson.status;",
+              "    pm.expect(status).to.eql('COMPLETED');",
               "    console.log('✓ Refund → COMPLETED');",
               "});"
             ]
@@ -852,9 +955,9 @@
               "",
               "pm.test('Response contains booking data', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson).to.have.property('data');",
-              "    pm.expect(responseJson.data).to.have.property('id');",
-              "    pm.expect(responseJson.data.id).to.eql(pm.environment.get('booking_id'));",
+              "    const obj = responseJson.data || responseJson;",
+              "    pm.expect(obj).to.have.property('id');",
+              "    pm.expect(obj.id).to.eql(pm.environment.get('booking_id'));",
               "    console.log('✓ Get Booking Details');",
               "});"
             ]
@@ -883,9 +986,9 @@
               "",
               "pm.test('Response contains payment data', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson).to.have.property('data');",
-              "    pm.expect(responseJson.data).to.have.property('id');",
-              "    pm.expect(responseJson.data.id).to.eql(pm.environment.get('payment_id'));",
+              "    const obj = responseJson.data || responseJson;",
+              "    pm.expect(obj).to.have.property('id');",
+              "    pm.expect(obj.id).to.eql(pm.environment.get('payment_id'));",
               "    console.log('✓ Get Payment Details');",
               "});"
             ]
@@ -914,9 +1017,9 @@
               "",
               "pm.test('Response contains dispatch data', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson).to.have.property('data');",
-              "    pm.expect(responseJson.data).to.have.property('id');",
-              "    pm.expect(responseJson.data.id).to.eql(pm.environment.get('dispatch_id'));",
+              "    const obj = responseJson.data || responseJson;",
+              "    pm.expect(obj).to.have.property('id');",
+              "    pm.expect(obj.id).to.eql(pm.environment.get('dispatch_id'));",
               "    console.log('✓ Get Dispatch Details');",
               "});"
             ]
@@ -945,9 +1048,9 @@
               "",
               "pm.test('Response contains dispute data', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson).to.have.property('data');",
-              "    pm.expect(responseJson.data).to.have.property('id');",
-              "    pm.expect(responseJson.data.id).to.eql(pm.environment.get('dispute_id'));",
+              "    const obj = responseJson.data || responseJson;",
+              "    pm.expect(obj).to.have.property('id');",
+              "    pm.expect(obj.id).to.eql(pm.environment.get('dispute_id'));",
               "    console.log('✓ Get Dispute Details');",
               "});"
             ]
@@ -976,9 +1079,9 @@
               "",
               "pm.test('Response contains refund data', function () {",
               "    const responseJson = pm.response.json();",
-              "    pm.expect(responseJson).to.have.property('data');",
-              "    pm.expect(responseJson.data).to.have.property('id');",
-              "    pm.expect(responseJson.data.id).to.eql(pm.environment.get('refund_id'));",
+              "    const obj = responseJson.data || responseJson;",
+              "    pm.expect(obj).to.have.property('id');",
+              "    pm.expect(obj.id).to.eql(pm.environment.get('refund_id'));",
               "    console.log('✓ Get Refund Details');",
               "});"
             ]

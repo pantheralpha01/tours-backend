@@ -20,7 +20,13 @@ enum BookingStatus {
 
 enum PaymentStatus {
   UNPAID
+  PARTIAL
   PAID
+}
+
+enum PaymentType {
+  FULL_PAYMENT
+  PARTIAL_PAYMENT
 }
 
 enum BookingEventType {
@@ -217,13 +223,22 @@ enum Currency {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(AGENT)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
+  id                String   @id @default(uuid())
+  name              String
+  email             String   @unique
+  emailVerified     Boolean  @default(false)
+  emailVerifiedAt   DateTime?
+  password          String
+  phone             String?
+  phoneVerified     Boolean  @default(false)
+  phoneVerifiedAt   DateTime?
+  idNumber          String?
+  idType            String?
+  profilePicUrl     String?
+  role              Role     @default(AGENT)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   bookings         Booking[]
   quotes           Quote[]
@@ -254,6 +269,7 @@ model User {
 model Booking {
   id                  String        @id @default(uuid())
   customerName        String
+  customerPhoneNumber String?
   serviceTitle        String
   amount              Decimal       @db.Decimal(12, 2)
   currency            Currency      @default(USD)
@@ -262,6 +278,11 @@ model Booking {
   commissionCurrency  Currency      @default(KES)
   status              BookingStatus @default(DRAFT)
   paymentStatus       PaymentStatus @default(UNPAID)
+  paymentType         PaymentType   @default(FULL_PAYMENT)
+  costAtBooking       Decimal?      @db.Decimal(12, 2)
+  costPostEvent       Decimal?      @db.Decimal(12, 2)
+  totalCost           Decimal?      @db.Decimal(12, 2)
+  payPostEventDueDate DateTime?
   splitPaymentEnabled Boolean       @default(false)
   depositPercentage   Decimal?      @db.Decimal(5, 4)
   depositAmount       Decimal?      @db.Decimal(12, 2)
@@ -274,23 +295,47 @@ model Booking {
   serviceEndAt        DateTime?
   serviceTimezone     String?
   createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 
-  agent         User          @relation(fields: [agentId], references: [id])
-  events        BookingEvent[]
-  payments      Payment[]
-  quotes        Quote[]
-  contracts     Contract[]
-  receipts      Receipt[]
-  disputes      Dispute[]
-  refunds       Refund[]
-  dispatches    Dispatch[]
-  escrow        EscrowAccount?
-  payouts       Payout[]
-  shifts        AgentShift[]
-  notifications NotificationJob[]
-  offers        OfferProposal[]
+  agent             User             @relation(fields: [agentId], references: [id])
+  bookingPartners   BookingPartner[] @relation("BookingPartners")
+  events            BookingEvent[]
+  payments          Payment[]
+  quotes            Quote[]
+  contracts         Contract[]
+  receipts          Receipt[]
+  disputes          Dispute[]
+  refunds           Refund[]
+  dispatches        Dispatch[]
+  escrow            EscrowAccount?
+  payouts           Payout[]
+  shifts            AgentShift[]
+  notifications     NotificationJob[]
+  offers            OfferProposal[]
 
   @@index([agentId])
+}
+
+model BookingPartner {
+  id                  String        @id @default(uuid())
+  bookingId           String
+  partnerId           String
+  partnerName         String
+  partnerPhoneNumber  String?
+  description         String?
+  costAtBooking       Decimal       @db.Decimal(12, 2)
+  costPostEvent       Decimal       @db.Decimal(12, 2) @default(0)
+  totalCost           Decimal       @db.Decimal(12, 2)
+  paymentStatus       PaymentStatus @default(UNPAID)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  booking             Booking       @relation("BookingPartners", fields: [bookingId], references: [id], onDelete: Cascade)
+  partner             Partner       @relation(fields: [partnerId], references: [id])
+
+  @@index([bookingId])
+  @@index([partnerId])
+  @@unique([bookingId, partnerId])
 }
 
 model BookingEvent {
@@ -319,12 +364,13 @@ model Partner {
   createdById String?
   createdAt DateTime        @default(now())
 
-  inventory InventoryItem[]
-  contracts Contract[]
-  events    PartnerEvent[]
-  invites   PartnerInvite[]
-  createdBy User? @relation("PartnerCreatedBy", fields: [createdById], references: [id])
-  approvedBy User? @relation("PartnerApprovedBy", fields: [approvedById], references: [id])
+  inventory       InventoryItem[]
+  contracts       Contract[]
+  events          PartnerEvent[]
+  invites         PartnerInvite[]
+  bookingPartners BookingPartner[]
+  createdBy       User? @relation("PartnerCreatedBy", fields: [createdById], references: [id])
+  approvedBy      User? @relation("PartnerApprovedBy", fields: [approvedById], references: [id])
 
   @@index([approvalStatus])
   @@index([createdById])

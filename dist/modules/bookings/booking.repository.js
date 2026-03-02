@@ -6,6 +6,7 @@ exports.bookingRepository = {
     create: (data) => prisma_1.prisma.booking.create({
         data: {
             customerName: data.customerName,
+            customerPhoneNumber: data.customerPhoneNumber,
             serviceTitle: data.serviceTitle,
             amount: data.amount,
             currency: data.currency ?? "USD",
@@ -14,6 +15,11 @@ exports.bookingRepository = {
             commissionCurrency: data.commissionCurrency ?? "KES",
             status: data.status ?? "DRAFT",
             paymentStatus: data.paymentStatus ?? "UNPAID",
+            paymentType: data.paymentType ?? "FULL_PAYMENT",
+            costAtBooking: data.costAtBooking,
+            costPostEvent: data.costPostEvent,
+            totalCost: data.totalCost,
+            payPostEventDueDate: data.payPostEventDueDate,
             splitPaymentEnabled: data.splitPaymentEnabled ?? false,
             depositPercentage: data.depositPercentage,
             depositAmount: data.depositAmount,
@@ -25,7 +31,12 @@ exports.bookingRepository = {
             serviceStartAt: data.serviceStartAt,
             serviceEndAt: data.serviceEndAt,
             serviceTimezone: data.serviceTimezone,
+            ...(data.bookingPartners && { bookingPartners: data.bookingPartners }),
         },
+        include: {
+            agent: true,
+            bookingPartners: true,
+        }
     }),
     findMany: (params) => {
         const where = {};
@@ -70,7 +81,10 @@ exports.bookingRepository = {
             orderBy,
             skip: params?.skip,
             take: params?.take,
-            include: { agent: true },
+            include: {
+                agent: true,
+                bookingPartners: true,
+            },
         });
     },
     count: (params) => {
@@ -109,6 +123,7 @@ exports.bookingRepository = {
         where: { id },
         include: {
             agent: true,
+            bookingPartners: true,
             events: {
                 orderBy: { createdAt: "desc" },
             },
@@ -117,7 +132,10 @@ exports.bookingRepository = {
     update: (id, data) => prisma_1.prisma.booking.update({
         where: { id },
         data,
-        include: { agent: true },
+        include: {
+            agent: true,
+            bookingPartners: true,
+        }
     }),
     remove: (id) => prisma_1.prisma.booking.delete({ where: { id } }),
 };

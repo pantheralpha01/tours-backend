@@ -1,6 +1,7 @@
 export declare const bookingRepository: {
     create: (data: {
         customerName: string;
+        customerPhoneNumber?: string;
         serviceTitle: string;
         amount: number;
         currency?: "USD" | "KES";
@@ -8,11 +9,17 @@ export declare const bookingRepository: {
         commissionAmount: number | string;
         commissionCurrency?: "USD" | "KES";
         status?: "DRAFT" | "CONFIRMED" | "CANCELLED";
-        paymentStatus?: "UNPAID" | "PAID";
+        paymentStatus?: "UNPAID" | "PARTIAL" | "PAID";
+        paymentType?: "FULL_PAYMENT" | "PARTIAL_PAYMENT";
+        costAtBooking?: any;
+        costPostEvent?: any;
+        totalCost?: any;
+        payPostEventDueDate?: Date;
         agentId: string;
         serviceStartAt?: Date;
         serviceEndAt?: Date;
         serviceTimezone?: string;
+        bookingPartners?: any;
         splitPaymentEnabled?: boolean;
         depositPercentage?: number | string | null;
         depositAmount?: number | string | null;
@@ -21,9 +28,44 @@ export declare const bookingRepository: {
         balanceDueDate?: Date | null;
         splitPaymentNotes?: string | null;
     }) => import(".prisma/client").Prisma.Prisma__BookingClient<{
+        agent: {
+            name: string;
+            id: string;
+            email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
+            password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
+            role: import(".prisma/client").$Enums.Role;
+            isActive: boolean;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        bookingPartners: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal;
+            totalCost: import("@prisma/client-runtime-utils").Decimal;
+            bookingId: string;
+            description: string | null;
+            partnerId: string;
+            partnerName: string;
+            partnerPhoneNumber: string | null;
+        }[];
+    } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         customerName: string;
+        customerPhoneNumber: string | null;
         serviceTitle: string;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
@@ -32,6 +74,11 @@ export declare const bookingRepository: {
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        paymentType: import(".prisma/client").$Enums.PaymentType;
+        costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+        costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+        totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+        payPostEventDueDate: Date | null;
         splitPaymentEnabled: boolean;
         depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
         depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -60,15 +107,40 @@ export declare const bookingRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
+        bookingPartners: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal;
+            totalCost: import("@prisma/client-runtime-utils").Decimal;
+            bookingId: string;
+            description: string | null;
+            partnerId: string;
+            partnerName: string;
+            partnerPhoneNumber: string | null;
+        }[];
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         customerName: string;
+        customerPhoneNumber: string | null;
         serviceTitle: string;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
@@ -77,6 +149,11 @@ export declare const bookingRepository: {
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        paymentType: import(".prisma/client").$Enums.PaymentType;
+        costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+        costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+        totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+        payPostEventDueDate: Date | null;
         splitPaymentEnabled: boolean;
         depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
         depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -103,11 +180,34 @@ export declare const bookingRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
+        bookingPartners: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal;
+            totalCost: import("@prisma/client-runtime-utils").Decimal;
+            bookingId: string;
+            description: string | null;
+            partnerId: string;
+            partnerName: string;
+            partnerPhoneNumber: string | null;
+        }[];
         events: {
             id: string;
             createdAt: Date;
@@ -119,7 +219,9 @@ export declare const bookingRepository: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         customerName: string;
+        customerPhoneNumber: string | null;
         serviceTitle: string;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
@@ -128,6 +230,11 @@ export declare const bookingRepository: {
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        paymentType: import(".prisma/client").$Enums.PaymentType;
+        costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+        costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+        totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+        payPostEventDueDate: Date | null;
         splitPaymentEnabled: boolean;
         depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
         depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -142,6 +249,7 @@ export declare const bookingRepository: {
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
         customerName?: string;
+        customerPhoneNumber?: string;
         serviceTitle?: string;
         amount?: number;
         currency?: "USD" | "KES";
@@ -149,7 +257,12 @@ export declare const bookingRepository: {
         commissionAmount?: number | string;
         commissionCurrency?: "USD" | "KES";
         status?: "DRAFT" | "CONFIRMED" | "CANCELLED";
-        paymentStatus?: "UNPAID" | "PAID";
+        paymentStatus?: "UNPAID" | "PARTIAL" | "PAID";
+        paymentType?: "FULL_PAYMENT" | "PARTIAL_PAYMENT";
+        costAtBooking?: any;
+        costPostEvent?: any;
+        totalCost?: any;
+        payPostEventDueDate?: Date;
         agentId?: string;
         serviceStartAt?: Date;
         serviceEndAt?: Date;
@@ -166,15 +279,40 @@ export declare const bookingRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
+        bookingPartners: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal;
+            totalCost: import("@prisma/client-runtime-utils").Decimal;
+            bookingId: string;
+            description: string | null;
+            partnerId: string;
+            partnerName: string;
+            partnerPhoneNumber: string | null;
+        }[];
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         customerName: string;
+        customerPhoneNumber: string | null;
         serviceTitle: string;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
@@ -183,6 +321,11 @@ export declare const bookingRepository: {
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        paymentType: import(".prisma/client").$Enums.PaymentType;
+        costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+        costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+        totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+        payPostEventDueDate: Date | null;
         splitPaymentEnabled: boolean;
         depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
         depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -198,7 +341,9 @@ export declare const bookingRepository: {
     remove: (id: string) => import(".prisma/client").Prisma.Prisma__BookingClient<{
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         customerName: string;
+        customerPhoneNumber: string | null;
         serviceTitle: string;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
@@ -207,6 +352,11 @@ export declare const bookingRepository: {
         commissionCurrency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.BookingStatus;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        paymentType: import(".prisma/client").$Enums.PaymentType;
+        costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+        costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+        totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+        payPostEventDueDate: Date | null;
         splitPaymentEnabled: boolean;
         depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
         depositAmount: import("@prisma/client-runtime-utils").Decimal | null;

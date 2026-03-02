@@ -9,6 +9,8 @@ import { bookingLifecycleRules } from "./booking.lifecycle-rules";
 import { calculatePagination, PaginatedResponse } from "../../utils/pagination";
 import { shiftService } from "../shifts/shift.service";
 import { offerService } from "../offers/offer.service";
+import { partnerRepository } from "../partners/partner.repository";
+import { ApiError } from "../../utils/ApiError";
 
 const MIN_DEPOSIT_PERCENTAGE = new Prisma.Decimal("0.10");
 const MAX_DEPOSIT_PERCENTAGE = new Prisma.Decimal("1.00");
@@ -88,29 +90,29 @@ const deriveSplitPaymentPlan = (input: SplitPaymentInput): SplitPaymentPlan => {
   }
 
   if (!percentage || !deposit) {
-    throw new Error("Unable to determine split payment values");
+    throw new ApiError(400, "INVALID_REQUEST", "Unable to determine split payment values");
   }
 
   if (percentage.lessThan(MIN_DEPOSIT_PERCENTAGE)) {
-    throw new Error("Deposit percentage must be at least 10%");
+    throw new ApiError(400, "INVALID_REQUEST", "Deposit percentage must be at least 10%");
   }
 
   if (percentage.greaterThan(MAX_DEPOSIT_PERCENTAGE)) {
-    throw new Error("Deposit percentage cannot exceed 100%");
+    throw new ApiError(400, "INVALID_REQUEST", "Deposit percentage cannot exceed 100%");
   }
 
   if (deposit.lessThanOrEqualTo(0)) {
-    throw new Error("Deposit amount must be greater than zero");
+    throw new ApiError(400, "INVALID_REQUEST", "Deposit amount must be greater than zero");
   }
 
   if (deposit.greaterThan(totalAmount)) {
-    throw new Error("Deposit amount cannot exceed booking amount");
+    throw new ApiError(400, "INVALID_REQUEST", "Deposit amount cannot exceed booking amount");
   }
 
   const balance = totalAmount.minus(deposit);
 
   if (balance.lessThan(0)) {
-    throw new Error("Balance amount cannot be negative");
+    throw new ApiError(400, "INVALID_REQUEST", "Balance amount cannot be negative");
   }
 
   return {
@@ -133,6 +135,44 @@ const serializeSplitPlan = (plan: SplitPaymentPlan) => ({
   balanceDueDate: plan.balanceDueDate,
   splitPaymentNotes: plan.splitPaymentNotes,
 });
+
+const validateBookingPartners = async (
+  partners?: Array<{
+    partnerId: string;
+    partnerName: string;
+    partnerPhoneNumber?: string;
+    description?: string;
+    costAtBooking: number;
+    costPostEvent: number;
+  }>
+) => {
+  if (!partners || partners.length === 0) {
+    return;
+  }
+
+  // Check for duplicate partners
+  const partnerIds = partners.map(p => p.partnerId);
+  const uniquePartnerIds = new Set(partnerIds);
+  if (uniquePartnerIds.size !== partnerIds.length) {
+    throw new ApiError(
+      400,
+      "INVALID_REQUEST",
+      "Duplicate partners provided. Each partner can only be added once per booking."
+    );
+  }
+
+  // Validate each partner exists
+  for (const partner of partners) {
+    const existingPartner = await partnerRepository.findById(partner.partnerId);
+    if (!existingPartner) {
+      throw new ApiError(
+        400,
+        "PARTNER_NOT_FOUND",
+        `Partner with ID '${partner.partnerId}' does not exist. Please create the partner first or use a valid partner ID.`
+      );
+    }
+  }
+};
 
 const syncBookingShift = async (
   booking: {
@@ -163,16 +203,29 @@ const syncBookingShift = async (
 export const bookingService = {
   create: async (data: {
     customerName: string;
+    customerPhoneNumber?: string;
     serviceTitle: string;
     amount: number;
     currency?: "USD" | "KES";
     status?: "DRAFT" | "CONFIRMED" | "CANCELLED";
-    paymentStatus?: "UNPAID" | "PAID";
+    paymentStatus?: "UNPAID" | "PARTIAL" | "PAID";
+    paymentType?: "FULL_PAYMENT" | "PARTIAL_PAYMENT";
+    costAtBooking?: number;
+    costPostEvent?: number;
+    payPostEventDueDate?: Date;
     agentId: string;
     serviceStartAt?: Date;
     serviceEndAt?: Date;
     serviceTimezone?: string;
     actorId?: string;
+    bookingPartners?: Array<{
+      partnerId: string;
+      partnerName: string;
+      partnerPhoneNumber?: string;
+      description?: string;
+      costAtBooking: number;
+      costPostEvent: number;
+    }>;
     splitPaymentEnabled?: boolean;
     depositPercentage?: number;
     depositAmount?: number;
@@ -190,6 +243,9 @@ export const bookingService = {
         paymentStatus: data.paymentStatus,
       }
     );
+
+    // Validate booking partners exist before proceeding
+    await validateBookingPartners(data.bookingPartners);
 
     const currency = data.currency ?? "USD";
     const commissionAmount = calculateCommission(data.amount);
@@ -211,13 +267,50 @@ export const bookingService = {
 
     const splitPersistence = serializeSplitPlan(splitPlan);
 
-    const booking = await bookingRepository.create({
+    // Calculate total cost from partners if provided
+    let totalCost: string | undefined = undefined;
+    if (data.bookingPartners && data.bookingPartners.length > 0) {
+      const partnerTotal = data.bookingPartners.reduce((sum, partner) => {
+        return sum + partner.costAtBooking + partner.costPostEvent;
+      }, 0);
+      totalCost = partnerTotal.toString();
+    }
+
+    const bookingData: any = {
       ...data,
       currency,
       commissionRate: BOOKING_COMMISSION_RATE.toString(),
       commissionAmount: commissionInKes.toString(),
       commissionCurrency: "KES",
+      paymentType: data.paymentType ?? "FULL_PAYMENT",
+      costAtBooking: data.costAtBooking ? new Prisma.Decimal(data.costAtBooking) : null,
+      costPostEvent: data.costPostEvent ? new Prisma.Decimal(data.costPostEvent) : null,
+      totalCost: totalCost ? new Prisma.Decimal(totalCost) : null,
       ...splitPersistence,
+    };
+
+    // Handle booking partners separately
+    const bookingPartners = data.bookingPartners;
+    delete bookingData.bookingPartners;
+
+    // Create booking with partners
+    const booking = await bookingRepository.create({
+      ...bookingData,
+      ...(bookingPartners && bookingPartners.length > 0 && {
+        bookingPartners: {
+          createMany: {
+            data: bookingPartners.map(p => ({
+              partnerId: p.partnerId,
+              partnerName: p.partnerName,
+              partnerPhoneNumber: p.partnerPhoneNumber,
+              description: p.description,
+              costAtBooking: new Prisma.Decimal(p.costAtBooking),
+              costPostEvent: new Prisma.Decimal(p.costPostEvent),
+              totalCost: new Prisma.Decimal(p.costAtBooking + p.costPostEvent),
+            }))
+          }
+        }
+      })
     });
 
     await bookingEventRepository.create({
@@ -229,6 +322,8 @@ export const bookingService = {
         paymentStatus: booking.paymentStatus,
         amount: booking.amount.toString(),
         currency: booking.currency,
+        paymentType: booking.paymentType,
+        partnerCount: bookingPartners?.length ?? 0,
       },
     });
 
@@ -291,17 +386,30 @@ export const bookingService = {
     id: string,
     data: {
       customerName?: string;
+      customerPhoneNumber?: string;
       serviceTitle?: string;
       amount?: number;
       currency?: "USD" | "KES";
       status?: "DRAFT" | "CONFIRMED" | "CANCELLED";
-      paymentStatus?: "UNPAID" | "PAID";
+      paymentStatus?: "UNPAID" | "PARTIAL" | "PAID";
+      paymentType?: "FULL_PAYMENT" | "PARTIAL_PAYMENT";
+      costAtBooking?: number;
+      costPostEvent?: number;
+      payPostEventDueDate?: Date;
       agentId?: string;
       serviceStartAt?: Date;
       serviceEndAt?: Date;
       serviceTimezone?: string;
       transitionReason?: string;
       actorId?: string;
+      bookingPartners?: Array<{
+        partnerId: string;
+        partnerName: string;
+        partnerPhoneNumber?: string;
+        description?: string;
+        costAtBooking: number;
+        costPostEvent: number;
+      }>;
       splitPaymentEnabled?: boolean;
       depositPercentage?: number;
       depositAmount?: number;

@@ -6,6 +6,10 @@ exports.registerSchema = zod_1.z.object({
     name: zod_1.z.string().min(2),
     email: zod_1.z.string().email(),
     password: zod_1.z.string().min(8),
+    phone: zod_1.z.string().min(7).optional(),
+    idNumber: zod_1.z.string().min(1).optional(),
+    idType: zod_1.z.string().optional(),
+    profilePicUrl: zod_1.z.string().url().optional(),
     role: zod_1.z.enum(["ADMIN", "AGENT", "MANAGER"]).optional(),
 });
 exports.loginSchema = zod_1.z.object({

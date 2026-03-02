@@ -51,13 +51,13 @@ export declare const acceptPartnerInviteSchema: z.ZodObject<{
     notes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     contactName: string;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     companyName?: string | undefined;
 }, {
     contactName: string;
-    notes?: string | undefined;
     phone?: string | undefined;
+    notes?: string | undefined;
     companyName?: string | undefined;
 }>;
 //# sourceMappingURL=partner-invite.validation.d.ts.map

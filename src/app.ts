@@ -32,6 +32,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 
 // API Documentation
+app.get("/swagger.json", (_req, res) => res.json(swaggerSpec));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rate limiting

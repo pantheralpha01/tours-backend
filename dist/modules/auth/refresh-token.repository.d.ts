@@ -16,10 +16,19 @@ export declare const refreshTokenRepository: {
             name: string;
             id: string;
             email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
             password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
         };
     } & {
         id: string;

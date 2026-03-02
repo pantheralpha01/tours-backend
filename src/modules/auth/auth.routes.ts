@@ -25,6 +25,7 @@ export const authRoutes = Router();
  *             properties:
  *               name:
  *                 type: string
+ *                 minLength: 2
  *                 example: John Doe
  *               email:
  *                 type: string
@@ -34,6 +35,20 @@ export const authRoutes = Router();
  *                 type: string
  *                 minLength: 8
  *                 example: SecurePass123
+ *               phone:
+ *                 type: string
+ *                 minLength: 7
+ *                 example: "+254712345678"
+ *               idNumber:
+ *                 type: string
+ *                 example: "12345678"
+ *               idType:
+ *                 type: string
+ *                 example: "NATIONAL_ID"
+ *               profilePicUrl:
+ *                 type: string
+ *                 format: url
+ *                 example: "https://example.com/pic.jpg"
  *               role:
  *                 type: string
  *                 enum: [ADMIN, AGENT, MANAGER]

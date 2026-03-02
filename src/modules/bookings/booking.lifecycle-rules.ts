@@ -1,24 +1,25 @@
 import { BookingStatus, PaymentStatus } from "@prisma/client";
+import { ApiError } from "../../utils/ApiError";
 
 export const bookingLifecycleRules = {
   canConfirm: (booking: { status: BookingStatus; paymentStatus: PaymentStatus }) => {
     if (booking.status !== "DRAFT") {
-      throw new Error("Can only confirm bookings in DRAFT status");
+      throw ApiError.badRequest("Can only confirm bookings in DRAFT status");
     }
     if (booking.paymentStatus !== "PAID") {
-      throw new Error("Cannot confirm booking without payment");
+      throw ApiError.badRequest("Cannot confirm booking without payment");
     }
   },
 
   canCancel: (booking: { status: BookingStatus; paymentStatus: PaymentStatus }) => {
     if (booking.status === "CONFIRMED" && booking.paymentStatus === "PAID") {
-      throw new Error("Cannot cancel a paid booking");
+      throw ApiError.badRequest("Cannot cancel a paid booking");
     }
   },
 
   canMarkComplete: (booking: { status: BookingStatus; paymentStatus: PaymentStatus }) => {
     if (booking.status !== "CONFIRMED") {
-      throw new Error("Can only complete CONFIRMED bookings");
+      throw ApiError.badRequest("Can only complete CONFIRMED bookings");
     }
   },
 };

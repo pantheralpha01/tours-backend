@@ -31,6 +31,9 @@ bookingRoutes.use(requireRoles("ADMIN", "MANAGER", "AGENT"));
  *               customerName:
  *                 type: string
  *                 example: Jane Smith
+ *               customerPhoneNumber:
+ *                 type: string
+ *                 example: "+254712345678"
  *               serviceTitle:
  *                 type: string
  *                 example: Kenya Safari Package
@@ -44,6 +47,21 @@ bookingRoutes.use(requireRoles("ADMIN", "MANAGER", "AGENT"));
  *               status:
  *                 type: string
  *                 enum: [DRAFT, CONFIRMED, CANCELLED]
+ *               paymentStatus:
+ *                 type: string
+ *                 enum: [UNPAID, PARTIAL, PAID]
+ *               paymentType:
+ *                 type: string
+ *                 enum: [FULL_PAYMENT, PARTIAL_PAYMENT]
+ *               costAtBooking:
+ *                 type: number
+ *                 example: 100.00
+ *               costPostEvent:
+ *                 type: number
+ *                 example: 50.00
+ *               payPostEventDueDate:
+ *                 type: string
+ *                 format: date-time
  *               agentId:
  *                 type: string
  *                 format: uuid
@@ -54,6 +72,45 @@ bookingRoutes.use(requireRoles("ADMIN", "MANAGER", "AGENT"));
  *                 type: string
  *                 format: date-time
  *               serviceTimezone:
+ *                 type: string
+ *               bookingPartners:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - partnerId
+ *                     - partnerName
+ *                     - costAtBooking
+ *                     - costPostEvent
+ *                   properties:
+ *                     partnerId:
+ *                       type: string
+ *                       format: uuid
+ *                     partnerName:
+ *                       type: string
+ *                     partnerPhoneNumber:
+ *                       type: string
+ *                     description:
+ *                       type: string
+ *                     costAtBooking:
+ *                       type: number
+ *                     costPostEvent:
+ *                       type: number
+ *               splitPaymentEnabled:
+ *                 type: boolean
+ *               depositPercentage:
+ *                 type: number
+ *                 minimum: 0.1
+ *                 maximum: 1
+ *               depositAmount:
+ *                 type: number
+ *               depositDueDate:
+ *                 type: string
+ *                 format: date-time
+ *               balanceDueDate:
+ *                 type: string
+ *                 format: date-time
+ *               splitPaymentNotes:
  *                 type: string
  *     responses:
  *       201:
@@ -302,6 +359,8 @@ bookingRoutes.get("/:id/events", bookingController.events);
  *             properties:
  *               customerName:
  *                 type: string
+ *               customerPhoneNumber:
+ *                 type: string
  *               serviceTitle:
  *                 type: string
  *               amount:
@@ -312,6 +371,22 @@ bookingRoutes.get("/:id/events", bookingController.events);
  *               status:
  *                 type: string
  *                 enum: [DRAFT, CONFIRMED, CANCELLED]
+ *               paymentStatus:
+ *                 type: string
+ *                 enum: [UNPAID, PARTIAL, PAID]
+ *               paymentType:
+ *                 type: string
+ *                 enum: [FULL_PAYMENT, PARTIAL_PAYMENT]
+ *               costAtBooking:
+ *                 type: number
+ *               costPostEvent:
+ *                 type: number
+ *               payPostEventDueDate:
+ *                 type: string
+ *                 format: date-time
+ *               agentId:
+ *                 type: string
+ *                 format: uuid
  *               serviceStartAt:
  *                 type: string
  *                 format: date-time
@@ -319,6 +394,40 @@ bookingRoutes.get("/:id/events", bookingController.events);
  *                 type: string
  *                 format: date-time
  *               serviceTimezone:
+ *                 type: string
+ *               transitionReason:
+ *                 type: string
+ *               bookingPartners:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     partnerId:
+ *                       type: string
+ *                       format: uuid
+ *                     partnerName:
+ *                       type: string
+ *                     partnerPhoneNumber:
+ *                       type: string
+ *                     description:
+ *                       type: string
+ *                     costAtBooking:
+ *                       type: number
+ *                     costPostEvent:
+ *                       type: number
+ *               splitPaymentEnabled:
+ *                 type: boolean
+ *               depositPercentage:
+ *                 type: number
+ *               depositAmount:
+ *                 type: number
+ *               depositDueDate:
+ *                 type: string
+ *                 format: date-time
+ *               balanceDueDate:
+ *                 type: string
+ *                 format: date-time
+ *               splitPaymentNotes:
  *                 type: string
  *     responses:
  *       200:

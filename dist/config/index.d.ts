@@ -20,6 +20,7 @@ export declare const config: {
     paypalClientId: string;
     paypalClientSecret: string;
     cardGatewayKey: string;
+    stripePublishableKey: string;
     stripeSecretKey: string;
     cryptoWalletAddress: string;
     mpesaConsumerKey: string;

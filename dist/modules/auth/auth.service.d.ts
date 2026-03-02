@@ -3,6 +3,10 @@ export declare const authService: {
         name: string;
         email: string;
         password: string;
+        phone?: string;
+        idNumber?: string;
+        idType?: string;
+        profilePicUrl?: string;
         role?: "ADMIN" | "AGENT" | "MANAGER";
     }) => Promise<{
         user: {

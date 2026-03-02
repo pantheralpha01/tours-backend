@@ -21,6 +21,10 @@ export const authService = {
     name: string;
     email: string;
     password: string;
+    phone?: string;
+    idNumber?: string;
+    idType?: string;
+    profilePicUrl?: string;
     role?: "ADMIN" | "AGENT" | "MANAGER";
   }) => {
     const existing = await userRepository.findByEmail(data.email);

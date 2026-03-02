@@ -10,7 +10,9 @@ export declare const contractRepository: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -19,6 +21,11 @@ export declare const contractRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -35,9 +42,9 @@ export declare const contractRepository: {
             name: string;
             id: string;
             email: string | null;
+            phone: string | null;
             isActive: boolean;
             createdAt: Date;
-            phone: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
@@ -67,7 +74,9 @@ export declare const contractRepository: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -76,6 +85,11 @@ export declare const contractRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -92,9 +106,9 @@ export declare const contractRepository: {
             name: string;
             id: string;
             email: string | null;
+            phone: string | null;
             isActive: boolean;
             createdAt: Date;
-            phone: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
@@ -122,7 +136,9 @@ export declare const contractRepository: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -131,6 +147,11 @@ export declare const contractRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -147,9 +168,9 @@ export declare const contractRepository: {
             name: string;
             id: string;
             email: string | null;
+            phone: string | null;
             isActive: boolean;
             createdAt: Date;
-            phone: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
@@ -176,7 +197,9 @@ export declare const contractRepository: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -185,6 +208,11 @@ export declare const contractRepository: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -201,9 +229,9 @@ export declare const contractRepository: {
             name: string;
             id: string;
             email: string | null;
+            phone: string | null;
             isActive: boolean;
             createdAt: Date;
-            phone: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;

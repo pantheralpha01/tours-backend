@@ -7,13 +7,13 @@ export declare const createPartnerSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name: string;
     email?: string | undefined;
-    isActive?: boolean | undefined;
     phone?: string | undefined;
+    isActive?: boolean | undefined;
 }, {
     name: string;
     email?: string | undefined;
-    isActive?: boolean | undefined;
     phone?: string | undefined;
+    isActive?: boolean | undefined;
 }>;
 export declare const updatePartnerSchema: z.ZodObject<{
     name: z.ZodOptional<z.ZodString>;
@@ -25,15 +25,15 @@ export declare const updatePartnerSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     name?: string | undefined;
     email?: string | undefined;
-    isActive?: boolean | undefined;
     phone?: string | undefined;
+    isActive?: boolean | undefined;
     approvalStatus?: "REJECTED" | "PENDING" | "APPROVED" | undefined;
     rejectedReason?: string | undefined;
 }, {
     name?: string | undefined;
     email?: string | undefined;
-    isActive?: boolean | undefined;
     phone?: string | undefined;
+    isActive?: boolean | undefined;
     approvalStatus?: "REJECTED" | "PENDING" | "APPROVED" | undefined;
     rejectedReason?: string | undefined;
 }>;

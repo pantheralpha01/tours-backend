@@ -10,9 +10,9 @@ export declare const inventoryRepository: {
             name: string;
             id: string;
             email: string | null;
+            phone: string | null;
             isActive: boolean;
             createdAt: Date;
-            phone: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
@@ -35,9 +35,9 @@ export declare const inventoryRepository: {
             name: string;
             id: string;
             email: string | null;
+            phone: string | null;
             isActive: boolean;
             createdAt: Date;
-            phone: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
@@ -58,9 +58,9 @@ export declare const inventoryRepository: {
             name: string;
             id: string;
             email: string | null;
+            phone: string | null;
             isActive: boolean;
             createdAt: Date;
-            phone: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
@@ -87,9 +87,9 @@ export declare const inventoryRepository: {
             name: string;
             id: string;
             email: string | null;
+            phone: string | null;
             isActive: boolean;
             createdAt: Date;
-            phone: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;

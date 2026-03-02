@@ -3,16 +3,28 @@ export declare const registerSchema: z.ZodObject<{
     name: z.ZodString;
     email: z.ZodString;
     password: z.ZodString;
+    phone: z.ZodOptional<z.ZodString>;
+    idNumber: z.ZodOptional<z.ZodString>;
+    idType: z.ZodOptional<z.ZodString>;
+    profilePicUrl: z.ZodOptional<z.ZodString>;
     role: z.ZodOptional<z.ZodEnum<["ADMIN", "AGENT", "MANAGER"]>>;
 }, "strip", z.ZodTypeAny, {
     name: string;
     email: string;
     password: string;
+    phone?: string | undefined;
+    idNumber?: string | undefined;
+    idType?: string | undefined;
+    profilePicUrl?: string | undefined;
     role?: "ADMIN" | "AGENT" | "MANAGER" | undefined;
 }, {
     name: string;
     email: string;
     password: string;
+    phone?: string | undefined;
+    idNumber?: string | undefined;
+    idType?: string | undefined;
+    profilePicUrl?: string | undefined;
     role?: "ADMIN" | "AGENT" | "MANAGER" | undefined;
 }>;
 export declare const loginSchema: z.ZodObject<{

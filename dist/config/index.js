@@ -28,6 +28,7 @@ exports.config = {
     paypalClientId: process.env.PAYPAL_CLIENT_ID ?? "",
     paypalClientSecret: process.env.PAYPAL_CLIENT_SECRET ?? "",
     cardGatewayKey: process.env.CARD_GATEWAY_KEY ?? "",
+    stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY ?? "",
     stripeSecretKey: process.env.STRIPE_SECRET_KEY ?? "",
     cryptoWalletAddress: process.env.CRYPTO_WALLET_ADDRESS ?? "",
     mpesaConsumerKey: process.env.MPESA_CONSUMER_KEY ?? "",

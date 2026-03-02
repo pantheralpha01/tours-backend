@@ -10,7 +10,9 @@ export declare const escrowService: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -19,6 +21,11 @@ export declare const escrowService: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -34,10 +41,10 @@ export declare const escrowService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         currency: import(".prisma/client").$Enums.Currency;
         bookingId: string;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
-        updatedAt: Date;
         totalAmount: import("@prisma/client-runtime-utils").Decimal;
         releasedAmount: import("@prisma/client-runtime-utils").Decimal;
         releaseStatus: import(".prisma/client").$Enums.EscrowReleaseStatus;
@@ -48,7 +55,9 @@ export declare const escrowService: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -57,6 +66,11 @@ export declare const escrowService: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -72,6 +86,7 @@ export declare const escrowService: {
         payouts: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.PayoutStatus;
@@ -79,16 +94,15 @@ export declare const escrowService: {
             notes: string | null;
             createdById: string | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            updatedAt: Date;
             escrowAccountId: string | null;
         }[];
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         currency: import(".prisma/client").$Enums.Currency;
         bookingId: string;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
-        updatedAt: Date;
         totalAmount: import("@prisma/client-runtime-utils").Decimal;
         releasedAmount: import("@prisma/client-runtime-utils").Decimal;
         releaseStatus: import(".prisma/client").$Enums.EscrowReleaseStatus;
@@ -106,7 +120,9 @@ export declare const escrowService: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -115,6 +131,11 @@ export declare const escrowService: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -130,10 +151,10 @@ export declare const escrowService: {
         escrowAccount: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             currency: import(".prisma/client").$Enums.Currency;
             bookingId: string;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            updatedAt: Date;
             totalAmount: import("@prisma/client-runtime-utils").Decimal;
             releasedAmount: import("@prisma/client-runtime-utils").Decimal;
             releaseStatus: import(".prisma/client").$Enums.EscrowReleaseStatus;
@@ -143,6 +164,7 @@ export declare const escrowService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.PayoutStatus;
@@ -150,7 +172,6 @@ export declare const escrowService: {
         notes: string | null;
         createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
-        updatedAt: Date;
         escrowAccountId: string | null;
     }>;
     updatePayoutStatus: (data: {
@@ -165,7 +186,9 @@ export declare const escrowService: {
         booking: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             customerName: string;
+            customerPhoneNumber: string | null;
             serviceTitle: string;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
@@ -174,6 +197,11 @@ export declare const escrowService: {
             commissionCurrency: import(".prisma/client").$Enums.Currency;
             status: import(".prisma/client").$Enums.BookingStatus;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+            paymentType: import(".prisma/client").$Enums.PaymentType;
+            costAtBooking: import("@prisma/client-runtime-utils").Decimal | null;
+            costPostEvent: import("@prisma/client-runtime-utils").Decimal | null;
+            totalCost: import("@prisma/client-runtime-utils").Decimal | null;
+            payPostEventDueDate: Date | null;
             splitPaymentEnabled: boolean;
             depositPercentage: import("@prisma/client-runtime-utils").Decimal | null;
             depositAmount: import("@prisma/client-runtime-utils").Decimal | null;
@@ -189,10 +217,10 @@ export declare const escrowService: {
         escrowAccount: {
             id: string;
             createdAt: Date;
+            updatedAt: Date;
             currency: import(".prisma/client").$Enums.Currency;
             bookingId: string;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
-            updatedAt: Date;
             totalAmount: import("@prisma/client-runtime-utils").Decimal;
             releasedAmount: import("@prisma/client-runtime-utils").Decimal;
             releaseStatus: import(".prisma/client").$Enums.EscrowReleaseStatus;
@@ -202,6 +230,7 @@ export declare const escrowService: {
     } & {
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         status: import(".prisma/client").$Enums.PayoutStatus;
@@ -209,16 +238,15 @@ export declare const escrowService: {
         notes: string | null;
         createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
-        updatedAt: Date;
         escrowAccountId: string | null;
     }>;
     cancelRelease: (bookingId: string) => import(".prisma/client").Prisma.Prisma__EscrowAccountClient<{
         id: string;
         createdAt: Date;
+        updatedAt: Date;
         currency: import(".prisma/client").$Enums.Currency;
         bookingId: string;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
-        updatedAt: Date;
         totalAmount: import("@prisma/client-runtime-utils").Decimal;
         releasedAmount: import("@prisma/client-runtime-utils").Decimal;
         releaseStatus: import(".prisma/client").$Enums.EscrowReleaseStatus;
