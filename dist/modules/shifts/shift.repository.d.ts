@@ -54,6 +54,7 @@ export declare const shiftRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -115,6 +116,7 @@ export declare const shiftRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -185,6 +187,7 @@ export declare const shiftRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -253,6 +256,7 @@ export declare const shiftRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -321,6 +325,7 @@ export declare const shiftRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };

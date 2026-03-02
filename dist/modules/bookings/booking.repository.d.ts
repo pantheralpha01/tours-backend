@@ -43,11 +43,13 @@ export declare const bookingRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
         bookingPartners: {
             id: string;
+            partnerId: string;
             createdAt: Date;
             updatedAt: Date;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
@@ -56,7 +58,6 @@ export declare const bookingRepository: {
             totalCost: import("@prisma/client-runtime-utils").Decimal;
             bookingId: string;
             description: string | null;
-            partnerId: string;
             partnerName: string;
             partnerPhoneNumber: string | null;
         }[];
@@ -118,11 +119,13 @@ export declare const bookingRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
         bookingPartners: {
             id: string;
+            partnerId: string;
             createdAt: Date;
             updatedAt: Date;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
@@ -131,7 +134,6 @@ export declare const bookingRepository: {
             totalCost: import("@prisma/client-runtime-utils").Decimal;
             bookingId: string;
             description: string | null;
-            partnerId: string;
             partnerName: string;
             partnerPhoneNumber: string | null;
         }[];
@@ -191,11 +193,13 @@ export declare const bookingRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
         bookingPartners: {
             id: string;
+            partnerId: string;
             createdAt: Date;
             updatedAt: Date;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
@@ -204,7 +208,6 @@ export declare const bookingRepository: {
             totalCost: import("@prisma/client-runtime-utils").Decimal;
             bookingId: string;
             description: string | null;
-            partnerId: string;
             partnerName: string;
             partnerPhoneNumber: string | null;
         }[];
@@ -290,11 +293,13 @@ export declare const bookingRepository: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         };
         bookingPartners: {
             id: string;
+            partnerId: string;
             createdAt: Date;
             updatedAt: Date;
             paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
@@ -303,7 +308,6 @@ export declare const bookingRepository: {
             totalCost: import("@prisma/client-runtime-utils").Decimal;
             bookingId: string;
             description: string | null;
-            partnerId: string;
             partnerName: string;
             partnerPhoneNumber: string | null;
         }[];

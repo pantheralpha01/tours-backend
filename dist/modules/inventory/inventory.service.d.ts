@@ -7,73 +7,97 @@ export declare const inventoryService: {
         status?: "DRAFT" | "ACTIVE" | "INACTIVE";
     }) => import(".prisma/client").Prisma.Prisma__InventoryItemClient<{
         partner: {
-            name: string;
             id: string;
-            email: string | null;
-            phone: string | null;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
+            description: string | null;
+            userId: string;
+            businessName: string | null;
+            website: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
             rejectedReason: string | null;
-            createdById: string | null;
+            serviceCategories: string[];
+            getAroundServices: string[];
+            verifiedStaysServices: string[];
+            liveLikeLocalServices: string[];
+            expertAccessServices: string[];
+            gearUpServices: string[];
+            getEntertainedServices: string[];
         };
     } & {
         id: string;
+        partnerId: string;
         createdAt: Date;
         status: import(".prisma/client").$Enums.InventoryStatus;
         title: string;
         description: string | null;
-        partnerId: string;
         price: import("@prisma/client-runtime-utils").Decimal;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     list: (params?: {
         createdById?: string;
     }) => import(".prisma/client").Prisma.PrismaPromise<({
         partner: {
-            name: string;
             id: string;
-            email: string | null;
-            phone: string | null;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
+            description: string | null;
+            userId: string;
+            businessName: string | null;
+            website: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
             rejectedReason: string | null;
-            createdById: string | null;
+            serviceCategories: string[];
+            getAroundServices: string[];
+            verifiedStaysServices: string[];
+            liveLikeLocalServices: string[];
+            expertAccessServices: string[];
+            gearUpServices: string[];
+            getEntertainedServices: string[];
         };
     } & {
         id: string;
+        partnerId: string;
         createdAt: Date;
         status: import(".prisma/client").$Enums.InventoryStatus;
         title: string;
         description: string | null;
-        partnerId: string;
         price: import("@prisma/client-runtime-utils").Decimal;
     })[]>;
     getById: (id: string) => import(".prisma/client").Prisma.Prisma__InventoryItemClient<({
         partner: {
-            name: string;
             id: string;
-            email: string | null;
-            phone: string | null;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
+            description: string | null;
+            userId: string;
+            businessName: string | null;
+            website: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
             rejectedReason: string | null;
-            createdById: string | null;
+            serviceCategories: string[];
+            getAroundServices: string[];
+            verifiedStaysServices: string[];
+            liveLikeLocalServices: string[];
+            expertAccessServices: string[];
+            gearUpServices: string[];
+            getEntertainedServices: string[];
         };
     } & {
         id: string;
+        partnerId: string;
         createdAt: Date;
         status: import(".prisma/client").$Enums.InventoryStatus;
         title: string;
         description: string | null;
-        partnerId: string;
         price: import("@prisma/client-runtime-utils").Decimal;
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
@@ -84,34 +108,42 @@ export declare const inventoryService: {
         status?: "DRAFT" | "ACTIVE" | "INACTIVE";
     }) => import(".prisma/client").Prisma.Prisma__InventoryItemClient<{
         partner: {
-            name: string;
             id: string;
-            email: string | null;
-            phone: string | null;
             isActive: boolean;
             createdAt: Date;
+            updatedAt: Date;
+            description: string | null;
+            userId: string;
+            businessName: string | null;
+            website: string | null;
             approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
             approvedById: string | null;
             approvedAt: Date | null;
             rejectedReason: string | null;
-            createdById: string | null;
+            serviceCategories: string[];
+            getAroundServices: string[];
+            verifiedStaysServices: string[];
+            liveLikeLocalServices: string[];
+            expertAccessServices: string[];
+            gearUpServices: string[];
+            getEntertainedServices: string[];
         };
     } & {
         id: string;
+        partnerId: string;
         createdAt: Date;
         status: import(".prisma/client").$Enums.InventoryStatus;
         title: string;
         description: string | null;
-        partnerId: string;
         price: import("@prisma/client-runtime-utils").Decimal;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove: (id: string) => import(".prisma/client").Prisma.Prisma__InventoryItemClient<{
         id: string;
+        partnerId: string;
         createdAt: Date;
         status: import(".prisma/client").$Enums.InventoryStatus;
         title: string;
         description: string | null;
-        partnerId: string;
         price: import("@prisma/client-runtime-utils").Decimal;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 };

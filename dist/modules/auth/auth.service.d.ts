@@ -7,7 +7,7 @@ export declare const authService: {
         idNumber?: string;
         idType?: string;
         profilePicUrl?: string;
-        role?: "ADMIN" | "AGENT" | "MANAGER";
+        role?: "ADMIN" | "AGENT" | "MANAGER" | "PARTNER";
     }) => Promise<{
         user: {
             id: string;

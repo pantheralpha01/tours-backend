@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 export declare const partnerController: {
-    create: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    /**
+     * Partner self-signup (public endpoint)
+     */
+    signup: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    create: (req: Request, _res: Response) => Promise<never>;
     list: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     getById: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     update: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;

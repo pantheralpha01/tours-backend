@@ -1,6 +1,6 @@
 export type JwtPayload = {
     sub: string;
-    role: "ADMIN" | "AGENT" | "MANAGER";
+    role: "ADMIN" | "AGENT" | "MANAGER" | "PARTNER";
 };
 export declare const signToken: (payload: JwtPayload) => string;
 export declare const verifyToken: (token: string) => JwtPayload;

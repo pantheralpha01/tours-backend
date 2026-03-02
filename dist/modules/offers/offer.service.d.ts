@@ -32,6 +32,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -50,8 +51,8 @@ export declare const offerService: {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        createdById: string | null;
         metadata: Prisma.JsonValue | null;
+        createdById: string | null;
         slug: string;
         defaultCurrency: import(".prisma/client").$Enums.Currency;
         baseAmount: Prisma.Decimal | null;
@@ -81,6 +82,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -99,8 +101,8 @@ export declare const offerService: {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        createdById: string | null;
         metadata: Prisma.JsonValue | null;
+        createdById: string | null;
         slug: string;
         defaultCurrency: import(".prisma/client").$Enums.Currency;
         baseAmount: Prisma.Decimal | null;
@@ -171,6 +173,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -180,8 +183,8 @@ export declare const offerService: {
             createdAt: Date;
             updatedAt: Date;
             description: string | null;
-            createdById: string | null;
             metadata: Prisma.JsonValue | null;
+            createdById: string | null;
             slug: string;
             defaultCurrency: import(".prisma/client").$Enums.Currency;
             baseAmount: Prisma.Decimal | null;
@@ -214,6 +217,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -303,6 +307,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -312,8 +317,8 @@ export declare const offerService: {
             createdAt: Date;
             updatedAt: Date;
             description: string | null;
-            createdById: string | null;
             metadata: Prisma.JsonValue | null;
+            createdById: string | null;
             slug: string;
             defaultCurrency: import(".prisma/client").$Enums.Currency;
             baseAmount: Prisma.Decimal | null;
@@ -346,6 +351,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -431,6 +437,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -440,8 +447,8 @@ export declare const offerService: {
             createdAt: Date;
             updatedAt: Date;
             description: string | null;
-            createdById: string | null;
             metadata: Prisma.JsonValue | null;
+            createdById: string | null;
             slug: string;
             defaultCurrency: import(".prisma/client").$Enums.Currency;
             baseAmount: Prisma.Decimal | null;
@@ -474,6 +481,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -557,6 +565,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -566,8 +575,8 @@ export declare const offerService: {
             createdAt: Date;
             updatedAt: Date;
             description: string | null;
-            createdById: string | null;
             metadata: Prisma.JsonValue | null;
+            createdById: string | null;
             slug: string;
             defaultCurrency: import(".prisma/client").$Enums.Currency;
             baseAmount: Prisma.Decimal | null;
@@ -600,6 +609,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -683,6 +693,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -692,8 +703,8 @@ export declare const offerService: {
             createdAt: Date;
             updatedAt: Date;
             description: string | null;
-            createdById: string | null;
             metadata: Prisma.JsonValue | null;
+            createdById: string | null;
             slug: string;
             defaultCurrency: import(".prisma/client").$Enums.Currency;
             baseAmount: Prisma.Decimal | null;
@@ -726,6 +737,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -812,6 +824,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -821,8 +834,8 @@ export declare const offerService: {
             createdAt: Date;
             updatedAt: Date;
             description: string | null;
-            createdById: string | null;
             metadata: Prisma.JsonValue | null;
+            createdById: string | null;
             slug: string;
             defaultCurrency: import(".prisma/client").$Enums.Currency;
             baseAmount: Prisma.Decimal | null;
@@ -855,6 +868,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -943,6 +957,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -952,8 +967,8 @@ export declare const offerService: {
             createdAt: Date;
             updatedAt: Date;
             description: string | null;
-            createdById: string | null;
             metadata: Prisma.JsonValue | null;
+            createdById: string | null;
             slug: string;
             defaultCurrency: import(".prisma/client").$Enums.Currency;
             baseAmount: Prisma.Decimal | null;
@@ -986,6 +1001,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -1074,6 +1090,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -1083,8 +1100,8 @@ export declare const offerService: {
             createdAt: Date;
             updatedAt: Date;
             description: string | null;
-            createdById: string | null;
             metadata: Prisma.JsonValue | null;
+            createdById: string | null;
             slug: string;
             defaultCurrency: import(".prisma/client").$Enums.Currency;
             baseAmount: Prisma.Decimal | null;
@@ -1117,6 +1134,7 @@ export declare const offerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;

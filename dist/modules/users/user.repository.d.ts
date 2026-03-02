@@ -7,7 +7,7 @@ export declare const userRepository: {
         idNumber?: string;
         idType?: string;
         profilePicUrl?: string;
-        role?: "ADMIN" | "AGENT" | "MANAGER";
+        role?: "ADMIN" | "AGENT" | "MANAGER" | "PARTNER";
     }) => import(".prisma/client").Prisma.Prisma__UserClient<{
         name: string;
         id: string;
@@ -23,6 +23,7 @@ export declare const userRepository: {
         profilePicUrl: string | null;
         role: import(".prisma/client").$Enums.Role;
         isActive: boolean;
+        partnerId: string | null;
         createdAt: Date;
         updatedAt: Date;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
@@ -41,6 +42,7 @@ export declare const userRepository: {
         profilePicUrl: string | null;
         role: import(".prisma/client").$Enums.Role;
         isActive: boolean;
+        partnerId: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
@@ -59,6 +61,7 @@ export declare const userRepository: {
         profilePicUrl: string | null;
         role: import(".prisma/client").$Enums.Role;
         isActive: boolean;
+        partnerId: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;

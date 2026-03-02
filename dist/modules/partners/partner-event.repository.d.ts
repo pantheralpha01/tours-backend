@@ -7,9 +7,9 @@ export declare const partnerEventRepository: {
         metadata?: Prisma.JsonValue;
     }) => Prisma.Prisma__PartnerEventClient<{
         id: string;
+        partnerId: string;
         createdAt: Date;
         metadata: Prisma.JsonValue | null;
-        partnerId: string;
         type: import(".prisma/client").$Enums.PartnerEventType;
         actorId: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
@@ -23,9 +23,9 @@ export declare const partnerEventRepository: {
         sort?: string;
     }) => Prisma.PrismaPromise<{
         id: string;
+        partnerId: string;
         createdAt: Date;
         metadata: Prisma.JsonValue | null;
-        partnerId: string;
         type: import(".prisma/client").$Enums.PartnerEventType;
         actorId: string | null;
     }[]>;

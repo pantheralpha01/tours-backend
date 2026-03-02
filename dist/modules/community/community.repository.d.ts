@@ -11,8 +11,8 @@ export declare const communityRepository: {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        createdById: string | null;
         metadata: Prisma.JsonValue | null;
+        createdById: string | null;
         slug: string;
         icon: string | null;
         color: string | null;
@@ -28,8 +28,8 @@ export declare const communityRepository: {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        createdById: string | null;
         metadata: Prisma.JsonValue | null;
+        createdById: string | null;
         slug: string;
         icon: string | null;
         color: string | null;
@@ -49,8 +49,8 @@ export declare const communityRepository: {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        createdById: string | null;
         metadata: Prisma.JsonValue | null;
+        createdById: string | null;
         slug: string;
         icon: string | null;
         color: string | null;
@@ -69,8 +69,8 @@ export declare const communityRepository: {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        createdById: string | null;
         metadata: Prisma.JsonValue | null;
+        createdById: string | null;
         slug: string;
         icon: string | null;
         color: string | null;
@@ -86,8 +86,8 @@ export declare const communityRepository: {
         createdAt: Date;
         updatedAt: Date;
         description: string | null;
-        createdById: string | null;
         metadata: Prisma.JsonValue | null;
+        createdById: string | null;
         slug: string;
         icon: string | null;
         color: string | null;
@@ -297,29 +297,29 @@ export declare const communityRepository: {
     findReaction: (postId: string, userId: string) => Prisma.Prisma__CommunityReactionClient<{
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.CommunityReactionType;
         userId: string;
+        type: import(".prisma/client").$Enums.CommunityReactionType;
         postId: string;
     } | null, null, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
     createReaction: (data: Prisma.CommunityReactionCreateInput) => Prisma.Prisma__CommunityReactionClient<{
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.CommunityReactionType;
         userId: string;
+        type: import(".prisma/client").$Enums.CommunityReactionType;
         postId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
     updateReaction: (id: string, data: Prisma.CommunityReactionUpdateInput) => Prisma.Prisma__CommunityReactionClient<{
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.CommunityReactionType;
         userId: string;
+        type: import(".prisma/client").$Enums.CommunityReactionType;
         postId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
     deleteReaction: (id: string) => Prisma.Prisma__CommunityReactionClient<{
         id: string;
         createdAt: Date;
-        type: import(".prisma/client").$Enums.CommunityReactionType;
         userId: string;
+        type: import(".prisma/client").$Enums.CommunityReactionType;
         postId: string;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, Prisma.PrismaClientOptions>;
     countReactions: (postId: string) => Prisma.PrismaPromise<number>;
@@ -333,8 +333,8 @@ export declare const communityRepository: {
         createdAt: Date;
         updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityCommentStatus;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         content: string;
         postId: string;
         parentId: string | null;
@@ -349,8 +349,8 @@ export declare const communityRepository: {
         createdAt: Date;
         updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityCommentStatus;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         content: string;
         postId: string;
         parentId: string | null;
@@ -366,8 +366,8 @@ export declare const communityRepository: {
         createdAt: Date;
         updatedAt: Date;
         status: import(".prisma/client").$Enums.CommunityCommentStatus;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         content: string;
         postId: string;
         parentId: string | null;
@@ -396,8 +396,8 @@ export declare const communityRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         topicId: string | null;
         postId: string | null;
         frequency: import(".prisma/client").$Enums.CommunitySubscriptionFrequency;
@@ -422,8 +422,8 @@ export declare const communityRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         topicId: string | null;
         postId: string | null;
         frequency: import(".prisma/client").$Enums.CommunitySubscriptionFrequency;
@@ -448,8 +448,8 @@ export declare const communityRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         topicId: string | null;
         postId: string | null;
         frequency: import(".prisma/client").$Enums.CommunitySubscriptionFrequency;
@@ -458,8 +458,8 @@ export declare const communityRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         topicId: string | null;
         postId: string | null;
         frequency: import(".prisma/client").$Enums.CommunitySubscriptionFrequency;
@@ -484,8 +484,8 @@ export declare const communityRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         topicId: string | null;
         postId: string | null;
         frequency: import(".prisma/client").$Enums.CommunitySubscriptionFrequency;
@@ -514,8 +514,8 @@ export declare const communityRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         topicId: string | null;
         postId: string | null;
         frequency: import(".prisma/client").$Enums.CommunitySubscriptionFrequency;
@@ -540,8 +540,8 @@ export declare const communityRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        metadata: Prisma.JsonValue | null;
         userId: string;
+        metadata: Prisma.JsonValue | null;
         topicId: string | null;
         postId: string | null;
         frequency: import(".prisma/client").$Enums.CommunitySubscriptionFrequency;

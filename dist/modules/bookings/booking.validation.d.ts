@@ -7,16 +7,16 @@ export declare const bookingPartnerSchema: z.ZodObject<{
     costAtBooking: z.ZodNumber;
     costPostEvent: z.ZodNumber;
 }, "strip", z.ZodTypeAny, {
+    partnerId: string;
     costAtBooking: number;
     costPostEvent: number;
-    partnerId: string;
     partnerName: string;
     description?: string | undefined;
     partnerPhoneNumber?: string | undefined;
 }, {
+    partnerId: string;
     costAtBooking: number;
     costPostEvent: number;
-    partnerId: string;
     partnerName: string;
     description?: string | undefined;
     partnerPhoneNumber?: string | undefined;
@@ -45,16 +45,16 @@ export declare const createBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
         costAtBooking: z.ZodNumber;
         costPostEvent: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
     }, {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -88,9 +88,9 @@ export declare const createBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -118,9 +118,9 @@ export declare const createBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -148,9 +148,9 @@ export declare const createBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -178,9 +178,9 @@ export declare const createBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -208,9 +208,9 @@ export declare const createBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -238,9 +238,9 @@ export declare const createBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -271,16 +271,16 @@ export declare const updateBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
         costAtBooking: z.ZodNumber;
         costPostEvent: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
     }, {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -314,9 +314,9 @@ export declare const updateBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -345,9 +345,9 @@ export declare const updateBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -376,9 +376,9 @@ export declare const updateBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -407,9 +407,9 @@ export declare const updateBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -438,9 +438,9 @@ export declare const updateBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;
@@ -469,9 +469,9 @@ export declare const updateBookingSchema: z.ZodEffects<z.ZodEffects<z.ZodObject<
     serviceEndAt?: Date | undefined;
     serviceTimezone?: string | undefined;
     bookingPartners?: {
+        partnerId: string;
         costAtBooking: number;
         costPostEvent: number;
-        partnerId: string;
         partnerName: string;
         description?: string | undefined;
         partnerPhoneNumber?: string | undefined;

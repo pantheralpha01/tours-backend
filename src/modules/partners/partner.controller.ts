@@ -1,35 +1,53 @@
 import { Request, Response } from "express";
 import { PartnerEventType } from "@prisma/client";
-import { partnerService } from "./partner.service";
+import { prisma } from "../../config/prisma";
+import {partnerService } from "./partner.service";
+import { ApiError } from "../../utils/ApiError";
 import {
-  createPartnerSchema,
   listPartnerSchema,
   partnerIdSchema,
   rejectPartnerSchema,
   updatePartnerSchema,
+  partnerSignupSchema,
 } from "./partner.validation";
-import { ApiError } from "../../utils/ApiError";
 import { partnerEventService } from "./partner-event.service";
 import { paginationSchema } from "../../utils/pagination";
 
 export const partnerController = {
-  create: async (req: Request, res: Response) => {
-    const payload = createPartnerSchema.parse(req.body);
-    const partner = await partnerService.create({
-      ...payload,
-      createdById: req.user?.id,
+  /**
+   * Partner self-signup (public endpoint)
+   */
+  signup: async (req: Request, res: Response) => {
+    const payload = partnerSignupSchema.parse(req.body);
+    
+    // Check if email already exists as a user
+    const existingUser = await prisma.user.findUnique({
+      where: { email: payload.email },
     });
-    return res.status(201).json(partner);
+    if (existingUser) {
+      throw ApiError.conflict("Email already registered");
+    }
+    
+    const result = await partnerService.signup(payload);
+    return res.status(201).json({
+      message: "Partner signup successful. Your application is pending admin approval.",
+      data: result,
+    });
+  },
+
+  create: async (req: Request, _res: Response) => {
+    // For now, the primary way to create partners is through signup
+    // This endpoint would be for admin-created partners only
+    if (!req.user?.id) {
+      throw ApiError.unauthorized();
+    }
+
+    throw ApiError.badRequest("Use /api/partners/signup endpoint for partner registration");
   },
 
   list: async (req: Request, res: Response) => {
     const params = listPartnerSchema.parse(req.query);
-    const createdById =
-      req.user?.role === "AGENT" ? req.user.id : params.createdById;
-    const result = await partnerService.list({
-      ...params,
-      createdById,
-    });
+    const result = await partnerService.list(params);
     return res.status(200).json(result);
   },
 
@@ -38,9 +56,6 @@ export const partnerController = {
     const partner = await partnerService.getById(id);
     if (!partner) {
       return res.status(404).json({ message: "Partner not found" });
-    }
-    if (req.user?.role === "AGENT" && partner.createdById !== req.user.id) {
-      throw ApiError.forbidden("Insufficient permissions");
     }
     return res.status(200).json(partner);
   },
@@ -96,9 +111,6 @@ export const partnerController = {
     const partner = await partnerService.getById(id);
     if (!partner) {
       return res.status(404).json({ message: "Partner not found" });
-    }
-    if (req.user?.role === "AGENT" && partner.createdById !== req.user.id) {
-      throw ApiError.forbidden("Insufficient permissions");
     }
     const result = await partnerEventService.list({
       partnerId: id,

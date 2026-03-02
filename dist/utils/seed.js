@@ -27,16 +27,30 @@ async function seed() {
     }
     // Create sample partner
     const partnerEmail = "partner@example.com";
-    const existingPartner = await prisma_1.prisma.partner.findUnique({
+    const existingUser = await prisma_1.prisma.user.findUnique({
         where: { email: partnerEmail },
     });
-    if (!existingPartner) {
+    if (!existingUser) {
+        const hashedPassword = await (0, password_1.hashPassword)("Partner@123");
+        const user = await prisma_1.prisma.user.create({
+            data: {
+                name: "Sample Partner",
+                email: partnerEmail,
+                password: hashedPassword,
+                phone: "+254712345678",
+                role: "PARTNER",
+                isActive: true,
+            },
+        });
         await prisma_1.prisma.partner.create({
             data: {
-                name: "Sample Travel Partner",
-                email: partnerEmail,
-                phone: "+254712345678",
+                userId: user.id,
+                businessName: "Sample Partner Business",
+                description: "A sample partner for testing",
                 isActive: true,
+                approvalStatus: "APPROVED",
+                serviceCategories: ["GET_AROUND"],
+                getAroundServices: ["AIRPORT_TRANSFERS"],
             },
         });
         console.log("Sample partner created");

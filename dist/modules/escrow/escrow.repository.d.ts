@@ -91,9 +91,9 @@ export declare const escrowRepository: {
             status: import(".prisma/client").$Enums.PayoutStatus;
             bookingId: string;
             notes: string | null;
-            createdById: string | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             escrowAccountId: string | null;
+            createdById: string | null;
         }[];
     } & {
         id: string;
@@ -151,9 +151,9 @@ export declare const escrowRepository: {
             status: import(".prisma/client").$Enums.PayoutStatus;
             bookingId: string;
             notes: string | null;
-            createdById: string | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             escrowAccountId: string | null;
+            createdById: string | null;
         }[];
     } & {
         id: string;
@@ -264,9 +264,9 @@ export declare const payoutRepository: {
         status: import(".prisma/client").$Enums.PayoutStatus;
         bookingId: string;
         notes: string | null;
-        createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         escrowAccountId: string | null;
+        createdById: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     findMany: (bookingId: string) => import(".prisma/client").Prisma.PrismaPromise<{
         id: string;
@@ -277,9 +277,9 @@ export declare const payoutRepository: {
         status: import(".prisma/client").$Enums.PayoutStatus;
         bookingId: string;
         notes: string | null;
-        createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         escrowAccountId: string | null;
+        createdById: string | null;
     }[]>;
     findById: (id: string) => import(".prisma/client").Prisma.Prisma__PayoutClient<({
         booking: {
@@ -335,9 +335,9 @@ export declare const payoutRepository: {
         status: import(".prisma/client").$Enums.PayoutStatus;
         bookingId: string;
         notes: string | null;
-        createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         escrowAccountId: string | null;
+        createdById: string | null;
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
         status?: PayoutStatus;
@@ -397,9 +397,9 @@ export declare const payoutRepository: {
         status: import(".prisma/client").$Enums.PayoutStatus;
         bookingId: string;
         notes: string | null;
-        createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         escrowAccountId: string | null;
+        createdById: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 };
 //# sourceMappingURL=escrow.repository.d.ts.map

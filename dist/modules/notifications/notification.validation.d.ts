@@ -49,6 +49,7 @@ export declare const scheduleNotificationSchema: z.ZodObject<{
     userId: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     bookingId?: string | undefined;
+    userId?: string | undefined;
     metadata?: Record<string, any> | undefined;
     type?: "REMINDER" | "PROMO" | "SOS" | "COMMUNITY" | undefined;
     channel?: "EMAIL" | "SMS" | "WHATSAPP" | undefined;
@@ -60,11 +61,11 @@ export declare const scheduleNotificationSchema: z.ZodObject<{
     recipientName?: string | undefined;
     recipientEmail?: string | undefined;
     recipientPhone?: string | undefined;
-    userId?: string | undefined;
     templateSlug?: string | undefined;
     sendNow?: boolean | undefined;
 }, {
     bookingId?: string | undefined;
+    userId?: string | undefined;
     metadata?: Record<string, any> | undefined;
     type?: "REMINDER" | "PROMO" | "SOS" | "COMMUNITY" | undefined;
     channel?: "EMAIL" | "SMS" | "WHATSAPP" | undefined;
@@ -76,7 +77,6 @@ export declare const scheduleNotificationSchema: z.ZodObject<{
     recipientName?: string | undefined;
     recipientEmail?: string | undefined;
     recipientPhone?: string | undefined;
-    userId?: string | undefined;
     templateSlug?: string | undefined;
     sendNow?: boolean | undefined;
 }>;

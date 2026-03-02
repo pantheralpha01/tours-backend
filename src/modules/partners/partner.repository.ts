@@ -2,21 +2,36 @@ import { prisma } from "../../config/prisma";
 
 export const partnerRepository = {
   create: (data: {
-    name: string;
-    email?: string;
-    phone?: string;
+    userId: string;
+    businessName?: string;
+    website?: string | null;
+    description?: string;
     isActive?: boolean;
-    createdById?: string;
+    approvalStatus?: "PENDING" | "APPROVED" | "REJECTED";
+    serviceCategories?: string[];
+    getAroundServices?: string[];
+    verifiedStaysServices?: string[];
+    liveLikeLocalServices?: string[];
+    expertAccessServices?: string[];
+    gearUpServices?: string[];
+    getEntertainedServices?: string[];
   }) =>
     prisma.partner.create({
       data: {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
+        userId: data.userId,
+        businessName: data.businessName,
+        website: data.website,
+        description: data.description,
         isActive: data.isActive ?? true,
-        createdById: data.createdById,
+        approvalStatus: data.approvalStatus ?? "PENDING",
+        serviceCategories: data.serviceCategories || [],
+        getAroundServices: data.getAroundServices || [],
+        verifiedStaysServices: data.verifiedStaysServices || [],
+        liveLikeLocalServices: data.liveLikeLocalServices || [],
+        expertAccessServices: data.expertAccessServices || [],
+        gearUpServices: data.gearUpServices || [],
+        getEntertainedServices: data.getEntertainedServices || [],
       },
-      include: { inventory: true, createdBy: true, approvedBy: true },
     }),
 
   findMany: (params?: {
@@ -24,7 +39,7 @@ export const partnerRepository = {
     take?: number;
     status?: string;
     approvalStatus?: string;
-    createdById?: string;
+    createdById?: string; // Deprecated - kept for backward compatibility
     dateFrom?: Date;
     dateTo?: Date;
     sort?: string;
@@ -37,14 +52,12 @@ export const partnerRepository = {
     if (params?.approvalStatus) {
       where.approvalStatus = params.approvalStatus;
     }
-    if (params?.createdById) {
-      where.createdById = params.createdById;
-    }
     if (params?.search) {
       const searchTerm = params.search;
       where.OR = [
-        { name: { contains: searchTerm, mode: "insensitive" } },
-        { email: { contains: searchTerm, mode: "insensitive" } },
+        { businessName: { contains: searchTerm, mode: "insensitive" } },
+        { user: { name: { contains: searchTerm, mode: "insensitive" } } },
+        { user: { email: { contains: searchTerm, mode: "insensitive" } } },
       ];
     }
     if (params?.dateFrom || params?.dateTo) {
@@ -78,14 +91,14 @@ export const partnerRepository = {
       orderBy,
       skip: params?.skip,
       take: params?.take,
-      include: { inventory: true, createdBy: true, approvedBy: true },
+      include: { user: true, approvedBy: true },
     });
   },
 
   count: (params?: {
     status?: string;
     approvalStatus?: string;
-    createdById?: string;
+    createdById?: string; // Deprecated
     dateFrom?: Date;
     dateTo?: Date;
     search?: string;
@@ -97,14 +110,12 @@ export const partnerRepository = {
     if (params?.approvalStatus) {
       where.approvalStatus = params.approvalStatus;
     }
-    if (params?.createdById) {
-      where.createdById = params.createdById;
-    }
     if (params?.search) {
       const searchTerm = params.search;
       where.OR = [
-        { name: { contains: searchTerm, mode: "insensitive" } },
-        { email: { contains: searchTerm, mode: "insensitive" } },
+        { businessName: { contains: searchTerm, mode: "insensitive" } },
+        { user: { name: { contains: searchTerm, mode: "insensitive" } } },
+        { user: { email: { contains: searchTerm, mode: "insensitive" } } },
       ];
     }
     if (params?.dateFrom || params?.dateTo) {
@@ -118,33 +129,40 @@ export const partnerRepository = {
   findById: (id: string) =>
     prisma.partner.findUnique({
       where: { id },
-      include: { inventory: true, createdBy: true, approvedBy: true },
+      include: { user: true, approvedBy: true },
     }),
 
-  findByEmail: (email: string) =>
+  findByEmail: () =>
     prisma.partner.findUnique({
-      where: { email },
-      include: { inventory: true, createdBy: true, approvedBy: true },
+      where: { id: "" }, // This method is no longer used since partners are now users
+      include: { user: true, approvedBy: true },
     }),
 
   update: (
     id: string,
     data: {
-      name?: string;
-      email?: string;
-      phone?: string;
+      businessName?: string;
+      website?: string;
+      description?: string;
       isActive?: boolean;
       approvalStatus?: "PENDING" | "APPROVED" | "REJECTED";
       approvedById?: string | null;
       approvedAt?: Date | null;
       rejectedReason?: string | null;
+      serviceCategories?: string[];
+      getAroundServices?: string[];
+      verifiedStaysServices?: string[];
+      liveLikeLocalServices?: string[];
+      expertAccessServices?: string[];
+      gearUpServices?: string[];
+      getEntertainedServices?: string[];
     }
   ) =>
     prisma.partner.update({
       where: { id },
       data,
-      include: { inventory: true, createdBy: true, approvedBy: true },
+      include: { user: true, approvedBy: true },
     }),
 
-  remove: (id: string) => prisma.partner.delete({ where: { id } }),
+  remove: (id: string) => prisma.partner.delete({ where: { id }, include: { user: true } }),
 };

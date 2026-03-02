@@ -31,4 +31,8 @@ export class ApiError extends Error {
   static notImplemented(message = "Not implemented", code = "NOT_IMPLEMENTED") {
     return new ApiError(501, code, message);
   }
+
+  static conflict(message = "Conflict", code = "CONFLICT") {
+    return new ApiError(409, code, message);
+  }
 }

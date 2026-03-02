@@ -28,6 +28,7 @@ export declare const notificationService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -36,8 +37,8 @@ export declare const notificationService: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        createdById: string | null;
         slug: string;
         type: import(".prisma/client").$Enums.NotificationType;
         channel: import(".prisma/client").$Enums.NotificationChannel;
@@ -83,6 +84,7 @@ export declare const notificationService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -122,8 +124,8 @@ export declare const notificationService: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            createdById: string | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            createdById: string | null;
             slug: string;
             type: import(".prisma/client").$Enums.NotificationType;
             channel: import(".prisma/client").$Enums.NotificationChannel;
@@ -138,8 +140,9 @@ export declare const notificationService: {
         updatedAt: Date;
         status: import(".prisma/client").$Enums.NotificationStatus;
         bookingId: string | null;
-        createdById: string | null;
+        userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        createdById: string | null;
         type: import(".prisma/client").$Enums.NotificationType;
         channel: import(".prisma/client").$Enums.NotificationChannel;
         subject: string | null;
@@ -154,7 +157,6 @@ export declare const notificationService: {
         recipientName: string | null;
         recipientEmail: string | null;
         recipientPhone: string | null;
-        userId: string | null;
     }>;
     listJobs: (params?: {
         page?: number;
@@ -194,6 +196,7 @@ export declare const notificationService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -233,8 +236,8 @@ export declare const notificationService: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            createdById: string | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
+            createdById: string | null;
             slug: string;
             type: import(".prisma/client").$Enums.NotificationType;
             channel: import(".prisma/client").$Enums.NotificationChannel;
@@ -249,8 +252,9 @@ export declare const notificationService: {
         updatedAt: Date;
         status: import(".prisma/client").$Enums.NotificationStatus;
         bookingId: string | null;
-        createdById: string | null;
+        userId: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
+        createdById: string | null;
         type: import(".prisma/client").$Enums.NotificationType;
         channel: import(".prisma/client").$Enums.NotificationChannel;
         subject: string | null;
@@ -265,7 +269,6 @@ export declare const notificationService: {
         recipientName: string | null;
         recipientEmail: string | null;
         recipientPhone: string | null;
-        userId: string | null;
     }>;
 };
 //# sourceMappingURL=notification.service.d.ts.map

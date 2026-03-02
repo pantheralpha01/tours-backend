@@ -6,14 +6,14 @@ export declare const createInventorySchema: z.ZodObject<{
     price: z.ZodNumber;
     status: z.ZodOptional<z.ZodEnum<["DRAFT", "ACTIVE", "INACTIVE"]>>;
 }, "strip", z.ZodTypeAny, {
-    title: string;
     partnerId: string;
+    title: string;
     price: number;
     status?: "DRAFT" | "ACTIVE" | "INACTIVE" | undefined;
     description?: string | undefined;
 }, {
-    title: string;
     partnerId: string;
+    title: string;
     price: number;
     status?: "DRAFT" | "ACTIVE" | "INACTIVE" | undefined;
     description?: string | undefined;
@@ -25,16 +25,16 @@ export declare const updateInventorySchema: z.ZodObject<{
     price: z.ZodOptional<z.ZodNumber>;
     status: z.ZodOptional<z.ZodEnum<["DRAFT", "ACTIVE", "INACTIVE"]>>;
 }, "strip", z.ZodTypeAny, {
+    partnerId?: string | undefined;
     status?: "DRAFT" | "ACTIVE" | "INACTIVE" | undefined;
     title?: string | undefined;
     description?: string | undefined;
-    partnerId?: string | undefined;
     price?: number | undefined;
 }, {
+    partnerId?: string | undefined;
     status?: "DRAFT" | "ACTIVE" | "INACTIVE" | undefined;
     title?: string | undefined;
     description?: string | undefined;
-    partnerId?: string | undefined;
     price?: number | undefined;
 }>;
 export declare const inventoryIdSchema: z.ZodObject<{

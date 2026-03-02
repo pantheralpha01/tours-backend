@@ -92,9 +92,9 @@ export declare const escrowService: {
             status: import(".prisma/client").$Enums.PayoutStatus;
             bookingId: string;
             notes: string | null;
-            createdById: string | null;
             metadata: import("@prisma/client/runtime/client").JsonValue | null;
             escrowAccountId: string | null;
+            createdById: string | null;
         }[];
     } & {
         id: string;
@@ -170,9 +170,9 @@ export declare const escrowService: {
         status: import(".prisma/client").$Enums.PayoutStatus;
         bookingId: string;
         notes: string | null;
-        createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         escrowAccountId: string | null;
+        createdById: string | null;
     }>;
     updatePayoutStatus: (data: {
         bookingId: string;
@@ -236,9 +236,9 @@ export declare const escrowService: {
         status: import(".prisma/client").$Enums.PayoutStatus;
         bookingId: string;
         notes: string | null;
-        createdById: string | null;
         metadata: import("@prisma/client/runtime/client").JsonValue | null;
         escrowAccountId: string | null;
+        createdById: string | null;
     }>;
     cancelRelease: (bookingId: string) => import(".prisma/client").Prisma.Prisma__EscrowAccountClient<{
         id: string;

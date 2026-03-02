@@ -30,19 +30,19 @@ export declare const listPartnerInviteSchema: z.ZodObject<{
     page: number;
     search?: string | undefined;
     status?: "ACCEPTED" | "EXPIRED" | "PENDING" | undefined;
-    invitedById?: string | undefined;
     sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
+    invitedById?: string | undefined;
 }, {
     limit?: number | undefined;
     search?: string | undefined;
     status?: "ACCEPTED" | "EXPIRED" | "PENDING" | undefined;
-    invitedById?: string | undefined;
     sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
     page?: number | undefined;
+    invitedById?: string | undefined;
 }>;
 export declare const acceptPartnerInviteSchema: z.ZodObject<{
     companyName: z.ZodOptional<z.ZodString>;

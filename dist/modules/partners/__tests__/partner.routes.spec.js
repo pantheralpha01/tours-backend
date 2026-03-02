@@ -107,17 +107,44 @@ const paginatedResponse = {
     });
     (0, vitest_1.it)("deletes a partner", async () => {
         service.remove.mockResolvedValue({
-            name: 'Test Partner',
             id: 'partner-1',
-            email: null,
+            userId: 'user-1',
+            businessName: 'Test Partner Ltd',
+            website: null,
+            description: null,
             isActive: true,
             createdAt: new Date(),
-            phone: null,
+            updatedAt: new Date(),
             approvalStatus: 'PENDING',
             approvedById: null,
             approvedAt: null,
             rejectedReason: null,
-            createdById: null
+            serviceCategories: [],
+            getAroundServices: [],
+            verifiedStaysServices: [],
+            liveLikeLocalServices: [],
+            expertAccessServices: [],
+            gearUpServices: [],
+            getEntertainedServices: [],
+            user: {
+                id: 'user-1',
+                name: 'Test User',
+                email: 'test@example.com',
+                emailVerified: false,
+                emailVerifiedAt: null,
+                password: 'hashed',
+                phone: null,
+                phoneVerified: false,
+                phoneVerifiedAt: null,
+                role: 'PARTNER',
+                partnerId: null,
+                idNumber: null,
+                idType: null,
+                profilePicUrl: null,
+                isActive: true,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
         });
         const res = await (0, supertest_1.default)(app).delete("/api/partners/550e8400-e29b-41d4-a716-446655440000");
         (0, vitest_1.expect)(res.status).toBe(204);

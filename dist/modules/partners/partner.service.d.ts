@@ -1,92 +1,45 @@
 import { PaginatedResponse } from "../../utils/pagination";
+import type { PartnerSignup } from "./partner.validation";
 export declare const partnerService: {
     create: (data: {
-        name: string;
-        email?: string;
-        phone?: string;
+        userId: string;
+        businessName?: string;
+        website?: string | null;
+        description?: string;
         isActive?: boolean;
-        createdById?: string;
     }) => import(".prisma/client").Prisma.Prisma__PartnerClient<{
-        inventory: {
-            id: string;
-            createdAt: Date;
-            status: import(".prisma/client").$Enums.InventoryStatus;
-            title: string;
-            description: string | null;
-            partnerId: string;
-            price: import("@prisma/client-runtime-utils").Decimal;
-        }[];
-        createdBy: {
-            name: string;
-            id: string;
-            email: string;
-            emailVerified: boolean;
-            emailVerifiedAt: Date | null;
-            password: string;
-            phone: string | null;
-            phoneVerified: boolean;
-            phoneVerifiedAt: Date | null;
-            idNumber: string | null;
-            idType: string | null;
-            profilePicUrl: string | null;
-            role: import(".prisma/client").$Enums.Role;
-            isActive: boolean;
-            createdAt: Date;
-            updatedAt: Date;
-        } | null;
-        approvedBy: {
-            name: string;
-            id: string;
-            email: string;
-            emailVerified: boolean;
-            emailVerifiedAt: Date | null;
-            password: string;
-            phone: string | null;
-            phoneVerified: boolean;
-            phoneVerifiedAt: Date | null;
-            idNumber: string | null;
-            idType: string | null;
-            profilePicUrl: string | null;
-            role: import(".prisma/client").$Enums.Role;
-            isActive: boolean;
-            createdAt: Date;
-            updatedAt: Date;
-        } | null;
-    } & {
-        name: string;
         id: string;
-        email: string | null;
-        phone: string | null;
         isActive: boolean;
         createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        userId: string;
+        businessName: string | null;
+        website: string | null;
         approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
         approvedById: string | null;
         approvedAt: Date | null;
         rejectedReason: string | null;
-        createdById: string | null;
+        serviceCategories: string[];
+        getAroundServices: string[];
+        verifiedStaysServices: string[];
+        liveLikeLocalServices: string[];
+        expertAccessServices: string[];
+        gearUpServices: string[];
+        getEntertainedServices: string[];
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     list: (params?: {
         page?: number;
         limit?: number;
         status?: string;
         approvalStatus?: string;
-        createdById?: string;
         dateFrom?: Date;
         dateTo?: Date;
         sort?: string;
         search?: string;
     }) => Promise<PaginatedResponse<any>>;
     getById: (id: string) => import(".prisma/client").Prisma.Prisma__PartnerClient<({
-        inventory: {
-            id: string;
-            createdAt: Date;
-            status: import(".prisma/client").$Enums.InventoryStatus;
-            title: string;
-            description: string | null;
-            partnerId: string;
-            price: import("@prisma/client-runtime-utils").Decimal;
-        }[];
-        createdBy: {
+        user: {
             name: string;
             id: string;
             email: string;
@@ -101,9 +54,10 @@ export declare const partnerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
-        } | null;
+        };
         approvedBy: {
             name: string;
             id: string;
@@ -119,42 +73,42 @@ export declare const partnerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
     } & {
-        name: string;
         id: string;
-        email: string | null;
-        phone: string | null;
         isActive: boolean;
         createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        userId: string;
+        businessName: string | null;
+        website: string | null;
         approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
         approvedById: string | null;
         approvedAt: Date | null;
         rejectedReason: string | null;
-        createdById: string | null;
+        serviceCategories: string[];
+        getAroundServices: string[];
+        verifiedStaysServices: string[];
+        liveLikeLocalServices: string[];
+        expertAccessServices: string[];
+        gearUpServices: string[];
+        getEntertainedServices: string[];
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
-        name?: string;
-        email?: string;
-        phone?: string;
+        businessName?: string;
+        website?: string;
+        description?: string;
         isActive?: boolean;
         approvalStatus?: "PENDING" | "APPROVED" | "REJECTED";
         approvedById?: string | null;
         approvedAt?: Date | null;
         rejectedReason?: string | null;
     }) => import(".prisma/client").Prisma.Prisma__PartnerClient<{
-        inventory: {
-            id: string;
-            createdAt: Date;
-            status: import(".prisma/client").$Enums.InventoryStatus;
-            title: string;
-            description: string | null;
-            partnerId: string;
-            price: import("@prisma/client-runtime-utils").Decimal;
-        }[];
-        createdBy: {
+        user: {
             name: string;
             id: string;
             email: string;
@@ -169,9 +123,10 @@ export declare const partnerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
-        } | null;
+        };
         approvedBy: {
             name: string;
             id: string;
@@ -187,33 +142,33 @@ export declare const partnerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
     } & {
-        name: string;
         id: string;
-        email: string | null;
-        phone: string | null;
         isActive: boolean;
         createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        userId: string;
+        businessName: string | null;
+        website: string | null;
         approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
         approvedById: string | null;
         approvedAt: Date | null;
         rejectedReason: string | null;
-        createdById: string | null;
+        serviceCategories: string[];
+        getAroundServices: string[];
+        verifiedStaysServices: string[];
+        liveLikeLocalServices: string[];
+        expertAccessServices: string[];
+        gearUpServices: string[];
+        getEntertainedServices: string[];
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     approve: (id: string, approvedById: string) => Promise<{
-        inventory: {
-            id: string;
-            createdAt: Date;
-            status: import(".prisma/client").$Enums.InventoryStatus;
-            title: string;
-            description: string | null;
-            partnerId: string;
-            price: import("@prisma/client-runtime-utils").Decimal;
-        }[];
-        createdBy: {
+        user: {
             name: string;
             id: string;
             email: string;
@@ -228,9 +183,10 @@ export declare const partnerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
-        } | null;
+        };
         approvedBy: {
             name: string;
             id: string;
@@ -246,33 +202,33 @@ export declare const partnerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
     } & {
-        name: string;
         id: string;
-        email: string | null;
-        phone: string | null;
         isActive: boolean;
         createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        userId: string;
+        businessName: string | null;
+        website: string | null;
         approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
         approvedById: string | null;
         approvedAt: Date | null;
         rejectedReason: string | null;
-        createdById: string | null;
+        serviceCategories: string[];
+        getAroundServices: string[];
+        verifiedStaysServices: string[];
+        liveLikeLocalServices: string[];
+        expertAccessServices: string[];
+        gearUpServices: string[];
+        getEntertainedServices: string[];
     }>;
     reject: (id: string, approvedById: string, reason?: string) => Promise<{
-        inventory: {
-            id: string;
-            createdAt: Date;
-            status: import(".prisma/client").$Enums.InventoryStatus;
-            title: string;
-            description: string | null;
-            partnerId: string;
-            price: import("@prisma/client-runtime-utils").Decimal;
-        }[];
-        createdBy: {
+        user: {
             name: string;
             id: string;
             email: string;
@@ -287,9 +243,10 @@ export declare const partnerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
-        } | null;
+        };
         approvedBy: {
             name: string;
             id: string;
@@ -305,34 +262,102 @@ export declare const partnerService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
     } & {
-        name: string;
         id: string;
-        email: string | null;
-        phone: string | null;
         isActive: boolean;
         createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        userId: string;
+        businessName: string | null;
+        website: string | null;
         approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
         approvedById: string | null;
         approvedAt: Date | null;
         rejectedReason: string | null;
-        createdById: string | null;
+        serviceCategories: string[];
+        getAroundServices: string[];
+        verifiedStaysServices: string[];
+        liveLikeLocalServices: string[];
+        expertAccessServices: string[];
+        gearUpServices: string[];
+        getEntertainedServices: string[];
     }>;
     remove: (id: string) => import(".prisma/client").Prisma.Prisma__PartnerClient<{
-        name: string;
+        user: {
+            name: string;
+            id: string;
+            email: string;
+            emailVerified: boolean;
+            emailVerifiedAt: Date | null;
+            password: string;
+            phone: string | null;
+            phoneVerified: boolean;
+            phoneVerifiedAt: Date | null;
+            idNumber: string | null;
+            idType: string | null;
+            profilePicUrl: string | null;
+            role: import(".prisma/client").$Enums.Role;
+            isActive: boolean;
+            partnerId: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+    } & {
         id: string;
-        email: string | null;
-        phone: string | null;
         isActive: boolean;
         createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        userId: string;
+        businessName: string | null;
+        website: string | null;
         approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
         approvedById: string | null;
         approvedAt: Date | null;
         rejectedReason: string | null;
-        createdById: string | null;
+        serviceCategories: string[];
+        getAroundServices: string[];
+        verifiedStaysServices: string[];
+        liveLikeLocalServices: string[];
+        expertAccessServices: string[];
+        gearUpServices: string[];
+        getEntertainedServices: string[];
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
+    /**
+     * Partner self-signup (new registration)
+     */
+    signup: (data: PartnerSignup) => Promise<{
+        user: {
+            id: string;
+            name: string;
+            email: string;
+            phone: string | null;
+            role: import(".prisma/client").$Enums.Role;
+        };
+        id: string;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        description: string | null;
+        userId: string;
+        businessName: string | null;
+        website: string | null;
+        approvalStatus: import(".prisma/client").$Enums.PartnerApprovalStatus;
+        approvedById: string | null;
+        approvedAt: Date | null;
+        rejectedReason: string | null;
+        serviceCategories: string[];
+        getAroundServices: string[];
+        verifiedStaysServices: string[];
+        liveLikeLocalServices: string[];
+        expertAccessServices: string[];
+        gearUpServices: string[];
+        getEntertainedServices: string[];
+    }>;
 };
 //# sourceMappingURL=partner.service.d.ts.map

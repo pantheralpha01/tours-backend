@@ -93,7 +93,12 @@ const options: swaggerJsdoc.Options = {
             id: { type: "string", format: "uuid" },
             name: { type: "string", example: "John Doe" },
             email: { type: "string", format: "email", example: "john@example.com" },
-            role: { type: "string", enum: ["ADMIN", "AGENT", "MANAGER"], example: "AGENT" },
+            phone: { type: "string", example: "+254712345678" },
+            role: {
+              type: "string",
+              enum: ["ADMIN", "AGENT", "MANAGER", "PARTNER"],
+              example: "PARTNER",
+            },
             isActive: { type: "boolean", example: true },
             createdAt: { type: "string", format: "date-time" },
           },
@@ -136,16 +141,252 @@ const options: swaggerJsdoc.Options = {
           type: "object",
           properties: {
             id: { type: "string", format: "uuid" },
-            name: { type: "string", example: "Safari Tours Co" },
-            email: { type: "string", format: "email", example: "contact@safaritours.com" },
-            phone: { type: "string", example: "+254712345678" },
+            userId: { type: "string", format: "uuid" },
+            businessName: { type: "string", example: "Safari Adventures" },
+            website: { type: "string", format: "uri", nullable: true, example: "https://safaris.io" },
+            description: { type: "string", example: "Premium safari planning" },
             isActive: { type: "boolean", example: true },
-            approvalStatus: { type: "string", enum: ["PENDING", "APPROVED", "REJECTED"], example: "PENDING" },
-            createdById: { type: "string", format: "uuid" },
-            approvedById: { type: "string", format: "uuid" },
-            approvedAt: { type: "string", format: "date-time" },
-            rejectedReason: { type: "string" },
+            approvalStatus: {
+              type: "string",
+              enum: ["PENDING", "APPROVED", "REJECTED"],
+              example: "PENDING",
+            },
+            approvedById: { type: "string", format: "uuid", nullable: true },
+            approvedAt: { type: "string", format: "date-time", nullable: true },
+            rejectedReason: { type: "string", nullable: true },
+            serviceCategories: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "GET_AROUND",
+                  "VERIFIED_STAYS",
+                  "LIVE_LIKE_LOCAL",
+                  "EXPERT_ACCESS",
+                  "GEAR_UP",
+                  "GET_ENTERTAINED",
+                ],
+              },
+              example: ["GET_AROUND", "EXPERT_ACCESS"],
+            },
+            getAroundServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "AIRPORT_TRANSFERS",
+                  "PRIVATE_DRIVERS",
+                  "CAR_RENTALS",
+                  "EV_CHARGING",
+                  "SCOOTER_BIKE_RENTALS",
+                  "TOURS",
+                  "CITY_TRANSFERS",
+                ],
+              },
+              example: ["AIRPORT_TRANSFERS", "CITY_TRANSFERS"],
+            },
+            verifiedStaysServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: ["BOUTIQUE_HOTELS", "VETTED_RENTALS", "ECO_LODGES", "LUXURY_CAMPS"],
+              },
+              example: ["BOUTIQUE_HOTELS"],
+            },
+            liveLikeLocalServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "HOME_COOKED_MEALS",
+                  "NEIGHBORHOOD_WALKS",
+                  "LANGUAGE_EXCHANGE",
+                  "CULTURAL_LEARNING",
+                ],
+              },
+            },
+            expertAccessServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "LAWYERS",
+                  "TOUR_GUIDES",
+                  "TRANSLATORS",
+                  "PHOTOGRAPHERS",
+                  "MEDICAL_ASSISTANTS",
+                  "SECURITY",
+                  "BUSINESS_SCOUTING",
+                  "INTERCONNECTIVITY_EXPERTS",
+                  "DELIVERY_SERVICES",
+                  "CLEANING_SERVICES",
+                  "EVENT_PLANNING",
+                ],
+              },
+            },
+            gearUpServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: ["CAMPING_GEAR", "HIKING_EQUIPMENT", "TECH_RENTALS"],
+              },
+            },
+            getEntertainedServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: ["CLUB", "DINE_OUT", "MASSAGE_SPA"],
+              },
+            },
             createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+            user: { $ref: "#/components/schemas/User" },
+          },
+        },
+        PartnerSignupRequest: {
+          type: "object",
+          required: [
+            "firstName",
+            "lastName",
+            "email",
+            "password",
+            "businessName",
+            "description",
+            "serviceCategories",
+          ],
+          properties: {
+            firstName: { type: "string", minLength: 2, example: "Joan" },
+            lastName: { type: "string", minLength: 2, example: "Mwangi" },
+            email: { type: "string", format: "email", example: "joan@ventures.com" },
+            password: {
+              type: "string",
+              minLength: 8,
+              description: "Must contain uppercase, lowercase, and number",
+              example: "SecurePass123",
+            },
+            phone: { type: "string", example: "+254712345678" },
+            businessName: { type: "string", example: "Nomad Experiences" },
+            website: { type: "string", format: "uri", example: "https://nomadexperiences.com" },
+            description: {
+              type: "string",
+              maxLength: 1000,
+              example: "Curated cultural immersions across East Africa",
+            },
+            serviceCategories: {
+              type: "array",
+              minItems: 1,
+              items: {
+                type: "string",
+                enum: [
+                  "GET_AROUND",
+                  "VERIFIED_STAYS",
+                  "LIVE_LIKE_LOCAL",
+                  "EXPERT_ACCESS",
+                  "GEAR_UP",
+                  "GET_ENTERTAINED",
+                ],
+              },
+            },
+            getAroundServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "AIRPORT_TRANSFERS",
+                  "PRIVATE_DRIVERS",
+                  "CAR_RENTALS",
+                  "EV_CHARGING",
+                  "SCOOTER_BIKE_RENTALS",
+                  "TOURS",
+                  "CITY_TRANSFERS",
+                ],
+              },
+            },
+            verifiedStaysServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: ["BOUTIQUE_HOTELS", "VETTED_RENTALS", "ECO_LODGES", "LUXURY_CAMPS"],
+              },
+            },
+            liveLikeLocalServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "HOME_COOKED_MEALS",
+                  "NEIGHBORHOOD_WALKS",
+                  "LANGUAGE_EXCHANGE",
+                  "CULTURAL_LEARNING",
+                ],
+              },
+            },
+            expertAccessServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "LAWYERS",
+                  "TOUR_GUIDES",
+                  "TRANSLATORS",
+                  "PHOTOGRAPHERS",
+                  "MEDICAL_ASSISTANTS",
+                  "SECURITY",
+                  "BUSINESS_SCOUTING",
+                  "INTERCONNECTIVITY_EXPERTS",
+                  "DELIVERY_SERVICES",
+                  "CLEANING_SERVICES",
+                  "EVENT_PLANNING",
+                ],
+              },
+            },
+            gearUpServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: ["CAMPING_GEAR", "HIKING_EQUIPMENT", "TECH_RENTALS"],
+              },
+            },
+            getEntertainedServices: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: ["CLUB", "DINE_OUT", "MASSAGE_SPA"],
+              },
+            },
+          },
+          example: {
+            firstName: "Joan",
+            lastName: "Mwangi",
+            email: "joan@nomadexperiences.com",
+            password: "SecurePass123",
+            phone: "+254712345678",
+            businessName: "Nomad Experiences",
+            website: "https://nomadexperiences.com",
+            description: "Curated cultural immersions across East Africa",
+            serviceCategories: ["GET_AROUND", "EXPERT_ACCESS"],
+            getAroundServices: ["AIRPORT_TRANSFERS", "CITY_TRANSFERS"],
+            expertAccessServices: ["LAWYERS", "TRANSLATORS"],
+          },
+        },
+        PartnerSignupResponse: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+              example: "Partner signup successful. Your application is pending admin approval.",
+            },
+            data: {
+              allOf: [
+                { $ref: "#/components/schemas/Partner" },
+                {
+                  type: "object",
+                  properties: {
+                    user: { $ref: "#/components/schemas/User" },
+                  },
+                },
+              ],
+            },
           },
         },
         InventoryItem: {

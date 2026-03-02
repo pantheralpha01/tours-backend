@@ -74,9 +74,6 @@ exports.dashboardService = {
         const partnerWhere = {
             approvalStatus: client_1.PartnerApprovalStatus.PENDING,
         };
-        if (role === "AGENT" && agentId) {
-            partnerWhere.createdById = agentId;
-        }
         const disputeWhere = {
             status: { in: [client_1.DisputeStatus.OPEN, client_1.DisputeStatus.UNDER_REVIEW] },
         };

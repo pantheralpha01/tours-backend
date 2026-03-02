@@ -55,6 +55,7 @@ export declare const dispatchService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -65,8 +66,8 @@ export declare const dispatchService: {
         bookingId: string;
         notes: string | null;
         assignedToId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         startedAt: Date | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         completedAt: Date | null;
     }>;
     list: (params?: {
@@ -127,6 +128,7 @@ export declare const dispatchService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -137,8 +139,8 @@ export declare const dispatchService: {
         bookingId: string;
         notes: string | null;
         assignedToId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         startedAt: Date | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         completedAt: Date | null;
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
@@ -196,6 +198,7 @@ export declare const dispatchService: {
             profilePicUrl: string | null;
             role: import(".prisma/client").$Enums.Role;
             isActive: boolean;
+            partnerId: string | null;
             createdAt: Date;
             updatedAt: Date;
         } | null;
@@ -206,8 +209,8 @@ export declare const dispatchService: {
         bookingId: string;
         notes: string | null;
         assignedToId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         startedAt: Date | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         completedAt: Date | null;
     }>;
     remove: (id: string) => import(".prisma/client").Prisma.Prisma__DispatchClient<{
@@ -217,8 +220,8 @@ export declare const dispatchService: {
         bookingId: string;
         notes: string | null;
         assignedToId: string | null;
-        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         startedAt: Date | null;
+        metadata: import("@prisma/client/runtime/client").JsonValue | null;
         completedAt: Date | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     addTrackPoint: (data: {

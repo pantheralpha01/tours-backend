@@ -112,14 +112,9 @@ export const dashboardService = {
     if (role === "AGENT" && agentId) {
       bookingWhere.agentId = agentId;
     }
-
     const partnerWhere: Prisma.PartnerWhereInput = {
       approvalStatus: PartnerApprovalStatus.PENDING,
     };
-
-    if (role === "AGENT" && agentId) {
-      partnerWhere.createdById = agentId;
-    }
 
     const disputeWhere: Prisma.DisputeWhereInput = {
       status: { in: [DisputeStatus.OPEN, DisputeStatus.UNDER_REVIEW] },

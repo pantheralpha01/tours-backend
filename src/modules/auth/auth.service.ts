@@ -4,7 +4,7 @@ import { hashPassword, comparePassword } from "../../utils/password";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../../utils/jwt";
 import { ApiError } from "../../utils/ApiError";
 
-const generateTokens = (userId: string, role: "ADMIN" | "AGENT" | "MANAGER") => {
+const generateTokens = (userId: string, role: "ADMIN" | "AGENT" | "MANAGER" | "PARTNER") => {
   const accessToken = signAccessToken({ sub: userId, role });
   const refreshToken = signRefreshToken({ sub: userId });
   return { accessToken, refreshToken };
@@ -25,7 +25,7 @@ export const authService = {
     idNumber?: string;
     idType?: string;
     profilePicUrl?: string;
-    role?: "ADMIN" | "AGENT" | "MANAGER";
+    role?: "ADMIN" | "AGENT" | "MANAGER" | "PARTNER";
   }) => {
     const existing = await userRepository.findByEmail(data.email);
     if (existing) {

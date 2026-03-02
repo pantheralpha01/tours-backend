@@ -5,13 +5,20 @@ const prisma_1 = require("../../config/prisma");
 exports.partnerRepository = {
     create: (data) => prisma_1.prisma.partner.create({
         data: {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
+            userId: data.userId,
+            businessName: data.businessName,
+            website: data.website,
+            description: data.description,
             isActive: data.isActive ?? true,
-            createdById: data.createdById,
+            approvalStatus: data.approvalStatus ?? "PENDING",
+            serviceCategories: data.serviceCategories || [],
+            getAroundServices: data.getAroundServices || [],
+            verifiedStaysServices: data.verifiedStaysServices || [],
+            liveLikeLocalServices: data.liveLikeLocalServices || [],
+            expertAccessServices: data.expertAccessServices || [],
+            gearUpServices: data.gearUpServices || [],
+            getEntertainedServices: data.getEntertainedServices || [],
         },
-        include: { inventory: true, createdBy: true, approvedBy: true },
     }),
     findMany: (params) => {
         const where = {};
@@ -21,14 +28,12 @@ exports.partnerRepository = {
         if (params?.approvalStatus) {
             where.approvalStatus = params.approvalStatus;
         }
-        if (params?.createdById) {
-            where.createdById = params.createdById;
-        }
         if (params?.search) {
             const searchTerm = params.search;
             where.OR = [
-                { name: { contains: searchTerm, mode: "insensitive" } },
-                { email: { contains: searchTerm, mode: "insensitive" } },
+                { businessName: { contains: searchTerm, mode: "insensitive" } },
+                { user: { name: { contains: searchTerm, mode: "insensitive" } } },
+                { user: { email: { contains: searchTerm, mode: "insensitive" } } },
             ];
         }
         if (params?.dateFrom || params?.dateTo) {
@@ -62,7 +67,7 @@ exports.partnerRepository = {
             orderBy,
             skip: params?.skip,
             take: params?.take,
-            include: { inventory: true, createdBy: true, approvedBy: true },
+            include: { user: true, approvedBy: true },
         });
     },
     count: (params) => {
@@ -73,14 +78,12 @@ exports.partnerRepository = {
         if (params?.approvalStatus) {
             where.approvalStatus = params.approvalStatus;
         }
-        if (params?.createdById) {
-            where.createdById = params.createdById;
-        }
         if (params?.search) {
             const searchTerm = params.search;
             where.OR = [
-                { name: { contains: searchTerm, mode: "insensitive" } },
-                { email: { contains: searchTerm, mode: "insensitive" } },
+                { businessName: { contains: searchTerm, mode: "insensitive" } },
+                { user: { name: { contains: searchTerm, mode: "insensitive" } } },
+                { user: { email: { contains: searchTerm, mode: "insensitive" } } },
             ];
         }
         if (params?.dateFrom || params?.dateTo) {
@@ -94,17 +97,17 @@ exports.partnerRepository = {
     },
     findById: (id) => prisma_1.prisma.partner.findUnique({
         where: { id },
-        include: { inventory: true, createdBy: true, approvedBy: true },
+        include: { user: true, approvedBy: true },
     }),
-    findByEmail: (email) => prisma_1.prisma.partner.findUnique({
-        where: { email },
-        include: { inventory: true, createdBy: true, approvedBy: true },
+    findByEmail: () => prisma_1.prisma.partner.findUnique({
+        where: { id: "" }, // This method is no longer used since partners are now users
+        include: { user: true, approvedBy: true },
     }),
     update: (id, data) => prisma_1.prisma.partner.update({
         where: { id },
         data,
-        include: { inventory: true, createdBy: true, approvedBy: true },
+        include: { user: true, approvedBy: true },
     }),
-    remove: (id) => prisma_1.prisma.partner.delete({ where: { id } }),
+    remove: (id) => prisma_1.prisma.partner.delete({ where: { id }, include: { user: true } }),
 };
 //# sourceMappingURL=partner.repository.js.map

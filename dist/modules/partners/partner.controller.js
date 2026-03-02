@@ -1,27 +1,42 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.partnerController = void 0;
+const prisma_1 = require("../../config/prisma");
 const partner_service_1 = require("./partner.service");
-const partner_validation_1 = require("./partner.validation");
 const ApiError_1 = require("../../utils/ApiError");
+const partner_validation_1 = require("./partner.validation");
 const partner_event_service_1 = require("./partner-event.service");
 const pagination_1 = require("../../utils/pagination");
 exports.partnerController = {
-    create: async (req, res) => {
-        const payload = partner_validation_1.createPartnerSchema.parse(req.body);
-        const partner = await partner_service_1.partnerService.create({
-            ...payload,
-            createdById: req.user?.id,
+    /**
+     * Partner self-signup (public endpoint)
+     */
+    signup: async (req, res) => {
+        const payload = partner_validation_1.partnerSignupSchema.parse(req.body);
+        // Check if email already exists as a user
+        const existingUser = await prisma_1.prisma.user.findUnique({
+            where: { email: payload.email },
         });
-        return res.status(201).json(partner);
+        if (existingUser) {
+            throw ApiError_1.ApiError.conflict("Email already registered");
+        }
+        const result = await partner_service_1.partnerService.signup(payload);
+        return res.status(201).json({
+            message: "Partner signup successful. Your application is pending admin approval.",
+            data: result,
+        });
+    },
+    create: async (req, _res) => {
+        // For now, the primary way to create partners is through signup
+        // This endpoint would be for admin-created partners only
+        if (!req.user?.id) {
+            throw ApiError_1.ApiError.unauthorized();
+        }
+        throw ApiError_1.ApiError.badRequest("Use /api/partners/signup endpoint for partner registration");
     },
     list: async (req, res) => {
         const params = partner_validation_1.listPartnerSchema.parse(req.query);
-        const createdById = req.user?.role === "AGENT" ? req.user.id : params.createdById;
-        const result = await partner_service_1.partnerService.list({
-            ...params,
-            createdById,
-        });
+        const result = await partner_service_1.partnerService.list(params);
         return res.status(200).json(result);
     },
     getById: async (req, res) => {
@@ -29,9 +44,6 @@ exports.partnerController = {
         const partner = await partner_service_1.partnerService.getById(id);
         if (!partner) {
             return res.status(404).json({ message: "Partner not found" });
-        }
-        if (req.user?.role === "AGENT" && partner.createdById !== req.user.id) {
-            throw ApiError_1.ApiError.forbidden("Insufficient permissions");
         }
         return res.status(200).json(partner);
     },
@@ -81,9 +93,6 @@ exports.partnerController = {
         const partner = await partner_service_1.partnerService.getById(id);
         if (!partner) {
             return res.status(404).json({ message: "Partner not found" });
-        }
-        if (req.user?.role === "AGENT" && partner.createdById !== req.user.id) {
-            throw ApiError_1.ApiError.forbidden("Insufficient permissions");
         }
         const result = await partner_event_service_1.partnerEventService.list({
             partnerId: id,

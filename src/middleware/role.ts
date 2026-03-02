@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ApiError } from "../utils/ApiError";
 
-type Role = "ADMIN" | "AGENT" | "MANAGER";
+type Role = "ADMIN" | "AGENT" | "MANAGER" | "PARTNER";
 
 export const requireRoles = (...roles: Role[]) => {
   return (req: Request, _res: Response, next: NextFunction) => {

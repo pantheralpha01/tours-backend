@@ -8,5 +8,6 @@ export declare class ApiError extends Error {
     static notFound(message?: string, code?: string): ApiError;
     static internal(message?: string, code?: string): ApiError;
     static notImplemented(message?: string, code?: string): ApiError;
+    static conflict(message?: string, code?: string): ApiError;
 }
 //# sourceMappingURL=ApiError.d.ts.map

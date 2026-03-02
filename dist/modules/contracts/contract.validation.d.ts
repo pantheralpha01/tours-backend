@@ -8,16 +8,16 @@ export declare const createContractSchema: z.ZodObject<{
     metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
 }, "strip", z.ZodTypeAny, {
     bookingId: string;
+    partnerId?: string | undefined;
     status?: "DRAFT" | "CANCELLED" | "SENT" | "SIGNED" | undefined;
     metadata?: Record<string, any> | undefined;
-    partnerId?: string | undefined;
     fileUrl?: string | undefined;
     signedAt?: Date | undefined;
 }, {
     bookingId: string;
+    partnerId?: string | undefined;
     status?: "DRAFT" | "CANCELLED" | "SENT" | "SIGNED" | undefined;
     metadata?: Record<string, any> | undefined;
-    partnerId?: string | undefined;
     fileUrl?: string | undefined;
     signedAt?: Date | undefined;
 }>;
@@ -28,15 +28,15 @@ export declare const updateContractSchema: z.ZodObject<{
     signedAt: z.ZodOptional<z.ZodDate>;
     metadata: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
 }, "strip", z.ZodTypeAny, {
+    partnerId?: string | undefined;
     status?: "DRAFT" | "CANCELLED" | "SENT" | "SIGNED" | undefined;
     metadata?: Record<string, any> | undefined;
-    partnerId?: string | undefined;
     fileUrl?: string | undefined;
     signedAt?: Date | undefined;
 }, {
+    partnerId?: string | undefined;
     status?: "DRAFT" | "CANCELLED" | "SENT" | "SIGNED" | undefined;
     metadata?: Record<string, any> | undefined;
-    partnerId?: string | undefined;
     fileUrl?: string | undefined;
     signedAt?: Date | undefined;
 }>;
@@ -53,17 +53,17 @@ export declare const listContractSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     limit: number;
     page: number;
+    partnerId?: string | undefined;
     status?: string | undefined;
     bookingId?: string | undefined;
-    partnerId?: string | undefined;
     sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;
 }, {
     limit?: number | undefined;
+    partnerId?: string | undefined;
     status?: string | undefined;
     bookingId?: string | undefined;
-    partnerId?: string | undefined;
     sort?: string | undefined;
     dateFrom?: Date | undefined;
     dateTo?: Date | undefined;

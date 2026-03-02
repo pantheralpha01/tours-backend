@@ -13,9 +13,6 @@ exports.inventoryController = {
             if (!partner) {
                 return res.status(404).json({ message: "Partner not found" });
             }
-            if (partner.createdById !== req.user.id) {
-                throw ApiError_1.ApiError.forbidden("Insufficient permissions");
-            }
             if (partner.approvalStatus !== "APPROVED") {
                 throw ApiError_1.ApiError.forbidden("Partner must be approved before adding inventory");
             }
@@ -34,21 +31,13 @@ exports.inventoryController = {
         if (!item) {
             return res.status(404).json({ message: "Inventory item not found" });
         }
-        if (req.user?.role === "AGENT" && item.partner.createdById !== req.user.id) {
-            throw ApiError_1.ApiError.forbidden("Insufficient permissions");
-        }
         return res.status(200).json(item);
     },
     update: async (req, res) => {
         const { id } = inventory_validation_1.inventoryIdSchema.parse(req.params);
-        if (req.user?.role === "AGENT") {
-            const current = await inventory_service_1.inventoryService.getById(id);
-            if (!current) {
-                return res.status(404).json({ message: "Inventory item not found" });
-            }
-            if (current.partner.createdById !== req.user.id) {
-                throw ApiError_1.ApiError.forbidden("Insufficient permissions");
-            }
+        const current = await inventory_service_1.inventoryService.getById(id);
+        if (!current) {
+            return res.status(404).json({ message: "Inventory item not found" });
         }
         const payload = inventory_validation_1.updateInventorySchema.parse(req.body);
         const item = await inventory_service_1.inventoryService.update(id, payload);
@@ -56,14 +45,9 @@ exports.inventoryController = {
     },
     remove: async (req, res) => {
         const { id } = inventory_validation_1.inventoryIdSchema.parse(req.params);
-        if (req.user?.role === "AGENT") {
-            const current = await inventory_service_1.inventoryService.getById(id);
-            if (!current) {
-                return res.status(404).json({ message: "Inventory item not found" });
-            }
-            if (current.partner.createdById !== req.user.id) {
-                throw ApiError_1.ApiError.forbidden("Insufficient permissions");
-            }
+        const current = await inventory_service_1.inventoryService.getById(id);
+        if (!current) {
+            return res.status(404).json({ message: "Inventory item not found" });
         }
         await inventory_service_1.inventoryService.remove(id);
         return res.status(204).send();

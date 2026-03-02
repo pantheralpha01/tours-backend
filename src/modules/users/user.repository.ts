@@ -9,7 +9,7 @@ export const userRepository = {
     idNumber?: string;
     idType?: string;
     profilePicUrl?: string;
-    role?: "ADMIN" | "AGENT" | "MANAGER";
+    role?: "ADMIN" | "AGENT" | "MANAGER" | "PARTNER";
   }) =>
     prisma.user.create({
       data: {

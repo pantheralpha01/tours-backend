@@ -10,6 +10,7 @@ enum Role {
   ADMIN
   AGENT
   MANAGER
+  PARTNER
 }
 
 enum BookingStatus {
@@ -60,12 +61,6 @@ enum PartnerEventType {
   REJECTED
 }
 
-enum PartnerInviteStatus {
-  PENDING
-  ACCEPTED
-  EXPIRED
-}
-
 enum PaymentState {
   INITIATED
   PENDING
@@ -94,6 +89,65 @@ enum QuoteStatus {
   ACCEPTED
   REJECTED
   EXPIRED
+}
+
+enum PartnerServiceCategory {
+  GET_AROUND
+  VERIFIED_STAYS
+  LIVE_LIKE_LOCAL
+  EXPERT_ACCESS
+  GEAR_UP
+  GET_ENTERTAINED
+}
+
+enum GetAroundService {
+  AIRPORT_TRANSFERS
+  PRIVATE_DRIVERS
+  CAR_RENTALS
+  EV_CHARGING
+  SCOOTER_BIKE_RENTALS
+  TOURS
+  CITY_TRANSFERS
+}
+
+enum VerifiedStaysService {
+  BOUTIQUE_HOTELS
+  VETTED_RENTALS
+  ECO_LODGES
+  LUXURY_CAMPS
+}
+
+enum LiveLikeLocalService {
+  HOME_COOKED_MEALS
+  NEIGHBORHOOD_WALKS
+  LANGUAGE_EXCHANGE
+  CULTURAL_LEARNING
+}
+
+enum ExpertAccessService {
+  LAWYERS
+  TOUR_GUIDES
+  TRANSLATORS
+  PHOTOGRAPHERS
+  MEDICAL_ASSISTANTS
+  SECURITY
+  BUSINESS_SCOUTING
+  INTERCONNECTIVITY_EXPERTS
+  DELIVERY_SERVICES
+  CLEANING_SERVICES
+  EVENT_PLANNING
+}
+
+enum GearUpService {
+  CAMPING_GEAR
+  HIKING_EQUIPMENT
+  TECH_RENTALS
+}
+
+enum GetEntertainedService {
+  CLUB
+  DINE_OUT
+  MASSAGE_SPA
 }
 
 enum ContractStatus {
@@ -237,6 +291,7 @@ model User {
   profilePicUrl     String?
   role              Role     @default(AGENT)
   isActive          Boolean  @default(true)
+  partnerId         String?  @unique // Link to partner profile if user is a partner
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -244,9 +299,9 @@ model User {
   quotes           Quote[]
   disputesOpened   Dispute[] @relation("DisputeOpenedBy")
   disputesAssigned Dispute[] @relation("DisputeAssignedTo")
-  partnersCreated  Partner[] @relation("PartnerCreatedBy")
   partnersApproved Partner[] @relation("PartnerApprovedBy")
-  partnerInvites   PartnerInvite[] @relation("PartnerInvitedBy")
+  partner          Partner?  @relation("UserPartner")
+
   dispatchesAssigned Dispatch[] @relation("DispatchAssignedTo")
   shifts             AgentShift[]
   paymentsRecorded  Payment[]      @relation("PaymentRecordedBy")
@@ -352,28 +407,37 @@ model BookingEvent {
 }
 
 model Partner {
-  id        String          @id @default(uuid())
-  name      String
-  email     String?         @unique
-  phone     String?
-  isActive  Boolean         @default(true)
-  approvalStatus PartnerApprovalStatus @default(PENDING)
-  approvedById String?
-  approvedAt DateTime?
-  rejectedReason String?
-  createdById String?
-  createdAt DateTime        @default(now())
+  id              String          @id @default(uuid())
+  userId          String          @unique // Linked to User
+  businessName    String?
+  website         String?
+  description     String?
+  isActive        Boolean         @default(true)
+  approvalStatus  PartnerApprovalStatus @default(PENDING)
+  approvedById    String?
+  approvedAt      DateTime?
+  rejectedReason  String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  // Store selected services as JSON arrays for flexibility
+  serviceCategories   String[]  // PartnerServiceCategory[] as strings
+  getAroundServices   String[]  // GetAroundService[] as strings
+  verifiedStaysServices String[]  // VerifiedStaysService[] as strings
+  liveLikeLocalServices String[]  // LiveLikeLocalService[] as strings
+  expertAccessServices String[]  // ExpertAccessService[] as strings
+  gearUpServices      String[]  // GearUpService[] as strings
+  getEntertainedServices String[]  // GetEntertainedService[] as strings
 
+  user            User       @relation("UserPartner", fields: [userId], references: [id], onDelete: Cascade)
   inventory       InventoryItem[]
   contracts       Contract[]
   events          PartnerEvent[]
-  invites         PartnerInvite[]
   bookingPartners BookingPartner[]
-  createdBy       User? @relation("PartnerCreatedBy", fields: [createdById], references: [id])
-  approvedBy      User? @relation("PartnerApprovedBy", fields: [approvedById], references: [id])
+  approvedBy      User?      @relation("PartnerApprovedBy", fields: [approvedById], references: [id])
 
   @@index([approvalStatus])
-  @@index([createdById])
+  @@index([userId])
   @@index([approvedById])
 }
 
@@ -390,28 +454,7 @@ model PartnerEvent {
   @@index([partnerId])
 }
 
-model PartnerInvite {
-  id           String              @id @default(uuid())
-  companyName  String
-  email        String
-  status       PartnerInviteStatus @default(PENDING)
-  token        String              @unique
-  expiresAt    DateTime
-  notes        String?
-  metadata     Json?
-  partnerId    String?
-  invitedById  String
-  acceptedAt   DateTime?
-  createdAt    DateTime            @default(now())
 
-  partner   Partner? @relation(fields: [partnerId], references: [id])
-  invitedBy User     @relation("PartnerInvitedBy", fields: [invitedById], references: [id])
-
-  @@index([status])
-  @@index([email])
-  @@index([partnerId])
-  @@index([invitedById])
-}
 
 model Dispatch {
   id           String         @id @default(uuid())
