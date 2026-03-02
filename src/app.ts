@@ -15,7 +15,11 @@ export const app = express();
 app.set("trust proxy", 1);
 
 // Security middleware
-app.use(helmet());
+// Disable CSP for Swagger UI to work properly (can be relaxed in production)
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
 app.use(corsMiddleware);
 
 // Logging

@@ -18,7 +18,11 @@ exports.app = (0, express_1.default)();
 // Respect proxy headers (needed on Render/other platforms for rate limiting & IPs)
 exports.app.set("trust proxy", 1);
 // Security middleware
-exports.app.use((0, helmet_1.default)());
+// Disable CSP for Swagger UI to work properly (can be relaxed in production)
+exports.app.use((0, helmet_1.default)({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+}));
 exports.app.use(cors_1.corsMiddleware);
 // Logging
 exports.app.use((0, morgan_1.default)("combined"));
