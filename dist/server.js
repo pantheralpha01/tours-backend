@@ -5,8 +5,8 @@ const config_1 = require("./config");
 const escrow_scheduler_1 = require("./modules/escrow/escrow.scheduler");
 const notification_scheduler_1 = require("./modules/notifications/notification.scheduler");
 const community_scheduler_1 = require("./modules/community/community.scheduler");
-const server = app_1.app.listen(config_1.config.port, () => {
-    console.log(`Server running on port ${config_1.config.port}`);
+const server = app_1.app.listen(config_1.config.port, "0.0.0.0", () => {
+    console.log(`Server running on port ${config_1.config.port} (listening on all interfaces)`);
 });
 const startSchedulers = () => {
     if (config_1.config.escrowScheduler.enabled) {

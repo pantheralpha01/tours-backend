@@ -4,8 +4,8 @@ import { escrowScheduler } from "./modules/escrow/escrow.scheduler";
 import { notificationScheduler } from "./modules/notifications/notification.scheduler";
 import { communityDigestScheduler } from "./modules/community/community.scheduler";
 
-const server = app.listen(config.port, () => {
-  console.log(`Server running on port ${config.port}`);
+const server = app.listen(config.port, "0.0.0.0", () => {
+  console.log(`Server running on port ${config.port} (listening on all interfaces)`);
 });
 
 const startSchedulers = () => {
