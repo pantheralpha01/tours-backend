@@ -11,6 +11,7 @@ import { shiftService } from "../shifts/shift.service";
 import { offerService } from "../offers/offer.service";
 import { partnerRepository } from "../partners/partner.repository";
 import { ApiError } from "../../utils/ApiError";
+import { generateBookingReference } from "../../utils/referenceNumber";
 
 const MIN_DEPOSIT_PERCENTAGE = new Prisma.Decimal("0.10");
 const MAX_DEPOSIT_PERCENTAGE = new Prisma.Decimal("1.00");
@@ -139,6 +140,7 @@ const serializeSplitPlan = (plan: SplitPaymentPlan) => ({
 const validateBookingPartners = async (
   partners?: Array<{
     partnerId: string;
+    partnerServiceId?: string;
     partnerName: string;
     partnerPhoneNumber?: string;
     description?: string;
@@ -203,8 +205,15 @@ const syncBookingShift = async (
 export const bookingService = {
   create: async (data: {
     customerName: string;
+    customerEmail?: string;
     customerPhoneNumber?: string;
     serviceTitle: string;
+    pickupLocation?: string;
+    destination?: string;
+    numberOfGuests?: number;
+    numberOfChildren?: number;
+    numberOfPets?: number;
+    notes?: string;
     amount: number;
     currency?: "USD" | "KES";
     status?: "DRAFT" | "CONFIRMED" | "CANCELLED";
@@ -220,6 +229,7 @@ export const bookingService = {
     actorId?: string;
     bookingPartners?: Array<{
       partnerId: string;
+      partnerServiceId?: string;
       partnerName: string;
       partnerPhoneNumber?: string;
       description?: string;
@@ -293,14 +303,20 @@ export const bookingService = {
     const bookingPartners = data.bookingPartners;
     delete bookingData.bookingPartners;
 
+    // Generate atomic reference number
+    const { referenceNumber, referenceSeq } = await generateBookingReference();
+
     // Create booking with partners
     const booking = await bookingRepository.create({
       ...bookingData,
+      referenceNumber,
+      referenceSeq,
       ...(bookingPartners && bookingPartners.length > 0 && {
         bookingPartners: {
           createMany: {
             data: bookingPartners.map(p => ({
               partnerId: p.partnerId,
+              partnerServiceId: p.partnerServiceId ?? null,
               partnerName: p.partnerName,
               partnerPhoneNumber: p.partnerPhoneNumber,
               description: p.description,

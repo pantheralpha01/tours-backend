@@ -11,8 +11,8 @@ export declare const escrowReleaseSchema: z.ZodObject<{
     releaseAt?: Date | undefined;
 }, {
     amount: number;
-    currency?: "USD" | "KES" | undefined;
     notes?: string | undefined;
+    currency?: "USD" | "KES" | undefined;
     releaseAt?: Date | undefined;
 }>;
 export declare const bookingParamSchema: z.ZodObject<{

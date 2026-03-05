@@ -51,4 +51,34 @@ export declare const logoutSchema: z.ZodObject<{
 }, {
     refreshToken: string;
 }>;
+export declare const verifyLoginOtpSchema: z.ZodObject<{
+    phone: z.ZodString;
+    otp: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    phone: string;
+    otp: string;
+}, {
+    phone: string;
+    otp: string;
+}>;
+export declare const forgotPasswordSchema: z.ZodObject<{
+    phone: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    phone: string;
+}, {
+    phone: string;
+}>;
+export declare const resetPasswordSchema: z.ZodObject<{
+    phone: z.ZodString;
+    otp: z.ZodString;
+    newPassword: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    phone: string;
+    otp: string;
+    newPassword: string;
+}, {
+    phone: string;
+    otp: string;
+    newPassword: string;
+}>;
 //# sourceMappingURL=auth.validation.d.ts.map

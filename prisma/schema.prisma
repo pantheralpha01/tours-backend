@@ -100,6 +100,36 @@ enum PartnerServiceCategory {
   GET_ENTERTAINED
 }
 
+enum PartnerServiceType {
+  CAR
+  DRIVER
+  GUIDE
+  PARK
+  MOTO
+  BOAT
+  MASSAGE
+  RESTAURANT
+  SHOP
+  LAUNDRY
+}
+
+enum City {
+  NAIROBI
+  MOMBASA
+  DIANI_BEACH
+  MALINDI
+  KISUMU
+  NAKURU
+  ELDORET
+  LAMU
+  NANYUKI
+  AMBOSELI
+  WATAMU
+  ZANZIBAR
+  ARUSHA
+  DAR_ES_SALAAM
+}
+
 enum GetAroundService {
   AIRPORT_TRANSFERS
   PRIVATE_DRIVERS
@@ -323,9 +353,18 @@ model User {
 
 model Booking {
   id                  String        @id @default(uuid())
+  referenceNumber     String        @unique  // e.g. TF-202603-00042
+  referenceSeq        Int                    // raw sequence for ordering/display
   customerName        String
+  customerEmail       String?
   customerPhoneNumber String?
   serviceTitle        String
+  pickupLocation      String?
+  destination         String?
+  numberOfGuests      Int?
+  numberOfChildren    Int           @default(0)
+  numberOfPets        Int           @default(0)
+  notes               String?
   amount              Decimal       @db.Decimal(12, 2)
   currency            Currency      @default(USD)
   commissionRate      Decimal       @db.Decimal(5, 4)
@@ -369,12 +408,14 @@ model Booking {
   offers            OfferProposal[]
 
   @@index([agentId])
+  @@index([referenceNumber])
 }
 
 model BookingPartner {
   id                  String        @id @default(uuid())
   bookingId           String
   partnerId           String
+  partnerServiceId    String?       // optional link to a specific PartnerService listing
   partnerName         String
   partnerPhoneNumber  String?
   description         String?
@@ -385,12 +426,59 @@ model BookingPartner {
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
 
-  booking             Booking       @relation("BookingPartners", fields: [bookingId], references: [id], onDelete: Cascade)
-  partner             Partner       @relation(fields: [partnerId], references: [id])
+  booking             Booking        @relation("BookingPartners", fields: [bookingId], references: [id], onDelete: Cascade)
+  partner             Partner        @relation(fields: [partnerId], references: [id])
+  partnerService      PartnerService? @relation(fields: [partnerServiceId], references: [id])
 
   @@index([bookingId])
   @@index([partnerId])
+  @@index([partnerServiceId])
   @@unique([bookingId, partnerId])
+}
+
+model PartnerService {
+  id               String                 @id @default(uuid())
+  partnerId        String
+  serviceCategory  PartnerServiceCategory
+  serviceType      PartnerServiceType
+  description      String?                // e.g. "Toyota Axio Hybrid", "Car With Driver"
+
+  // Car-specific
+  carType          String?                // e.g. "Compact", "SUV", "Minivan"
+  selfDrive        Boolean?
+
+  // Boat-specific
+  boatCapacity     Int?
+
+  // Restaurant-specific
+  cuisine          String?
+
+  // General
+  priceFrom        Decimal?               @db.Decimal(12, 2)
+  currency         Currency               @default(KES)
+  isActive         Boolean                @default(true)
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+
+  partner          Partner                @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  cities           PartnerServiceCity[]
+  bookingPartners  BookingPartner[]
+
+  @@index([partnerId])
+  @@index([serviceType])
+  @@index([serviceCategory])
+}
+
+model PartnerServiceCity {
+  id               String         @id @default(uuid())
+  partnerServiceId String
+  city             City
+
+  partnerService   PartnerService @relation(fields: [partnerServiceId], references: [id], onDelete: Cascade)
+
+  @@unique([partnerServiceId, city])
+  @@index([partnerServiceId])
+  @@index([city])
 }
 
 model BookingEvent {
@@ -404,6 +492,12 @@ model BookingEvent {
   booking   Booking          @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 
   @@index([bookingId])
+}
+
+// Counter table for per-month sequential reference numbers
+model BookingSequence {
+  id      String @id  // e.g. "2026-03"
+  lastSeq Int    @default(0)
 }
 
 model Partner {
@@ -434,6 +528,7 @@ model Partner {
   contracts       Contract[]
   events          PartnerEvent[]
   bookingPartners BookingPartner[]
+  partnerServices PartnerService[]
   approvedBy      User?      @relation("PartnerApprovedBy", fields: [approvedById], references: [id])
 
   @@index([approvalStatus])
@@ -970,4 +1065,15 @@ model RefreshToken {
 
   @@index([userId])
   @@index([token])
+}
+
+model PhoneOtp {
+  id        String   @id @default(uuid())
+  phone     String   @unique
+  otpHash   String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([phone])
 }

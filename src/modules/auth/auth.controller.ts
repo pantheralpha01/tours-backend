@@ -1,6 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { authService } from "./auth.service";
-import { loginSchema, logoutSchema, refreshSchema, registerSchema } from "./auth.validation";
+import {
+  loginSchema,
+  logoutSchema,
+  refreshSchema,
+  registerSchema,
+  verifyLoginOtpSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from "./auth.validation";
 import { userRepository } from "../users/user.repository";
 
 export const authController = {
@@ -39,6 +47,36 @@ export const authController = {
       const { refreshToken } = logoutSchema.parse(req.body);
       await authService.logout(refreshToken);
       res.status(200).json({ message: "Logged out successfully" });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  verifyLoginOtp: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const payload = verifyLoginOtpSchema.parse(req.body);
+      const result = await authService.verifyLoginOtp(payload);
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  forgotPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const payload = forgotPasswordSchema.parse(req.body);
+      const result = await authService.forgotPassword(payload);
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  resetPassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const payload = resetPasswordSchema.parse(req.body);
+      const result = await authService.resetPassword(payload);
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }

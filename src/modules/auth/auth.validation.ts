@@ -23,3 +23,18 @@ export const refreshSchema = z.object({
 export const logoutSchema = z.object({
   refreshToken: z.string().min(1),
 });
+
+export const verifyLoginOtpSchema = z.object({
+  phone: z.string().min(7, "Phone number required"),
+  otp: z.string().length(6, "OTP must be 6 digits"),
+});
+
+export const forgotPasswordSchema = z.object({
+  phone: z.string().min(7, "Phone number required"),
+});
+
+export const resetPasswordSchema = z.object({
+  phone: z.string().min(7, "Phone number required"),
+  otp: z.string().length(6, "OTP must be 6 digits"),
+  newPassword: z.string().min(8, "Password must be at least 8 characters"),
+});

@@ -14,9 +14,18 @@ export declare const quoteService: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            referenceNumber: string;
+            referenceSeq: number;
             customerName: string;
+            customerEmail: string | null;
             customerPhoneNumber: string | null;
             serviceTitle: string;
+            pickupLocation: string | null;
+            destination: string | null;
+            numberOfGuests: number | null;
+            numberOfChildren: number;
+            numberOfPets: number;
+            notes: string | null;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
             commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -63,6 +72,7 @@ export declare const quoteService: {
     } & {
         id: string;
         createdAt: Date;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -74,7 +84,6 @@ export declare const quoteService: {
         title: string;
         expiresAt: Date | null;
         items: import("@prisma/client/runtime/client").JsonValue | null;
-        notes: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     list: (params?: {
         page?: number;
@@ -91,9 +100,18 @@ export declare const quoteService: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            referenceNumber: string;
+            referenceSeq: number;
             customerName: string;
+            customerEmail: string | null;
             customerPhoneNumber: string | null;
             serviceTitle: string;
+            pickupLocation: string | null;
+            destination: string | null;
+            numberOfGuests: number | null;
+            numberOfChildren: number;
+            numberOfPets: number;
+            notes: string | null;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
             commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -140,6 +158,7 @@ export declare const quoteService: {
     } & {
         id: string;
         createdAt: Date;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -151,7 +170,6 @@ export declare const quoteService: {
         title: string;
         expiresAt: Date | null;
         items: import("@prisma/client/runtime/client").JsonValue | null;
-        notes: string | null;
     }) | null, null, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     update: (id: string, data: {
         title?: string;
@@ -166,9 +184,18 @@ export declare const quoteService: {
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            referenceNumber: string;
+            referenceSeq: number;
             customerName: string;
+            customerEmail: string | null;
             customerPhoneNumber: string | null;
             serviceTitle: string;
+            pickupLocation: string | null;
+            destination: string | null;
+            numberOfGuests: number | null;
+            numberOfChildren: number;
+            numberOfPets: number;
+            notes: string | null;
             amount: import("@prisma/client-runtime-utils").Decimal;
             currency: import(".prisma/client").$Enums.Currency;
             commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -215,6 +242,7 @@ export declare const quoteService: {
     } & {
         id: string;
         createdAt: Date;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -226,11 +254,11 @@ export declare const quoteService: {
         title: string;
         expiresAt: Date | null;
         items: import("@prisma/client/runtime/client").JsonValue | null;
-        notes: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
     remove: (id: string) => import(".prisma/client").Prisma.Prisma__QuoteClient<{
         id: string;
         createdAt: Date;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -242,7 +270,6 @@ export declare const quoteService: {
         title: string;
         expiresAt: Date | null;
         items: import("@prisma/client/runtime/client").JsonValue | null;
-        notes: string | null;
     }, never, import("@prisma/client/runtime/client").DefaultArgs, import(".prisma/client").Prisma.PrismaClientOptions>;
 };
 //# sourceMappingURL=quote.service.d.ts.map

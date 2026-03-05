@@ -31,12 +31,36 @@ bookingRoutes.use(requireRoles("ADMIN", "MANAGER", "AGENT"));
  *               customerName:
  *                 type: string
  *                 example: Jane Smith
+ *               customerEmail:
+ *                 type: string
+ *                 format: email
+ *                 example: jane@example.com
  *               customerPhoneNumber:
  *                 type: string
  *                 example: "+254712345678"
  *               serviceTitle:
  *                 type: string
  *                 example: Kenya Safari Package
+ *               pickupLocation:
+ *                 type: string
+ *                 example: JKIA Terminal 1
+ *               destination:
+ *                 type: string
+ *                 example: Maasai Mara National Reserve
+ *               numberOfGuests:
+ *                 type: integer
+ *                 example: 4
+ *               numberOfChildren:
+ *                 type: integer
+ *                 example: 1
+ *                 default: 0
+ *               numberOfPets:
+ *                 type: integer
+ *                 example: 0
+ *                 default: 0
+ *               notes:
+ *                 type: string
+ *                 example: Client prefers window seat on the safari vehicle
  *               amount:
  *                 type: number
  *                 example: 1500.00
@@ -112,9 +136,38 @@ bookingRoutes.use(requireRoles("ADMIN", "MANAGER", "AGENT"));
  *                 format: date-time
  *               splitPaymentNotes:
  *                 type: string
+ *           example:
+ *             customerName: Jane Smith
+ *             customerEmail: jane@example.com
+ *             customerPhoneNumber: "+254712345678"
+ *             serviceTitle: Kenya Safari Package
+ *             pickupLocation: JKIA Terminal 1
+ *             destination: Maasai Mara National Reserve
+ *             numberOfGuests: 4
+ *             numberOfChildren: 1
+ *             numberOfPets: 0
+ *             notes: Client prefers window seat
+ *             amount: 1500.00
+ *             currency: USD
+ *             status: CONFIRMED
+ *             paymentType: PARTIAL_PAYMENT
+ *             costAtBooking: 750.00
+ *             costPostEvent: 750.00
+ *             payPostEventDueDate: "2026-04-01T00:00:00.000Z"
+ *             agentId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+ *             serviceStartAt: "2026-04-15T08:00:00.000Z"
+ *             serviceEndAt: "2026-04-18T17:00:00.000Z"
+ *             serviceTimezone: Africa/Nairobi
+ *             bookingPartners:
+ *               - partnerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+ *                 partnerName: Acacia Safaris
+ *                 partnerPhoneNumber: "+254798765432"
+ *                 description: Airport transfer + 3-day game drive
+ *                 costAtBooking: 500.00
+ *                 costPostEvent: 0
  *     responses:
  *       201:
- *         description: Booking created successfully
+ *         description: Booking created — response includes auto-generated referenceNumber (e.g. TF-202603-00042)
  *         content:
  *           application/json:
  *             schema:

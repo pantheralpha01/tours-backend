@@ -28,6 +28,12 @@ export declare const config: {
     mpesaShortCode: string;
     mpesaPasskey: string;
     mpesaCallbackUrl: string;
+    textsms: {
+        apiUrl: string;
+        apiKey: string;
+        partnerId: string;
+        shortcode: string;
+    };
     paymentWebhookSecret: string;
     stripeWebhookSecret: string;
     mpesaWebhookSecret: string;

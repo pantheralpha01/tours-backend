@@ -45,6 +45,36 @@ exports.authController = {
             next(err);
         }
     },
+    verifyLoginOtp: async (req, res, next) => {
+        try {
+            const payload = auth_validation_1.verifyLoginOtpSchema.parse(req.body);
+            const result = await auth_service_1.authService.verifyLoginOtp(payload);
+            res.status(200).json(result);
+        }
+        catch (err) {
+            next(err);
+        }
+    },
+    forgotPassword: async (req, res, next) => {
+        try {
+            const payload = auth_validation_1.forgotPasswordSchema.parse(req.body);
+            const result = await auth_service_1.authService.forgotPassword(payload);
+            res.status(200).json(result);
+        }
+        catch (err) {
+            next(err);
+        }
+    },
+    resetPassword: async (req, res, next) => {
+        try {
+            const payload = auth_validation_1.resetPasswordSchema.parse(req.body);
+            const result = await auth_service_1.authService.resetPassword(payload);
+            res.status(200).json(result);
+        }
+        catch (err) {
+            next(err);
+        }
+    },
     me: async (req, res, next) => {
         try {
             if (!req.user?.id) {

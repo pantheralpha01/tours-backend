@@ -31,6 +31,10 @@
     "src/modules/payments/__tests__",
     "src/modules/quotes/__tests__",
     "src/modules/receipts/__tests__",
-    "src/modules/refunds/__tests__"
+    "src/modules/refunds/__tests__",
+    "src/modules/invoices",
+    "src/modules/bookings/booking.mapper.ts",
+    "src/modules/auth/email-action.repository.ts",
+    "src/**/*.old.ts"
   ]
 }

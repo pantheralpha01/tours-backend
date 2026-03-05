@@ -6,6 +6,7 @@ import {
 	partnerInvitePublicRoutes,
 	partnerInviteRoutes,
 } from "../modules/partner-invites/partner-invite.routes";
+import { partnerServiceRoutes } from "../modules/partner-services/partner-service.routes";
 import { inventoryRoutes } from "../modules/inventory/inventory.routes";
 import { paymentRoutes } from "../modules/payments/payment.routes";
 import { quoteRoutes } from "../modules/quotes/quote.routes";
@@ -29,6 +30,7 @@ apiRouter.use("/dashboard", dashboardRoutes);
 apiRouter.use("/bookings", bookingRoutes);
 apiRouter.use("/partners/invites", partnerInviteRoutes);
 apiRouter.use("/partners", partnerRoutes);
+apiRouter.use("/partner-services", partnerServiceRoutes);
 apiRouter.use("/inventory", inventoryRoutes);
 apiRouter.use("/payments", paymentRoutes);
 apiRouter.use("/quotes", quoteRoutes);

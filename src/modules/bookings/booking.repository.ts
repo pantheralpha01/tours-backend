@@ -3,8 +3,15 @@ import { prisma } from "../../config/prisma";
 export const bookingRepository = {
   create: (data: {
     customerName: string;
+    customerEmail?: string;
     customerPhoneNumber?: string;
     serviceTitle: string;
+    pickupLocation?: string;
+    destination?: string;
+    numberOfGuests?: number;
+    numberOfChildren?: number;
+    numberOfPets?: number;
+    notes?: string;
     amount: number;
     currency?: "USD" | "KES";
     commissionRate: number | string;
@@ -29,6 +36,8 @@ export const bookingRepository = {
     balanceAmount?: number | string | null;
     balanceDueDate?: Date | null;
     splitPaymentNotes?: string | null;
+    referenceNumber: string;
+    referenceSeq: number;
   }) =>
     prisma.booking.create({
       data: {
@@ -58,6 +67,15 @@ export const bookingRepository = {
         serviceStartAt: data.serviceStartAt,
         serviceEndAt: data.serviceEndAt,
         serviceTimezone: data.serviceTimezone,
+        customerEmail: data.customerEmail,
+        pickupLocation: data.pickupLocation,
+        destination: data.destination,
+        numberOfGuests: data.numberOfGuests,
+        numberOfChildren: data.numberOfChildren ?? 0,
+        numberOfPets: data.numberOfPets ?? 0,
+        notes: data.notes,
+        referenceNumber: data.referenceNumber,
+        referenceSeq: data.referenceSeq,
         ...(data.bookingPartners && { bookingPartners: data.bookingPartners }),
       },
       include: {

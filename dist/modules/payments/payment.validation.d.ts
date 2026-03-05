@@ -58,16 +58,16 @@ export declare const manualPaymentSchema: z.ZodObject<{
     amount: number;
     bookingId: string;
     provider: "MPESA" | "PAYPAL" | "VISA" | "MASTERCARD" | "CRYPTO" | "CASH" | "BANK_TRANSFER" | "OTHER";
-    currency?: "USD" | "KES" | undefined;
     notes?: string | undefined;
+    currency?: "USD" | "KES" | undefined;
     metadata?: Record<string, any> | undefined;
     reference?: string | undefined;
     recordedAt?: Date | undefined;
 }, {
     amount: number;
     bookingId: string;
-    currency?: "USD" | "KES" | undefined;
     notes?: string | undefined;
+    currency?: "USD" | "KES" | undefined;
     metadata?: Record<string, any> | undefined;
     provider?: "MPESA" | "PAYPAL" | "VISA" | "MASTERCARD" | "CRYPTO" | "CASH" | "BANK_TRANSFER" | "OTHER" | undefined;
     reference?: string | undefined;

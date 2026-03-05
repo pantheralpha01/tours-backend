@@ -14,6 +14,7 @@ const shift_service_1 = require("../shifts/shift.service");
 const offer_service_1 = require("../offers/offer.service");
 const partner_repository_1 = require("../partners/partner.repository");
 const ApiError_1 = require("../../utils/ApiError");
+const referenceNumber_1 = require("../../utils/referenceNumber");
 const MIN_DEPOSIT_PERCENTAGE = new client_1.Prisma.Decimal("0.10");
 const MAX_DEPOSIT_PERCENTAGE = new client_1.Prisma.Decimal("1.00");
 const DEFAULT_DEPOSIT_PERCENTAGE = new client_1.Prisma.Decimal("0.50");
@@ -178,14 +179,19 @@ exports.bookingService = {
         // Handle booking partners separately
         const bookingPartners = data.bookingPartners;
         delete bookingData.bookingPartners;
+        // Generate atomic reference number
+        const { referenceNumber, referenceSeq } = await (0, referenceNumber_1.generateBookingReference)();
         // Create booking with partners
         const booking = await booking_repository_1.bookingRepository.create({
             ...bookingData,
+            referenceNumber,
+            referenceSeq,
             ...(bookingPartners && bookingPartners.length > 0 && {
                 bookingPartners: {
                     createMany: {
                         data: bookingPartners.map(p => ({
                             partnerId: p.partnerId,
+                            partnerServiceId: p.partnerServiceId ?? null,
                             partnerName: p.partnerName,
                             partnerPhoneNumber: p.partnerPhoneNumber,
                             description: p.description,

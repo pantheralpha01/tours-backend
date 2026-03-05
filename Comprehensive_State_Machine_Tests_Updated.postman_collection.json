@@ -1,0 +1,364 @@
+{
+  "info": {
+    "name": "Comprehensive State Machine Tests - Updated",
+    "description": "Complete test suite for booking, payment, dispatch, dispute, refund, and invoice state machine transitions",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "live_server_url",
+      "value": "http://178.162.244.84:4000"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Register User",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const timestamp = Date.now();",
+              "const uniqueEmail = `test.agent.${timestamp}@example.com`;",
+              "pm.environment.set('test_user_email', uniqueEmail);",
+              "console.log('✓ Generated unique email:', uniqueEmail);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('User registered successfully', function () {",
+              "    const responseJson = pm.response.json();",
+              "    console.log('Register Response:', JSON.stringify(responseJson, null, 2));",
+              "    ",
+              "    pm.expect(responseJson).to.have.property('user');",
+              "    pm.expect(responseJson.user).to.have.property('email');",
+              "    pm.expect(responseJson.user).to.have.property('id');",
+              "    pm.expect(responseJson).to.have.property('accessToken');",
+              "    ",
+              "    pm.environment.set('test_user_email', responseJson.user.email);",
+              "    pm.environment.set('agent_id', responseJson.user.id);",
+              "    pm.environment.set('access_token', responseJson.accessToken);",
+              "    console.log('✓ User Registered: ' + responseJson.user.email);",
+              "    console.log('✓ Agent ID set: ' + responseJson.user.id);",
+              "    console.log('✓ Access Token set from registration');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Agent\",\n  \"email\": \"{{test_user_email}}\",\n  \"password\": \"TestPass123!\",\n  \"phone\": \"+254712345678\",\n  \"idNumber\": \"12345678\",\n  \"idType\": \"NATIONAL_ID\",\n  \"profilePicUrl\": \"https://example.com/pic.jpg\",\n  \"role\": \"AGENT\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/register",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "1. Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has access token', function () {",
+              "    const responseJson = pm.response.json();",
+              "    console.log('Login Response:', JSON.stringify(responseJson, null, 2));",
+              "    ",
+              "    let accessToken;",
+              "    if (responseJson.data && responseJson.data.accessToken) {",
+              "        accessToken = responseJson.data.accessToken;",
+              "    } else if (responseJson.accessToken) {",
+              "        accessToken = responseJson.accessToken;",
+              "    } else {",
+              "        throw new Error('No accessToken found in response');",
+              "    }",
+              "    ",
+              "    pm.expect(accessToken).to.be.a('string');",
+              "    pm.expect(accessToken.length).to.be.greaterThan(10);",
+              "    ",
+              "    pm.environment.set('access_token', accessToken);",
+              "    console.log('✓ Login - Token stored:', accessToken.substring(0, 20) + '...');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{test_user_email}}\",\n  \"password\": \"TestPass123!\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "2. Create Booking",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Response has booking ID', function () {",
+              "    const responseJson = pm.response.json();",
+              "    console.log('Booking Response:', JSON.stringify(responseJson, null, 2));",
+              "    ",
+              "    let bookingId;",
+              "    if (responseJson.data && responseJson.data.id) {",
+              "        bookingId = responseJson.data.id;",
+              "    } else if (responseJson.id) {",
+              "        bookingId = responseJson.id;",
+              "    } else {",
+              "        throw new Error('No booking ID found');",
+              "    }",
+              "    ",
+              "    pm.environment.set('booking_id', bookingId);",
+              "    console.log('✓ Create Booking - ID: ' + bookingId);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customerName\": \"Jane Smith\",\n  \"customerEmail\": \"jane.smith@example.com\",\n  \"customerPhoneNumber\": \"+254712345678\",\n  \"numberOfGuests\": 4,\n  \"children\": 2,\n  \"pets\": 1,\n  \"specialRequests\": \"Vegetarian meals required\",\n  \"pickupLocation\": {\n    \"address\": \"Kenyatta Avenue\",\n    \"city\": \"Nairobi\",\n    \"country\": \"Kenya\",\n    \"zipCode\": \"00100\"\n  },\n  \"destination\": {\n    \"address\": \"Masai Mara\",\n    \"city\": \"Narok\",\n    \"country\": \"Kenya\",\n    \"zipCode\": \"\"\n  },\n  \"serviceTitle\": \"3-Day Safari\",\n  \"amount\": 5000.00,\n  \"currency\": \"USD\",\n  \"commissionRate\": 0.15,\n  \"commissionAmount\": 750.00,\n  \"commissionCurrency\": \"KES\",\n  \"costAtBooking\": 2000.00,\n  \"costPostEvent\": 3000.00,\n  \"serviceStartAt\": \"2026-03-15T08:00:00Z\",\n  \"serviceEndAt\": \"2026-03-17T18:00:00Z\",\n  \"serviceTimezone\": \"Africa/Nairobi\",\n  \"agentId\": \"{{agent_id}}\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/bookings",
+          "host": ["{{base_url}}"],
+          "path": ["api", "bookings"]
+        }
+      }
+    },
+    {
+      "name": "3. Confirm Booking",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"toStatus\": \"CONFIRMED\",\n  \"transitionReason\": \"Customer confirmed\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/bookings/{{booking_id}}/transition",
+          "host": ["{{base_url}}"],
+          "path": ["api", "bookings", "{{booking_id}}", "transition"]
+        }
+      }
+    },
+    {
+      "name": "25. Create Invoice",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Invoice created with ID', function () {",
+              "    const responseJson = pm.response.json();",
+              "    console.log('Invoice Response:', JSON.stringify(responseJson, null, 2));",
+              "    ",
+              "    let invoiceId;",
+              "    if (responseJson.data && responseJson.data.id) {",
+              "        invoiceId = responseJson.data.id;",
+              "    } else if (responseJson.id) {",
+              "        invoiceId = responseJson.id;",
+              "    }",
+              "    ",
+              "    pm.environment.set('invoice_id', invoiceId);",
+              "    console.log('✓ Invoice ID: ' + invoiceId);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingId\": \"{{booking_id}}\",\n  \"customerName\": \"Jane Smith\",\n  \"customerEmail\": \"jane.smith@example.com\",\n  \"serviceTitle\": \"3-Day Safari\",\n  \"amount\": 5000.00,\n  \"currency\": \"USD\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/invoices",
+          "host": ["{{base_url}}"],
+          "path": ["api", "invoices"]
+        }
+      }
+    },
+    {
+      "name": "26. Send Invoice",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/invoices/{{invoice_id}}/send",
+          "host": ["{{base_url}}"],
+          "path": ["api", "invoices", "{{invoice_id}}", "send"]
+        }
+      }
+    },
+    {
+      "name": "27. Record Payment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"transactionId\": \"TXN-2026030101\",\n  \"type\": \"DEPOSIT\",\n  \"amount\": 2000.00,\n  \"currency\": \"USD\",\n  \"paymentMethod\": \"MPESA\",\n  \"status\": \"COMPLETED\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/invoices/{{invoice_id}}/payments",
+          "host": ["{{base_url}}"],
+          "path": ["api", "invoices", "{{invoice_id}}", "payments"]
+        }
+      }
+    },
+    {
+      "name": "28. Get Invoice",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/invoices/{{invoice_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "invoices", "{{invoice_id}}"]
+        }
+      }
+    },
+    {
+      "name": "29. List Invoices",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/invoices",
+          "host": ["{{base_url}}"],
+          "path": ["api", "invoices"]
+        }
+      }
+    },
+    {
+      "name": "30. Get Invoices by Booking",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/invoices/booking/{{booking_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "invoices", "booking", "{{booking_id}}"]
+        }
+      }
+    }
+  ]
+}

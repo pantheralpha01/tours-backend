@@ -32,6 +32,12 @@ export const config = {
   mpesaShortCode: process.env.MPESA_SHORT_CODE ?? "",
   mpesaPasskey: process.env.MPESA_PASSKEY ?? "",
   mpesaCallbackUrl: process.env.MPESA_CALLBACK_URL ?? "",
+  textsms: {
+    apiUrl: process.env.TEXTSMS_API_URL ?? "",
+    apiKey: process.env.TEXTSMS_API_KEY ?? "",
+    partnerId: process.env.TEXTSMS_PARTNER_ID ?? "",
+    shortcode: process.env.TEXTSMS_SHORTCODE ?? "",
+  },
   paymentWebhookSecret: process.env.PAYMENT_WEBHOOK_SECRET ?? "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
   mpesaWebhookSecret: process.env.MPESA_WEBHOOK_SECRET ?? "",

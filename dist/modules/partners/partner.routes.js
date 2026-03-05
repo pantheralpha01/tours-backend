@@ -19,106 +19,73 @@ exports.partnerRoutes = (0, express_1.Router)();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - firstName
- *               - lastName
- *               - email
- *               - password
- *               - businessName
- *               - description
- *               - serviceCategories
- *             properties:
- *               firstName:
- *                 type: string
- *                 example: John
- *               lastName:
- *                 type: string
- *                 example: Doe
- *               email:
- *                 type: string
- *                 format: email
- *                 example: john@safari.com
- *               password:
- *                 type: string
- *                 description: Must contain uppercase, lowercase, and number (min 8 chars)
- *                 example: SecurePass123
- *               phone:
- *                 type: string
- *                 example: +254712345678
- *               businessName:
- *                 type: string
- *                 example: Safari Adventures Ltd
- *               website:
- *                 type: string
- *                 format: url
- *                 example: https://safariventures.com
- *               description:
- *                 type: string
- *                 example: Premium safari tours in Kenya
- *               serviceCategories:
- *                 type: array
- *                 description: Main service categories partner offers
- *                 items:
- *                   type: string
- *                   enum: [GET_AROUND, VERIFIED_STAYS, LIVE_LIKE_LOCAL, EXPERT_ACCESS, GEAR_UP, GET_ENTERTAINED]
- *               getAroundServices:
- *                 type: array
- *                 description: Specific services under Get Around (Airport transfers, Private drivers, Car rentals, EV charging, Scooter/Bike rentals, Tours, City transfers)
- *                 items:
- *                   type: string
- *                   enum: [AIRPORT_TRANSFERS, PRIVATE_DRIVERS, CAR_RENTALS, EV_CHARGING, SCOOTER_BIKE_RENTALS, TOURS, CITY_TRANSFERS]
- *               verifiedStaysServices:
- *                 type: array
- *                 description: Specific services under Verified Stays (Boutique hotels, Vetted rentals, Eco-lodges, Luxury camps)
- *                 items:
- *                   type: string
- *                   enum: [BOUTIQUE_HOTELS, VETTED_RENTALS, ECO_LODGES, LUXURY_CAMPS]
- *               liveLikeLocalServices:
- *                 type: array
- *                 description: Specific services under Live Like a Local (Home-cooked meals, Neighborhood walks, Language exchange, Cultural learning)
- *                 items:
- *                   type: string
- *                   enum: [HOME_COOKED_MEALS, NEIGHBORHOOD_WALKS, LANGUAGE_EXCHANGE, CULTURAL_LEARNING]
- *               expertAccessServices:
- *                 type: array
- *                 description: Specific services under Expert Access (Lawyers, Tour guides, Translators, Photographers, Medical assistants, Security, Business scouting, Interconnectivity experts, Delivery services, Cleaning services, Event planning)
- *                 items:
- *                   type: string
- *                   enum: [LAWYERS, TOUR_GUIDES, TRANSLATORS, PHOTOGRAPHERS, MEDICAL_ASSISTANTS, SECURITY, BUSINESS_SCOUTING, INTERCONNECTIVITY_EXPERTS, DELIVERY_SERVICES, CLEANING_SERVICES, EVENT_PLANNING]
- *               gearUpServices:
- *                 type: array
- *                 description: Specific services under Gear Up (Camping gear, Hiking equipment, Tech rentals)
- *                 items:
- *                   type: string
- *                   enum: [CAMPING_GEAR, HIKING_EQUIPMENT, TECH_RENTALS]
- *               getEntertainedServices:
- *                 type: array
- *                 description: Specific services under Get Entertained/Relax (Club, Dine out, Massage/Spa)
- *                 items:
- *                   type: string
- *                   enum: [CLUB, DINE_OUT, MASSAGE_SPA]
+ *             $ref: '#/components/schemas/PartnerSignupRequest'
+ *           example:
+ *             firstName: Joan
+ *             lastName: Mwangi
+ *             email: joan@nomadexperiences.com
+ *             password: SecurePass123
+ *             phone: +254712345678
+ *             businessName: Nomad Experiences
+ *             website: https://nomadexperiences.com
+ *             description: Curated cultural immersions across East Africa
+ *             serviceCategories:
+ *               - GET_AROUND
+ *               - EXPERT_ACCESS
+ *             getAroundServices:
+ *               - AIRPORT_TRANSFERS
+ *               - CITY_TRANSFERS
+ *             expertAccessServices:
+ *               - LAWYERS
+ *               - TRANSLATORS
  *     responses:
  *       201:
  *         description: Partner registered successfully, pending admin approval
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 data:
- *                   type: object
- *                   properties:
- *                     partner:
- *                       type: object
- *                     user:
- *                       type: object
+ *               $ref: '#/components/schemas/PartnerSignupResponse'
+ *             example:
+ *               message: Partner signup successful. Your application is pending admin approval.
+ *               data:
+ *                 id: 4f57c3c0-1234-4a91-8d54-1ecf9b8aa111
+ *                 userId: 8e9152d9-5678-44c1-a332-8ad118d55000
+ *                 businessName: Nomad Experiences
+ *                 website: https://nomadexperiences.com
+ *                 description: Curated cultural immersions across East Africa
+ *                 isActive: true
+ *                 approvalStatus: PENDING
+ *                 serviceCategories:
+ *                   - GET_AROUND
+ *                   - EXPERT_ACCESS
+ *                 getAroundServices:
+ *                   - AIRPORT_TRANSFERS
+ *                 expertAccessServices:
+ *                   - LAWYERS
+ *                 verifiedStaysServices: []
+ *                 liveLikeLocalServices: []
+ *                 gearUpServices: []
+ *                 getEntertainedServices: []
+ *                 createdAt: 2026-03-02T18:20:39.000Z
+ *                 updatedAt: 2026-03-02T18:20:39.000Z
+ *                 user:
+ *                   id: 8e9152d9-5678-44c1-a332-8ad118d55000
+ *                   name: Joan Mwangi
+ *                   email: joan@nomadexperiences.com
+ *                   phone: +254712345678
+ *                   role: PARTNER
  *       400:
  *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *       409:
  *         description: Email already registered
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
 exports.partnerRoutes.post("/signup", partner_controller_1.partnerController.signup);
 // All routes below require authentication

@@ -27,4 +27,19 @@ export const userRepository = {
   findByEmail: (email: string) => prisma.user.findUnique({ where: { email } }),
 
   findById: (id: string) => prisma.user.findUnique({ where: { id } }),
+
+  updatePassword: (id: string, hashedPassword: string) =>
+    prisma.user.update({ where: { id }, data: { password: hashedPassword } }),
+
+  findByPhone: (phone: string) => {
+    // Match regardless of stored format: 254..., +254..., 0...
+    const normalized = phone.replace(/^\+/, ""); // strip leading +
+    const withPlus = `+${normalized}`;
+    const withZero = normalized.startsWith("254")
+      ? `0${normalized.slice(3)}`
+      : phone;
+    return prisma.user.findFirst({
+      where: { phone: { in: [normalized, withPlus, withZero] } },
+    });
+  },
 };

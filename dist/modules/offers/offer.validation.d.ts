@@ -178,9 +178,9 @@ export declare const proposalSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     bookingId: string;
     baseAmount: number;
+    notes?: string | undefined;
     currency?: "USD" | "KES" | undefined;
     expiresAt?: Date | undefined;
-    notes?: string | undefined;
     metadata?: Record<string, any> | undefined;
     templateId?: string | undefined;
     itinerary?: {
@@ -198,9 +198,9 @@ export declare const proposalSchema: z.ZodObject<{
 }, {
     bookingId: string;
     baseAmount: number;
+    notes?: string | undefined;
     currency?: "USD" | "KES" | undefined;
     expiresAt?: Date | undefined;
-    notes?: string | undefined;
     metadata?: Record<string, any> | undefined;
     templateId?: string | undefined;
     itinerary?: {

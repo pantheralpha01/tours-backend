@@ -3,58 +3,58 @@ export declare const shiftStatusEnum: z.ZodEnum<["SCHEDULED", "IN_PROGRESS", "CO
 export declare const createShiftSchema: z.ZodEffects<z.ZodType<{
     startAt: Date;
     endAt: Date;
+    notes?: string | undefined;
     status?: "CANCELLED" | "IN_PROGRESS" | "COMPLETED" | "SCHEDULED" | undefined;
     agentId?: string | undefined;
     bookingId?: string | undefined;
-    notes?: string | undefined;
 }, z.ZodTypeDef, {
     startAt: Date;
     endAt: Date;
+    notes?: string | undefined;
     status?: "CANCELLED" | "IN_PROGRESS" | "COMPLETED" | "SCHEDULED" | undefined;
     agentId?: string | undefined;
     bookingId?: string | undefined;
-    notes?: string | undefined;
 }>, {
     startAt: Date;
     endAt: Date;
+    notes?: string | undefined;
     status?: "CANCELLED" | "IN_PROGRESS" | "COMPLETED" | "SCHEDULED" | undefined;
     agentId?: string | undefined;
     bookingId?: string | undefined;
-    notes?: string | undefined;
 }, {
     startAt: Date;
     endAt: Date;
+    notes?: string | undefined;
     status?: "CANCELLED" | "IN_PROGRESS" | "COMPLETED" | "SCHEDULED" | undefined;
     agentId?: string | undefined;
     bookingId?: string | undefined;
-    notes?: string | undefined;
 }>;
 export declare const updateShiftSchema: z.ZodEffects<z.ZodType<{
+    notes?: string | null | undefined;
     status?: "CANCELLED" | "IN_PROGRESS" | "COMPLETED" | "SCHEDULED" | undefined;
     agentId?: string | undefined;
     bookingId?: string | null | undefined;
-    notes?: string | null | undefined;
     startAt?: Date | undefined;
     endAt?: Date | undefined;
 }, z.ZodTypeDef, {
+    notes?: string | null | undefined;
     status?: "CANCELLED" | "IN_PROGRESS" | "COMPLETED" | "SCHEDULED" | undefined;
     agentId?: string | undefined;
     bookingId?: string | null | undefined;
-    notes?: string | null | undefined;
     startAt?: Date | undefined;
     endAt?: Date | undefined;
 }>, {
+    notes?: string | null | undefined;
     status?: "CANCELLED" | "IN_PROGRESS" | "COMPLETED" | "SCHEDULED" | undefined;
     agentId?: string | undefined;
     bookingId?: string | null | undefined;
-    notes?: string | null | undefined;
     startAt?: Date | undefined;
     endAt?: Date | undefined;
 }, {
+    notes?: string | null | undefined;
     status?: "CANCELLED" | "IN_PROGRESS" | "COMPLETED" | "SCHEDULED" | undefined;
     agentId?: string | undefined;
     bookingId?: string | null | undefined;
-    notes?: string | null | undefined;
     startAt?: Date | undefined;
     endAt?: Date | undefined;
 }>;

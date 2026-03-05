@@ -12,20 +12,20 @@ export declare const createQuoteSchema: z.ZodObject<{
     amount: number;
     bookingId: string;
     title: string;
+    notes?: string | undefined;
     currency?: "USD" | "KES" | undefined;
     agentId?: string | undefined;
     expiresAt?: Date | undefined;
     items?: Record<string, any> | undefined;
-    notes?: string | undefined;
 }, {
     amount: number;
     bookingId: string;
     title: string;
+    notes?: string | undefined;
     currency?: "USD" | "KES" | undefined;
     agentId?: string | undefined;
     expiresAt?: Date | undefined;
     items?: Record<string, any> | undefined;
-    notes?: string | undefined;
 }>;
 export declare const updateQuoteSchema: z.ZodObject<{
     title: z.ZodOptional<z.ZodString>;
@@ -36,21 +36,21 @@ export declare const updateQuoteSchema: z.ZodObject<{
     items: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
     notes: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
+    notes?: string | undefined;
     amount?: number | undefined;
     currency?: "USD" | "KES" | undefined;
     status?: "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED" | "EXPIRED" | undefined;
     title?: string | undefined;
     expiresAt?: Date | undefined;
     items?: Record<string, any> | undefined;
-    notes?: string | undefined;
 }, {
+    notes?: string | undefined;
     amount?: number | undefined;
     currency?: "USD" | "KES" | undefined;
     status?: "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED" | "EXPIRED" | undefined;
     title?: string | undefined;
     expiresAt?: Date | undefined;
     items?: Record<string, any> | undefined;
-    notes?: string | undefined;
 }>;
 export declare const listQuoteSchema: z.ZodObject<{
     page: z.ZodDefault<z.ZodOptional<z.ZodNumber>>;

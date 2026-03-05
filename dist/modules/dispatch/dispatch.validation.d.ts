@@ -8,15 +8,15 @@ export declare const createDispatchSchema: z.ZodObject<{
     completedAt: z.ZodOptional<z.ZodDate>;
 }, "strip", z.ZodTypeAny, {
     bookingId: string;
-    status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     notes?: string | undefined;
+    status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     assignedToId?: string | undefined;
     startedAt?: Date | undefined;
     completedAt?: Date | undefined;
 }, {
     bookingId: string;
-    status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     notes?: string | undefined;
+    status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     assignedToId?: string | undefined;
     startedAt?: Date | undefined;
     completedAt?: Date | undefined;
@@ -29,15 +29,15 @@ export declare const updateDispatchSchema: z.ZodObject<{
     completedAt: z.ZodOptional<z.ZodDate>;
     transitionReason: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     notes?: string | undefined;
+    status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     assignedToId?: string | undefined;
     startedAt?: Date | undefined;
     completedAt?: Date | undefined;
     transitionReason?: string | undefined;
 }, {
-    status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     notes?: string | undefined;
+    status?: "CANCELLED" | "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | undefined;
     assignedToId?: string | undefined;
     startedAt?: Date | undefined;
     completedAt?: Date | undefined;

@@ -3,6 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.rejectPartnerSchema = exports.partnerIdSchema = exports.listPartnerSchema = exports.updatePartnerSchema = exports.createPartnerSchema = exports.partnerSignupSchema = exports.getEntertainedServices = exports.gearUpServices = exports.expertAccessServices = exports.liveLikeLocalServices = exports.verifiedStaysServices = exports.getAroundServices = exports.partnerServiceCategories = void 0;
 const zod_1 = require("zod");
 const pagination_1 = require("../../utils/pagination");
+const ensureString = (val) => {
+    if (typeof val === "number") {
+        return val.toString();
+    }
+    return val;
+};
+const coerceString = (schema) => zod_1.z.preprocess(ensureString, schema ?? zod_1.z.string());
+const stringArray = () => zod_1.z.array(coerceString());
 // Service category constants
 exports.partnerServiceCategories = [
     "GET_AROUND",
@@ -58,51 +66,44 @@ exports.getEntertainedServices = [
 ];
 // Partner signup schema (self-registration) - using string validation with refinement
 exports.partnerSignupSchema = zod_1.z.object({
-    firstName: zod_1.z.string().min(2, "First name must be at least 2 characters"),
-    lastName: zod_1.z.string().min(2, "Last name must be at least 2 characters"),
-    email: zod_1.z.string().email("Invalid email address"),
-    password: zod_1.z
+    firstName: coerceString(zod_1.z.string().min(2, "First name must be at least 2 characters")),
+    lastName: coerceString(zod_1.z.string().min(2, "Last name must be at least 2 characters")),
+    email: coerceString(zod_1.z.string().email("Invalid email address")),
+    password: coerceString(zod_1.z
         .string()
         .min(8, "Password must be at least 8 characters")
         .regex(/[A-Z]/, "Password must contain an uppercase letter")
         .regex(/[a-z]/, "Password must contain a lowercase letter")
-        .regex(/[0-9]/, "Password must contain a number"),
-    phone: zod_1.z.string().min(7, "Invalid phone number").optional(),
-    businessName: zod_1.z.string().min(2, "Business name must be at least 2 characters"),
-    website: zod_1.z.string().url("Invalid website URL").optional().or(zod_1.z.literal("")),
-    description: zod_1.z.string().max(1000, "Description too long"),
+        .regex(/[0-9]/, "Password must contain a number")),
+    phone: coerceString(zod_1.z.string().min(7, "Invalid phone number")).optional(),
+    businessName: coerceString(zod_1.z.string().min(2, "Business name must be at least 2 characters")),
+    website: coerceString(zod_1.z.string().url("Invalid website URL")).optional().or(zod_1.z.literal("")),
+    description: coerceString(zod_1.z.string().max(1000, "Description too long")),
     // Services selection - validate as arrays of strings
-    serviceCategories: zod_1.z
-        .array(zod_1.z.string())
+    serviceCategories: stringArray()
         .min(1, "Select at least one service category")
         .refine((arr) => arr.every((val) => exports.partnerServiceCategories.includes(val)), "Invalid service category"),
-    getAroundServices: zod_1.z
-        .array(zod_1.z.string())
+    getAroundServices: stringArray()
         .optional()
         .transform((arr) => arr ?? [])
         .refine((arr) => arr.every((val) => exports.getAroundServices.includes(val)), "Invalid get around service"),
-    verifiedStaysServices: zod_1.z
-        .array(zod_1.z.string())
+    verifiedStaysServices: stringArray()
         .optional()
         .transform((arr) => arr ?? [])
         .refine((arr) => arr.every((val) => exports.verifiedStaysServices.includes(val)), "Invalid verified stays service"),
-    liveLikeLocalServices: zod_1.z
-        .array(zod_1.z.string())
+    liveLikeLocalServices: stringArray()
         .optional()
         .transform((arr) => arr ?? [])
         .refine((arr) => arr.every((val) => exports.liveLikeLocalServices.includes(val)), "Invalid live like local service"),
-    expertAccessServices: zod_1.z
-        .array(zod_1.z.string())
+    expertAccessServices: stringArray()
         .optional()
         .transform((arr) => arr ?? [])
         .refine((arr) => arr.every((val) => exports.expertAccessServices.includes(val)), "Invalid expert access service"),
-    gearUpServices: zod_1.z
-        .array(zod_1.z.string())
+    gearUpServices: stringArray()
         .optional()
         .transform((arr) => arr ?? [])
         .refine((arr) => arr.every((val) => exports.gearUpServices.includes(val)), "Invalid gear up service"),
-    getEntertainedServices: zod_1.z
-        .array(zod_1.z.string())
+    getEntertainedServices: stringArray()
         .optional()
         .transform((arr) => arr ?? [])
         .refine((arr) => arr.every((val) => exports.getEntertainedServices.includes(val)), "Invalid get entertained service"),

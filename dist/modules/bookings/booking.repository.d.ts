@@ -1,8 +1,15 @@
 export declare const bookingRepository: {
     create: (data: {
         customerName: string;
+        customerEmail?: string;
         customerPhoneNumber?: string;
         serviceTitle: string;
+        pickupLocation?: string;
+        destination?: string;
+        numberOfGuests?: number;
+        numberOfChildren?: number;
+        numberOfPets?: number;
+        notes?: string;
         amount: number;
         currency?: "USD" | "KES";
         commissionRate: number | string;
@@ -27,6 +34,8 @@ export declare const bookingRepository: {
         balanceAmount?: number | string | null;
         balanceDueDate?: Date | null;
         splitPaymentNotes?: string | null;
+        referenceNumber: string;
+        referenceSeq: number;
     }) => import(".prisma/client").Prisma.Prisma__BookingClient<{
         agent: {
             name: string;
@@ -58,6 +67,7 @@ export declare const bookingRepository: {
             totalCost: import("@prisma/client-runtime-utils").Decimal;
             bookingId: string;
             description: string | null;
+            partnerServiceId: string | null;
             partnerName: string;
             partnerPhoneNumber: string | null;
         }[];
@@ -65,9 +75,18 @@ export declare const bookingRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        referenceNumber: string;
+        referenceSeq: number;
         customerName: string;
+        customerEmail: string | null;
         customerPhoneNumber: string | null;
         serviceTitle: string;
+        pickupLocation: string | null;
+        destination: string | null;
+        numberOfGuests: number | null;
+        numberOfChildren: number;
+        numberOfPets: number;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -134,6 +153,7 @@ export declare const bookingRepository: {
             totalCost: import("@prisma/client-runtime-utils").Decimal;
             bookingId: string;
             description: string | null;
+            partnerServiceId: string | null;
             partnerName: string;
             partnerPhoneNumber: string | null;
         }[];
@@ -141,9 +161,18 @@ export declare const bookingRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        referenceNumber: string;
+        referenceSeq: number;
         customerName: string;
+        customerEmail: string | null;
         customerPhoneNumber: string | null;
         serviceTitle: string;
+        pickupLocation: string | null;
+        destination: string | null;
+        numberOfGuests: number | null;
+        numberOfChildren: number;
+        numberOfPets: number;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -208,6 +237,7 @@ export declare const bookingRepository: {
             totalCost: import("@prisma/client-runtime-utils").Decimal;
             bookingId: string;
             description: string | null;
+            partnerServiceId: string | null;
             partnerName: string;
             partnerPhoneNumber: string | null;
         }[];
@@ -223,9 +253,18 @@ export declare const bookingRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        referenceNumber: string;
+        referenceSeq: number;
         customerName: string;
+        customerEmail: string | null;
         customerPhoneNumber: string | null;
         serviceTitle: string;
+        pickupLocation: string | null;
+        destination: string | null;
+        numberOfGuests: number | null;
+        numberOfChildren: number;
+        numberOfPets: number;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -308,6 +347,7 @@ export declare const bookingRepository: {
             totalCost: import("@prisma/client-runtime-utils").Decimal;
             bookingId: string;
             description: string | null;
+            partnerServiceId: string | null;
             partnerName: string;
             partnerPhoneNumber: string | null;
         }[];
@@ -315,9 +355,18 @@ export declare const bookingRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        referenceNumber: string;
+        referenceSeq: number;
         customerName: string;
+        customerEmail: string | null;
         customerPhoneNumber: string | null;
         serviceTitle: string;
+        pickupLocation: string | null;
+        destination: string | null;
+        numberOfGuests: number | null;
+        numberOfChildren: number;
+        numberOfPets: number;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
@@ -346,9 +395,18 @@ export declare const bookingRepository: {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        referenceNumber: string;
+        referenceSeq: number;
         customerName: string;
+        customerEmail: string | null;
         customerPhoneNumber: string | null;
         serviceTitle: string;
+        pickupLocation: string | null;
+        destination: string | null;
+        numberOfGuests: number | null;
+        numberOfChildren: number;
+        numberOfPets: number;
+        notes: string | null;
         amount: import("@prisma/client-runtime-utils").Decimal;
         currency: import(".prisma/client").$Enums.Currency;
         commissionRate: import("@prisma/client-runtime-utils").Decimal;
